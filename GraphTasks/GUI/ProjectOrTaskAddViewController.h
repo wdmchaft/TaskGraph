@@ -8,14 +8,20 @@
 
 #import <UIKit/UIKit.h>
 @class  NMTGProject;
-@interface ProjectOrTaskAddViewController : UIViewController{
+@interface ProjectOrTaskAddViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate,UITableViewDelegate,UITableViewDataSource>{
     //GUI
     UISegmentedControl* _segmentedControlProjectOrTask;
+    UILabel* _labelTaskType;
     UISegmentedControl* _segmentedControlTaskType;
     UIScrollView* _scrollView;
     UISwitch* _switchIsSpecialTask;
-    UIDatePicker* datePickerAlert1;
-    UIDatePicker* datePickerAlert2;
+    UIDatePicker* _datePickerAlert1;
+    UITextField* _textFieldNameOfTask;
+    UITableView* _tableViewExtraSettings;
+    UILabel* labelExtraSettings;
+    UILabel* labelDatePicker1;
+    UILabel* labelName;
+    
     
     //CoreData
     NSManagedObjectContext* _context;
@@ -29,6 +35,7 @@
 -(void)save;
 -(void)cancel;
 -(void)switchValueChanged:(id)object;
+-(void)setUpMovableGUI:(int)offset;
 
 @end
 

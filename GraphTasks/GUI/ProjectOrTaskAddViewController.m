@@ -37,7 +37,7 @@
     _scrollView.scrollEnabled = YES;
     
     _scrollView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
-    _scrollView.contentSize = CGSizeMake(320,700);
+    _scrollView.contentSize = CGSizeMake(320,600);
     [self.view addSubview:_scrollView];
     
     UILabel* label = [[UILabel alloc]initWithFrame: CGRectMake(95,5,160,15)];
@@ -75,9 +75,6 @@
             [self presentModalViewController:nvc animated:YES];
         }
         else if([_segmentedControlProjectOrTask selectedSegmentIndex]==1){
-            UIBarButtonItem* save = [[UIBarButtonItem alloc]initWithTitle:@"save" style:UIBarButtonItemStyleDone target:self action:@selector(save)];
-            self.navigationItem.rightBarButtonItem = save;
-            
             UILabel* label3 = [[UILabel alloc]initWithFrame:CGRectMake(70,75,200,20)];
             label3.text = @"Task of a specific type";
             label3.font = [UIFont systemFontOfSize:15];
@@ -91,18 +88,71 @@
             [_scrollView addSubview:_switchIsSpecialTask];
             
             
+            
+            
+            labelName = [[UILabel alloc]init];
+
+            _textFieldNameOfTask = [[UITextField alloc]init];
+            labelDatePicker1 = [[UILabel alloc]init];
+            _datePickerAlert1 = [[UIDatePicker alloc]initWithFrame:CGRectZero];
+            labelExtraSettings = [[UILabel alloc]init];
+            _tableViewExtraSettings = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+            _tableViewExtraSettings.delegate = self;
+            _tableViewExtraSettings.dataSource = self;
+            [self setUpMovableGUI:100];
         }
     }
+}
+
+
+
+
+-(void)setUpMovableGUI:(int)offset {
+    labelName.frame = CGRectMake(15, offset + 15, 60, 15);
+    labelName.text = @"Name:";
+    [_scrollView addSubview:labelName];
+    
+    
+    _textFieldNameOfTask.frame = CGRectMake(75, offset + 10, 230, 25);
+    _textFieldNameOfTask.borderStyle = UITextBorderStyleRoundedRect;
+    _textFieldNameOfTask.clearButtonMode = UITextFieldViewModeWhileEditing;
+    _textFieldNameOfTask.returnKeyType =  UIReturnKeyDefault;
+    _textFieldNameOfTask.delegate = self;
+    _textFieldNameOfTask.backgroundColor = [UIColor colorWithRed:0.0 green:0.888 blue:0.999 alpha:1.0];
+    _textFieldNameOfTask.textColor = [UIColor yellowColor];
+    [_scrollView addSubview:_textFieldNameOfTask];
+    
+    
+    labelDatePicker1.frame = CGRectMake(15, _textFieldNameOfTask.frame.size.height + offset + 10,280,35);
+    labelDatePicker1.text = @"First alert date: ";
+    
+    [_scrollView addSubview:labelDatePicker1];
+    
+    
+    _datePickerAlert1.datePickerMode = UIDatePickerModeDateAndTime;
+    CGSize pickerSize = [_datePickerAlert1 sizeThatFits:CGSizeZero];
+    _datePickerAlert1.frame = CGRectMake(0, labelDatePicker1.frame.size.height + offset + 30, pickerSize.width, pickerSize.height); 
+    [_scrollView addSubview: _datePickerAlert1];
+    
+    
+    
+    labelExtraSettings.frame = CGRectMake(40, _datePickerAlert1.frame.size.height + offset + 65,280,35);
+    labelExtraSettings.text = @"Additional settings: ";
+    [_scrollView addSubview:labelExtraSettings];
+    
+    
+    _tableViewExtraSettings.frame = CGRectMake(0,_datePickerAlert1.frame.size.height + offset + 95,320,110);
+    [_scrollView addSubview:_tableViewExtraSettings];
 }
 
 
 -(void)switchValueChanged:(id)sender{
     if(sender==_switchIsSpecialTask){
         if(_switchIsSpecialTask.on == YES){
-            UILabel* label2 = [[UILabel alloc]initWithFrame: CGRectMake(90,120,170,20)];
-            label2.text = @"Choose Task Type: ";
-            label2.font = [UIFont systemFontOfSize:15];
-            [_scrollView addSubview:label2];
+            _labelTaskType = [[UILabel alloc]initWithFrame: CGRectMake(90,120,170,20)];
+            _labelTaskType.text = @"Choose Task Type: ";
+            _labelTaskType.font = [UIFont systemFontOfSize:15];
+            [_scrollView addSubview:_labelTaskType];
             
             
             _segmentedControlTaskType = [[UISegmentedControl alloc]initWithItems:
@@ -112,9 +162,26 @@
                                           [UIImage imageNamed:@"map_mini.png"],nil]];
             [_segmentedControlTaskType setFrame:CGRectMake(10,140,300,77)];
             [_scrollView addSubview:_segmentedControlTaskType];
+            [self setUpMovableGUI:230];
+        }
+        else{
+            [_labelTaskType setFrame: CGRectMake(-1000,120,170,20)];
+            [_segmentedControlTaskType setFrame:CGRectMake(-1000,140,300,77)];
+            [self setUpMovableGUI:100];
         }
     }
 }
+
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    if(textField == _textFieldNameOfTask){
+        UIBarButtonItem* save = [[UIBarButtonItem alloc]initWithTitle:@"save" style:UIBarButtonItemStyleDone target:self action:@selector(save)];
+        self.navigationItem.rightBarButtonItem = save;
+        [textField resignFirstResponder];    
+    }
+    return YES;
+}
+
 
 -(void)cancel{
     [[NSNotificationCenter defaultCenter]postNotification:
@@ -125,6 +192,48 @@
 -(void)save{
     //
 }
+
+
+
+
+
+
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 2;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"TableViewExtraSettingsCell";
+    
+    UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier]; 
+    
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    if(indexPath.row == 0) [[cell textLabel] setText: @"Project's Comment"];
+    else if(indexPath.row == 1) [[cell textLabel] setText:@"Project's 2nd Alert Date"];
+    
+    return cell;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NO;
+}                  
+
+
+
+
+
+
+
+
 
 
 
