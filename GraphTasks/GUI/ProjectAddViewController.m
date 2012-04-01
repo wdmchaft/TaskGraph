@@ -42,15 +42,12 @@
         
         self.navigationItem.leftBarButtonItem = cancel;
         [self.navigationItem setTitle:@"new Project"];
+
         
 
         UILabel* labelName = [[UILabel alloc]initWithFrame:CGRectMake(15, 15, 60, 15)];
         labelName.text = @"Name:";
         [_scrollView addSubview:labelName];
-        
-        
-//        _textFieldNameOfProject = [[UITextField alloc]initWithFrame:CGRectMake(20, 30, 280, 25)];
-        //        _textFieldNameOfProject.placeholder = @"<enter new project's name>";
         
         _textFieldNameOfProject = [[UITextField alloc]initWithFrame:CGRectMake(75, 10, 230, 25)];
         _textFieldNameOfProject.borderStyle = UITextBorderStyleRoundedRect;
@@ -59,7 +56,6 @@
         _textFieldNameOfProject.delegate = self;
         _textFieldNameOfProject.backgroundColor = [UIColor colorWithRed:0.0 green:0.888 blue:0.999 alpha:1.0];
         _textFieldNameOfProject.textColor = [UIColor yellowColor];
-        //        [_textFieldNameOfProject becomeFirstResponder];
         [_scrollView addSubview:_textFieldNameOfProject];
         
         
@@ -74,9 +70,6 @@
         _datePickerAlert1.datePickerMode = UIDatePickerModeDateAndTime;
         CGSize pickerSize = [_datePickerAlert1 sizeThatFits:CGSizeZero];
         _datePickerAlert1.frame = CGRectMake(0, labelDatePicker1.frame.size.height + 30, pickerSize.width, pickerSize.height); 
-//        [_datePickerAlert1 addTarget:self 
-//                              action:@selector(datePickerChanged:)
-//                    forControlEvents:UIControlEventValueChanged]; 
         [_scrollView addSubview: _datePickerAlert1];
         
         

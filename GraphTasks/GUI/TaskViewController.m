@@ -61,8 +61,6 @@
     [request setEntity:entity1];
     
     NMTaskGraphManager* dataManager = [NMTaskGraphManager sharedManager];
-    NSLog(@"parent project: %@",dataManager.projectFantom);
-    
     
     NSPredicate* pred = [NSPredicate predicateWithFormat:@"parentProject == %@",dataManager.projectFantom];
     [request setPredicate:pred];

@@ -204,6 +204,7 @@
         return;
     }
     else{
+//        NSLog(@"%@",_parentProject);
         NMTGTask* _newTask = [[NMTGProject alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:_context] insertIntoManagedObjectContext:_context];
         _newTask.title = [_textFieldNameOfTask.text copy];
         _newTask.alertDate_first = _datePickerAlert1.date;
