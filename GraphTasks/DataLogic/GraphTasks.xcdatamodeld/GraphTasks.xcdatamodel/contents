@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1171" systemVersion="11D50d" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="NMTGAbstract" representedClassName="NMTGAbstract" isAbstract="YES" syncable="YES">
+        <attribute name="alertDate_first" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="alertDate_second" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="comment" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="done" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="finishDate" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="employers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NMTGProfile" inverseName="tasksAndProjects" inverseEntity="NMTGProfile" syncable="YES"/>
+    </entity>
+    <entity name="NMTGProfile" representedClassName="NMTeamProfile" syncable="YES">
+        <attribute name="birthday" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mail" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="photo" optional="YES" attributeType="Transformable" storedInTruthFile="YES" syncable="YES"/>
+        <relationship name="tasksAndProjects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NMTGAbstract" inverseName="employers" inverseEntity="NMTGAbstract" syncable="YES"/>
+    </entity>
+    <entity name="NMTGProject" representedClassName="NMTGProject" parentEntity="NMTGAbstract" syncable="YES">
+        <relationship name="parentProject" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="NMTGProject" syncable="YES"/>
+        <relationship name="subProject" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="NMTGProject" syncable="YES"/>
+        <relationship name="subTasks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="NMTGTask" inverseName="parentProject" inverseEntity="NMTGTask" syncable="YES"/>
+    </entity>
+    <entity name="NMTGTask" representedClassName="NMTGTask" parentEntity="NMTGAbstract" syncable="YES">
+        <relationship name="parentProject" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="NMTGProject" inverseName="subTasks" inverseEntity="NMTGProject" syncable="YES"/>
+    </entity>
+    <entity name="NMTGTaskLocation" representedClassName="NMTGTaskLocation" parentEntity="NMTGTask" syncable="YES"/>
+    <entity name="NMTGTaskMail" representedClassName="NMTGTaskMail" parentEntity="NMTGTask" syncable="YES"/>
+    <entity name="NMTGTaskPhone" representedClassName="NMTGTaskPhone" parentEntity="NMTGTask" syncable="YES"/>
+    <entity name="NMTGTaskSMS" representedClassName="NMTGTaskSMS" parentEntity="NMTGTask" syncable="YES"/>
+    <elements>
+        <element name="NMTGAbstract" positionX="-3125" positionY="-1881" width="128" height="150"/>
+        <element name="NMTGProfile" positionX="-2916" positionY="-1653" width="128" height="150"/>
+        <element name="NMTGProject" positionX="-3123" positionY="-2079" width="128" height="90"/>
+        <element name="NMTGTask" positionX="-2745" positionY="-1860" width="128" height="60"/>
+        <element name="NMTGTaskLocation" positionX="-2630" positionY="-1953" width="128" height="45"/>
+        <element name="NMTGTaskMail" positionX="-2477" positionY="-1656" width="128" height="45"/>
+        <element name="NMTGTaskPhone" positionX="-2592" positionY="-1566" width="128" height="45"/>
+        <element name="NMTGTaskSMS" positionX="-2477" positionY="-1764" width="128" height="45"/>
+    </elements>
+</model>
