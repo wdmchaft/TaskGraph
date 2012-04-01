@@ -9,6 +9,7 @@
 #import "ProjectOrTaskAddViewController.h"
 #import "ProjectAddViewController.h"
 #import "ProjectsViewController.h"
+#import "NMTGTask.h"
 
 @interface ProjectOrTaskAddViewController ()
 
@@ -37,7 +38,7 @@
     _scrollView.scrollEnabled = YES;
     
     _scrollView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
-    _scrollView.contentSize = CGSizeMake(320,600);
+    _scrollView.contentSize = CGSizeMake(320,710);
     [self.view addSubview:_scrollView];
     
     UILabel* label = [[UILabel alloc]initWithFrame: CGRectMake(95,5,160,15)];
@@ -75,6 +76,8 @@
             [self presentModalViewController:nvc animated:YES];
         }
         else if([_segmentedControlProjectOrTask selectedSegmentIndex]==1){
+            [self.navigationItem setTitle:@"new Task"];
+            
             UILabel* label3 = [[UILabel alloc]initWithFrame:CGRectMake(70,75,200,20)];
             label3.text = @"Task of a specific type";
             label3.font = [UIFont systemFontOfSize:15];
@@ -190,7 +193,32 @@
 }
 
 -(void)save{
-    //
+    if(( [_textFieldNameOfTask.text isEqualToString:@""]) ||
+       !(_textFieldNameOfTask.text)){
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Enter Task's name" 
+                                                       message:@"Don't forget to name your task"
+                                                      delegate:self
+                                             cancelButtonTitle:@"OK"
+                                             otherButtonTitles:nil];
+        [alert show];
+        return;
+    }
+    else{
+        NMTGTask* _newTask = [[NMTGProject alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:_context] insertIntoManagedObjectContext:_context];
+        _newTask.title = [_textFieldNameOfTask.text copy];
+        _newTask.alertDate_first = _datePickerAlert1.date;
+        
+        [_parentProject addSubProjectObject:_newTask];
+        _newTask.parentProject = _parentProject;
+        
+        NSError* error = nil;
+        if(! ([_context save:&error ]) ){
+            NSLog(@"Failed to save context in ProjectOrTaskAddVC in 'save'");
+        }
+        [[NSNotificationCenter defaultCenter]
+         postNotificationName:@"projectOrTaskAddVCDidFinishWorkingWithNewProjectOrTask" 
+         object:nil];
+    }
 }
 
 

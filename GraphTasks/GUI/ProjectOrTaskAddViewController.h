@@ -26,7 +26,6 @@
     //CoreData
     NSManagedObjectContext* _context;
     NMTGProject* _parentProject; //этому проекту будут добавлены подпроект или задание
-    NMTGAbstract* _projectOrTask; //пользователь выберет создает он задание или проект, которое будете добавлено в качестве дочернего к _currentProject
 }
 
 @property (nonatomic,strong) NMTGProject* parentProject;
