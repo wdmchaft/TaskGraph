@@ -28,6 +28,7 @@
 		17BBB679152512E000184F8B /* NMTGTaskSMS.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB678152512E000184F8B /* NMTGTaskSMS.m */; };
 		17BBB67C152512E000184F8B /* NMTGAbstract.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB67B152512E000184F8B /* NMTGAbstract.m */; };
 		17BBB67F152512E000184F8B /* NMTGProject.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB67E152512E000184F8B /* NMTGProject.m */; };
+		17E308F2152A3DAD007414A5 /* AddWhateverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E308F1152A3DAD007414A5 /* AddWhateverViewController.m */; };
 		632BDE3814F4157F00A10E0B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 632BDE3714F4157F00A10E0B /* UIKit.framework */; };
 		632BDE3A14F4157F00A10E0B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 632BDE3914F4157F00A10E0B /* Foundation.framework */; };
 		632BDE3C14F4157F00A10E0B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 632BDE3B14F4157F00A10E0B /* CoreGraphics.framework */; };
@@ -113,6 +114,8 @@
 		17BBB67B152512E000184F8B /* NMTGAbstract.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGAbstract.m; sourceTree = "<group>"; };
 		17BBB67D152512E000184F8B /* NMTGProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGProject.h; sourceTree = "<group>"; };
 		17BBB67E152512E000184F8B /* NMTGProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGProject.m; sourceTree = "<group>"; };
+		17E308F0152A3DAD007414A5 /* AddWhateverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddWhateverViewController.h; sourceTree = "<group>"; };
+		17E308F1152A3DAD007414A5 /* AddWhateverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddWhateverViewController.m; sourceTree = "<group>"; };
 		632BDE3314F4157F00A10E0B /* GraphTasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GraphTasks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		632BDE3714F4157F00A10E0B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		632BDE3914F4157F00A10E0B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -361,6 +364,8 @@
 				9C98B61C14FD37C800A4C6F0 /* NMTeamProfileViewController */,
 				178D47DA151F2C9A004F0734 /* ProjectsViewController */,
 				178D4803151F64D3004F0734 /* TaskViewController */,
+				17E308F0152A3DAD007414A5 /* AddWhateverViewController.h */,
+				17E308F1152A3DAD007414A5 /* AddWhateverViewController.m */,
 			);
 			path = GUI;
 			sourceTree = "<group>";
@@ -621,6 +626,7 @@
 				17BBB67C152512E000184F8B /* NMTGAbstract.m in Sources */,
 				17BBB67F152512E000184F8B /* NMTGProject.m in Sources */,
 				1773ED7A1526EA1700D8492A /* ProjectsExtraSettingsViewController.m in Sources */,
+				17E308F2152A3DAD007414A5 /* AddWhateverViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
