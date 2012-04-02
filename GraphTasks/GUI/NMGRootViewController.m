@@ -110,7 +110,7 @@ CGRect  kNMGSettingsRect;
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
-//разработка программного средвства по упрвалению и созданию задачами на основании методологии управления временем gtd
+
 #pragma mark    -   Logic
 
 -   (void)  tasksButtonClicked{

@@ -36,6 +36,7 @@
         _scrollView.scrollEnabled = YES;
         _scrollView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
         _scrollView.contentSize = CGSizeMake(320,500);
+        _scrollView.backgroundColor = [UIColor groupTableViewBackgroundColor];
         [self.view addSubview:_scrollView];        
         
         UIBarButtonItem* cancel = [[UIBarButtonItem alloc]initWithTitle:@"cancel" style:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
@@ -47,6 +48,7 @@
 
         UILabel* labelName = [[UILabel alloc]initWithFrame:CGRectMake(15, 15, 60, 15)];
         labelName.text = @"Name:";
+        labelName.backgroundColor = [UIColor groupTableViewBackgroundColor ];
         [_scrollView addSubview:labelName];
         
         _textFieldNameOfProject = [[UITextField alloc]initWithFrame:CGRectMake(75, 10, 230, 25)];
@@ -61,7 +63,7 @@
         
         UILabel* labelDatePicker1 = [[UILabel alloc]initWithFrame:CGRectMake(15, _textFieldNameOfProject.frame.size.height + 10,280,35)];
         labelDatePicker1.text = @"First alert date: ";
-
+        labelDatePicker1.backgroundColor = [UIColor groupTableViewBackgroundColor];
         [_scrollView addSubview:labelDatePicker1];
         
         
@@ -76,6 +78,7 @@
         
         UILabel* labelExtraSettings = [[UILabel alloc]initWithFrame:CGRectMake(40, _datePickerAlert1.frame.size.height + 65,280,35)];
         labelExtraSettings.text = @"Additional settings: ";
+        labelExtraSettings.backgroundColor = [UIColor groupTableViewBackgroundColor];
         [_scrollView addSubview:labelExtraSettings];
         
         

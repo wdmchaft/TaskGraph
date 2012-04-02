@@ -101,6 +101,12 @@
     
     NSString *str = [project.alertDate_second description];
     [[cell  detailTextLabel]    setText:[NSString stringWithFormat:@"2d Alert Date: %@",str]];
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+//    if(indexPath.row && 1){
+//        UISwitch* sw = [[UISwitch alloc] initWithFrame:CGRectMake(220, 8, 94, 27)];
+//        sw.backgroundColor = [UIColor clearColor];
+//        [cell.contentView addSubview:sw];
+//    }
     return cell;
 }
 

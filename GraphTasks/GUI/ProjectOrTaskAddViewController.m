@@ -39,10 +39,12 @@
     
     _scrollView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
     _scrollView.contentSize = CGSizeMake(320,710);
+    _scrollView.backgroundColor = [UIColor groupTableViewBackgroundColor];
     [self.view addSubview:_scrollView];
     
     UILabel* label = [[UILabel alloc]initWithFrame: CGRectMake(95,5,160,15)];
     label.text = @"Choose an item :";
+    label.backgroundColor = [UIColor groupTableViewBackgroundColor];
     [_scrollView addSubview:label];
     
     _segmentedControlProjectOrTask = [[UISegmentedControl alloc]initWithItems:[NSArray arrayWithObjects:@"SubProject",@"Task", nil]]; 
@@ -81,6 +83,7 @@
             UILabel* label3 = [[UILabel alloc]initWithFrame:CGRectMake(70,75,200,20)];
             label3.text = @"Task of a specific type";
             label3.font = [UIFont systemFontOfSize:15];
+            label3.backgroundColor = [UIColor groupTableViewBackgroundColor];
             [_scrollView addSubview:label3];
             
             _switchIsSpecialTask = [[UISwitch alloc]initWithFrame: CGRectMake(225,75,50,30)];
@@ -113,6 +116,7 @@
 -(void)setUpMovableGUI:(int)offset {
     labelName.frame = CGRectMake(15, offset + 15, 60, 15);
     labelName.text = @"Name:";
+    labelName.backgroundColor = [UIColor groupTableViewBackgroundColor];
     [_scrollView addSubview:labelName];
     
     
@@ -128,7 +132,7 @@
     
     labelDatePicker1.frame = CGRectMake(15, _textFieldNameOfTask.frame.size.height + offset + 10,280,35);
     labelDatePicker1.text = @"First alert date: ";
-    
+    labelDatePicker1.backgroundColor = [UIColor groupTableViewBackgroundColor];
     [_scrollView addSubview:labelDatePicker1];
     
     
@@ -141,6 +145,7 @@
     
     labelExtraSettings.frame = CGRectMake(40, _datePickerAlert1.frame.size.height + offset + 65,280,35);
     labelExtraSettings.text = @"Additional settings: ";
+    labelExtraSettings.backgroundColor = [UIColor groupTableViewBackgroundColor];
     [_scrollView addSubview:labelExtraSettings];
     
     
@@ -155,6 +160,7 @@
             _labelTaskType = [[UILabel alloc]initWithFrame: CGRectMake(90,120,170,20)];
             _labelTaskType.text = @"Choose Task Type: ";
             _labelTaskType.font = [UIFont systemFontOfSize:15];
+            _labelTaskType.backgroundColor = [UIColor groupTableViewBackgroundColor];
             [_scrollView addSubview:_labelTaskType];
             
             
