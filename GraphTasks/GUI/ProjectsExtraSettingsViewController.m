@@ -62,12 +62,20 @@
 }
 
 
+-(void)datePickerChanged:(id)object{
+    if(object==_datePickerAlert2){
+        //
+    }
+}
+
+
 -(void)save{
     if(self->extraSettingTypeIsComment){
         [[NSNotificationCenter defaultCenter]postNotificationName:@"exTraCommentAdded" 
                                                            object:[_textViewComment.text copy]];
     }
     else{
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"exTraAlertAdded" object:_datePickerAlert2.date];
 //        self.parentViewController->_newProject.alertDate_second = _datePickerAlert2.date;
     }
     [self.navigationController popViewControllerAnimated:YES];

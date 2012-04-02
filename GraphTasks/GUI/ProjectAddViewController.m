@@ -52,7 +52,7 @@
         _textFieldNameOfProject = [[UITextField alloc]initWithFrame:CGRectMake(75, 10, 230, 25)];
         _textFieldNameOfProject.borderStyle = UITextBorderStyleRoundedRect;
         _textFieldNameOfProject.clearButtonMode = UITextFieldViewModeWhileEditing;
-        _textFieldNameOfProject.returnKeyType =  UIReturnKeyDefault;
+        _textFieldNameOfProject.returnKeyType =  UIReturnKeyDone;
         _textFieldNameOfProject.delegate = self;
         _textFieldNameOfProject.backgroundColor = [UIColor colorWithRed:0.0 green:0.888 blue:0.999 alpha:1.0];
         _textFieldNameOfProject.textColor = [UIColor yellowColor];
@@ -87,6 +87,8 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ProjectExtraSettingsViewControllerDidAddComment:) name:@"exTraCommentAdded" object:nil];
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector (ProjectExtraSettingsViewControllerDidAddAlert:) name:@"exTraAlertAdded" object:nil];
+    
     return self;
 }
 
@@ -119,9 +121,10 @@
     
     
 //    if(_senderType == ProjectAddViewControllerSenderProjectsVC){
-    if(senderIsProjectsVC == NO){
+    if(senderIsProjectsVC == YES){
         [[NSNotificationCenter defaultCenter]postNotificationName:@"DismissModalController" 
                                                        object:nil];
+        self.navigationItem.title = @"new subProject";
     }
 //    else if(_senderType == ProjectAddViewControllerSenderProjectOrTaskAddVC){
     else {
@@ -141,7 +144,7 @@
     
     
 //    if(_senderType == ProjectAddViewControllerSenderProjectsVC){
-    if (senderIsProjectsVC == NO){
+    if (senderIsProjectsVC == YES){
         [[NSNotificationCenter defaultCenter]postNotificationName:@"DismissModalController" 
                                                            object:nil];
     }
@@ -164,8 +167,18 @@
 }
 
 
--(void)ProjectExtraSettingsViewControllerDidAddComment:(NSNotification*)obj{
-    _newProject.comment = obj.object;
+-(void)ProjectExtraSettingsViewControllerDidAddComment:(NSNotification*)object_{
+    _newProject.comment = object_.object;
+}
+
+
+-(void)ProjectExtraSettingsViewControllerDidAddAlert:(NSNotification*)object_{
+    NSLog(@"%@",object_);
+    
+    _newProject.alertDate_second = object_.object;
+    NSLog(@"%@",_newProject.alertDate_second);
+//    _newProject.alertDate_second = object_.name;                  
+//    NSLog(@"%@",_newProject.alertDate_second);
 }
 
 

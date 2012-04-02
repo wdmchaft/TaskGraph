@@ -22,15 +22,15 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        UIBarButtonItem* addbutton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewProject)];
-        
-        self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:self.editButtonItem,addbutton, nil];
         [[[NMTaskGraphManager sharedManager]managedContext ]reset];
         _context = [[NMTaskGraphManager sharedManager] managedContext];
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ProjectAddViewControllerDidAddProject) name:@"DismissModalController" object:nil];
         
-        [self.navigationItem setTitle:@"Projects"];
+        NSLog(@"SELF: %@ %@", self.navigationController, self.navigationItem);
+        NSLog(@"TABBAR: %@ %@", self.tabBarController, self.tabBarController.navigationController);
+//        [self.tabBarController.navigationItem   setTitle:@"Projects"];
+//        [self.navigationItem setTitle:@"Projects"];
         }
     return self;
 }
@@ -38,7 +38,7 @@
 
 -(void) addNewProject{
     ProjectAddViewController* vc = [[ProjectAddViewController alloc] init];    
-    vc->senderIsProjectsVC==YES;
+    vc->senderIsProjectsVC=YES;
 //    NSLog(@"do %@",vc->_senderType);
 //    vc->_senderType = ProjectAddViewControllerSenderProjectsVC;
 //    NSLog(@"posle %@",vc->_senderType);  
@@ -96,9 +96,11 @@
     NMTGProject* project = [_fetchedProjects objectAtIndex:indexPath.row]; 
         
     [[cell textLabel] setText: project.title];
-    [[cell  detailTextLabel]    setText:project.comment];
+//    [[cell  detailTextLabel]    setText:project.comment];
 //    [[cell  detailTextLabel]    setText:[project.alertDate_first description]];
-//    [[cell  detailTextLabel]    setText:[project.alertDate_second description]];
+    
+    NSString *str = [project.alertDate_second description];
+    [[cell  detailTextLabel]    setText:[NSString stringWithFormat:@"2d Alert Date: %@",str]];
     return cell;
 }
 
@@ -165,12 +167,22 @@
 
 
 
-
+-(void)viewWillAppear:(BOOL)animated{
+    [super  viewWillAppear:animated];
+    [self.tabBarController.navigationItem   setTitle:@"Projects2"];
+    [self.navigationItem setTitle:@"Projects"];
+    
+    UIBarButtonItem* addbutton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewProject)];
+    
+    self.tabBarController.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:self.editButtonItem,addbutton, nil];
+}
 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
     [self reloadData];
 }
 

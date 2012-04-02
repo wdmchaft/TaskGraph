@@ -110,20 +110,22 @@ CGRect  kNMGSettingsRect;
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
-
+//разработка программного средвства по упрвалению и созданию задачами на основании методологии управления временем gtd
 #pragma mark    -   Logic
 
 -   (void)  tasksButtonClicked{
     NSLog(@"Tasks");
     
     ProjectsViewController* pvc = [[ProjectsViewController alloc]init];
-    [pvc setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"projects" image:nil tag:0]];
-
-//    UITabBarController* tvc = [[UITabBarController alloc]init];
-//    [tvc setViewControllers:[NSArray arrayWithObjects:pvc, nil]];
-//    
-//    [self.navigationController pushViewController:tvc animated:YES];
-    [self.navigationController pushViewController:pvc animated:YES];    
+    [pvc setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"Projects" image:nil tag:0]];
+    
+    UIViewController* VASILENKO_VIEW_CONTROLLER = [UIViewController new];
+    [VASILENKO_VIEW_CONTROLLER setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"VASILENKO" image:nil tag:0]];
+    
+    UITabBarController* tvc = [[UITabBarController alloc]init];
+    [tvc setViewControllers:[NSArray arrayWithObjects:pvc, VASILENKO_VIEW_CONTROLLER, nil]];
+    [self.navigationController pushViewController:tvc animated:YES];
+//    [self.navigationController pushViewController:pvc animated:YES];    
 }
 
 -   (void)  teamButtonClicked{

@@ -40,6 +40,9 @@ typedef enum{
 
 -(void)save;
 -(void)cancel;
+-(void)ProjectExtraSettingsViewControllerDidAddComment:(NSNotification*)object;
+-(void)ProjectExtraSettingsViewControllerDidAddAlert:(NSNotification*)object;
+
 //-(void)datePickerChanged:(id)sender;
 
 @end

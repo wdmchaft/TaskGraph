@@ -67,13 +67,10 @@
     
     NSError* error = nil;
     _fetchedProjectsOrTasks = [NSMutableArray arrayWithArray:[_context executeFetchRequest:request error:&error]];
-//    dataManager.projectFantom(@"%@",_fetchedProjectsOrTasks);
-    
     
     [request setEntity:entity2];
     error=nil;
     [_fetchedProjectsOrTasks addObjectsFromArray:[_context executeFetchRequest:request error:&error]];
-//    dataManager.projectFantom(@"%@",_fetchedProjectsOrTasks);   
     
     [self.tableView reloadData];
 
@@ -99,6 +96,7 @@
 
 
 
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -120,7 +118,12 @@
     NMTGAbstract* object = (NMTGAbstract*)[_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
 
     [[cell textLabel] setText:object.title];  
-    [[cell detailTextLabel] setText:[object.alertDate_first description]];
+//    [[cell detailTextLabel] setText:[object.alertDate_first description]];
+    
+    NSString *str = [object.comment description];
+//    NSString *str = [object.alertDate_second description];
+//    [[cell  detailTextLabel]    setText:[NSString stringWithFormat:@"2d Alert Date: %@",str]];
+    [[cell  detailTextLabel]    setText:[NSString stringWithFormat:@"comment: %@",str]];
     return cell;
 }
 
