@@ -9,7 +9,6 @@
 #import "TaskViewController.h"
 #import "NMTGAbstract.h"
 #import "NMTGTask.h"
-#import "ProjectOrTaskAddViewController.h"
 #import "AddWhateverViewController.h"
 
 
@@ -209,7 +208,7 @@
 //    dataManager.projectFantom = selectedProject;
     //    NSLog(@"Project Fantom: %@",dataManager.projectFantom);
     
-    if([selectedProject isKindOfClass:[NMTGProject class]]){
+    if([selectedObject isKindOfClass:[NMTGProject class]]){
         TaskViewController* vc = [[TaskViewController alloc]initWithStyle:UITableViewStylePlain];
         vc.parentProject = selectedObject;
         [self.navigationController pushViewController:vc animated:YES];
