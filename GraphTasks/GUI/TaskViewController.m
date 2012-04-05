@@ -202,17 +202,21 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NMTGProject* selectedProject = [_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
+    NMTGProject* selectedObject = [_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
     //    NSLog(@"selectedProject: %@",selectedProject);
     
 //    NMTaskGraphManager* dataManager = [NMTaskGraphManager sharedManager];
 //    dataManager.projectFantom = selectedProject;
     //    NSLog(@"Project Fantom: %@",dataManager.projectFantom);
     
-    TaskViewController* vc = [[TaskViewController alloc]initWithStyle:UITableViewStylePlain];
-    vc.parentProject = selectedProject;
-    [self.navigationController pushViewController:vc animated:YES];
-    
+    if([selectedProject isKindOfClass:[NMTGProject class]]){
+        TaskViewController* vc = [[TaskViewController alloc]initWithStyle:UITableViewStylePlain];
+        vc.parentProject = selectedObject;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    if([selectedObject isKindOfClass:[NMTGTask class]]){
+        //Переход в меню настройки параметров задания
+    }
 }
 
 

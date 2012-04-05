@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface FocusedViewController : UITableViewController{
-    NSMutableArray* _tableDataSource;
+    NSDictionary* _tableDataSource;
 }
 
 @end

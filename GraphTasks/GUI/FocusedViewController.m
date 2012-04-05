@@ -15,6 +15,11 @@
 //
 */
 
+#define TITLE_OVERDUE @"Просроченные"
+#define TITLE_TODAY @"Сегодня"
+#define TITLE_THIS_WEEK @"На этой неделе"
+#define TITLE_THIS_MONTH @"В этом месяце"
+
 @interface FocusedViewController (internal)
     -(void)reloadData;
 @end
