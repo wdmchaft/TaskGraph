@@ -10,10 +10,14 @@
 #import "NMTGProject.h"
 #import "ProjectAddViewController.h"
 #import "TaskViewController.h"
+#import "AddWhateverViewController.h"
+#import "TextViewViewController.h"
 
 
-@interface ProjectsViewController ()
-
+@interface ProjectsViewController (internal)
+    -(void)addNewProject:(NMTGProject*) newProject;
+    -(void)reloadData;
+    -(void)ProjectAddViewControllerDidAddProject;
 @end
 
 @implementation ProjectsViewController
@@ -26,24 +30,14 @@
         _context = [[NMTaskGraphManager sharedManager] managedContext];
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ProjectAddViewControllerDidAddProject) name:@"DismissModalController" object:nil];
-        
-        NSLog(@"SELF: %@ %@", self.navigationController, self.navigationItem);
-        NSLog(@"TABBAR: %@ %@", self.tabBarController, self.tabBarController.navigationController);
-//        [self.tabBarController.navigationItem   setTitle:@"Projects"];
-//        [self.navigationItem setTitle:@"Projects"];
         }
     return self;
 }
 
 
 -(void) addNewProject{
-    ProjectAddViewController* vc = [[ProjectAddViewController alloc] init];    
-    vc->senderIsProjectsVC=YES;
-//    NSLog(@"do %@",vc->_senderType);
-//    vc->_senderType = ProjectAddViewControllerSenderProjectsVC;
-//    NSLog(@"posle %@",vc->_senderType);  
-    
-    vc.parentProject = nil; //из этого контроллера мы создаем проекты для верхнего уровня иерархии
+    AddWhateverViewController* vc = [[AddWhateverViewController alloc]initWithStyle:UITableViewStyleGrouped];
+    vc.parentProject = nil; //из текущего контроллера мы создаем проекты для верхнего уровня иерархии
     
     UINavigationController* nvc = [[UINavigationController alloc]initWithRootViewController:vc];
     [self presentModalViewController:nvc animated:YES];
@@ -51,8 +45,8 @@
 
 
 
--(void)ProjectAddViewControllerDidAddProject{
-
+-(void)ProjectAddViewControllerDidAddProject
+{
     [self reloadData];
     [self dismissModalViewControllerAnimated:YES];
 }
@@ -96,17 +90,20 @@
     NMTGProject* project = [_fetchedProjects objectAtIndex:indexPath.row]; 
         
     [[cell textLabel] setText: project.title];
-//    [[cell  detailTextLabel]    setText:project.comment];
-//    [[cell  detailTextLabel]    setText:[project.alertDate_first description]];
     
-    NSString *str = [project.alertDate_second description];
-    [[cell  detailTextLabel]    setText:[NSString stringWithFormat:@"2d Alert Date: %@",str]];
+    NSString *str = [project.alertDate_first description];
+    [[cell  detailTextLabel]    setText:[NSString stringWithFormat:@"1st Alert Date: %@",str]];
+    
     cell.selectionStyle = UITableViewCellSelectionStyleGray;
 //    if(indexPath.row && 1){
 //        UISwitch* sw = [[UISwitch alloc] initWithFrame:CGRectMake(220, 8, 94, 27)];
 //        sw.backgroundColor = [UIColor clearColor];
 //        [cell.contentView addSubview:sw];
 //    }
+    NSLog(@"%@", project.done);
+//    cell.imageView.image = (project.done == [NSNumber numberWithBool: NO]) 
+//                                         ? ([UIImage imageNamed:@"case_30x30.png"])
+//                                         : ([UIImage imageNamed:@"case_30x30_checked.png"]);
     return cell;
 }
 
@@ -160,11 +157,12 @@
     NMTGProject* selectedProject = [_fetchedProjects objectAtIndex:indexPath.row];
 //    NSLog(@"selectedProject: %@",selectedProject);
     
-    NMTaskGraphManager* dataManager = [NMTaskGraphManager sharedManager];
-    dataManager.projectFantom = selectedProject;
+//    NMTaskGraphManager* dataManager = [NMTaskGraphManager sharedManager];
+//    dataManager.projectFantom = selectedProject;
 //    NSLog(@"Project Fantom: %@",dataManager.projectFantom);
     
     TaskViewController* vc = [[TaskViewController alloc]initWithStyle:UITableViewStylePlain];
+    vc.parentProject = selectedProject;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -175,7 +173,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super  viewWillAppear:animated];
-    [self.tabBarController.navigationItem   setTitle:@"Projects2"];
+    [self.tabBarController.navigationItem   setTitle:@"Проекты"];
     [self.navigationItem setTitle:@"Projects"];
     
     UIBarButtonItem* addbutton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewProject)];

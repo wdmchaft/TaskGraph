@@ -4,7 +4,7 @@
         <attribute name="alertDate_first" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="alertDate_second" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="comment" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="done" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="done" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="finishDate" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="employers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NMTGProfile" inverseName="tasksAndProjects" inverseEntity="NMTGProfile" syncable="YES"/>

@@ -10,6 +10,7 @@
 #import "NMTeamProfileViewController.h"
 #import "ProjectsViewController.h"
 #import "AddWhateverViewController.h"
+#import "ListsViewController.h"
 
 CGFloat kNMGButtonHeight;
 CGFloat kNMGButtonWidth;
@@ -115,7 +116,6 @@ CGRect  kNMGSettingsRect;
 #pragma mark    -   Logic
 
 -   (void)  tasksButtonClicked{
-    NSLog(@"Tasks");
     
     ProjectsViewController* pvc = [[ProjectsViewController alloc]init];
     [pvc setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"Projects" image:nil tag:0]];
@@ -130,21 +130,23 @@ CGRect  kNMGSettingsRect;
 }
 
 -   (void)  teamButtonClicked{
-    NSLog(@"Team");
     NMTeamProfileViewController*    tvc =   [[NMTeamProfileViewController   alloc]  init];
     [self.navigationController  pushViewController:tvc animated:YES];
 }
 
 -   (void)  contextsButtonClicked{
-    NSLog(@"Contexts");
     AddWhateverViewController*    tvc =   [[AddWhateverViewController   alloc]  initWithStyle:UITableViewStyleGrouped];
     [self.navigationController  pushViewController:tvc animated:YES];
-
 }
 
 -   (void)  settingsButtonClicked{
-    NSLog(@"Settings");
+    ListsViewController* LstVC = [[ListsViewController alloc]initWithStyle:UITableViewStyleGrouped];
+    [self.navigationController pushViewController:LstVC animated:YES];
 }
+
+
+
+
 
 
 

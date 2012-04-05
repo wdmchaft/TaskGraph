@@ -6,21 +6,37 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#import "TextViewViewController.h"
 #import "AddWhateverViewController.h"
 
-#define TITLENORMAL @"Обычные задачи"
-#define TITLESPECIAL @"Специальные задачи"
+
+#define TITLE_NORMAL @"Обычные задачи"
+#define TITLE_SPECIAL @"Специальные задачи"
+/*
+// 
+//Данный контроллер предлагает пользователю выбор того, что он хочет добавить: проект, обычное задание, или задание специального типа
+//
+*/
+@interface AddWhateverViewController(internal)
+    -(void)save;
+    -(void)cancel;
+@end
+
+
 
 @implementation AddWhateverViewController
+
+@synthesize  parentProject = _parentProject;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
-        NSArray* taskTypeNormal = [NSArray arrayWithObjects:@"Стандартная", @"Проект", nil];
-        NSArray* taskTypeSpecial = [NSArray arrayWithObjects:@"Позвонить контакту", @"Написать e-mail контакту", @"Отправить SMS контакту", @"Посетить место", nil];
+        NSArray* taskTypeNormal = [NSArray arrayWithObjects:@"Проект", @"Обычная", nil];
+        NSArray* taskTypeSpecial = 
+            [NSArray arrayWithObjects:@"Позвонить контакту", @"Отправить e-mail контакту", @"Отправить SMS контакту", @"Посетить место", nil];
         _tableData = [NSDictionary dictionaryWithObjectsAndKeys:
-            taskTypeNormal,TITLENORMAL,taskTypeSpecial,TITLESPECIAL,nil];
+            taskTypeNormal,TITLE_NORMAL,taskTypeSpecial,TITLE_SPECIAL,nil];
     }
     return self;
 }
@@ -28,20 +44,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIBarButtonItem* cancel = [[UIBarButtonItem alloc]initWithTitle:@"cancel" style:UIBarButtonSystemItemAdd target:self action:@selector(cancel)];
+    self.navigationItem.title = @"Тип задачи";
+    UIBarButtonItem* cancel = [[UIBarButtonItem alloc]initWithTitle:@"Отмена" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)];
     self.navigationItem.leftBarButtonItem = cancel;
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+        NSLog(@"\nADD WHATEVER VC~~~~~~~~~~%@",self.parentProject);
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+-(void)cancel
 {
-	return YES;
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"DismissModalController" object:nil];
 }
 
+//###################################################################################################
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -67,10 +85,77 @@
     }
     NSArray* allKeys = [_tableData allKeys];
     NSString* particularKey = [allKeys objectAtIndex:indexPath.section];
-    NSArray* arrayForKey = [_tableData objectForKey:particularKey];
+    NSArray* cellDataSourse = [_tableData objectForKey:particularKey];
     
-    cell.textLabel.text = [arrayForKey objectAtIndex:indexPath.row];
+    cell.textLabel.text = [cellDataSourse objectAtIndex:indexPath.row];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    switch (indexPath.section) {
+        case 0:
+        {
+            switch (indexPath.row) {
+                case 0:
+                {
+                    cell.imageView.image = [UIImage imageNamed:@"case_30x30.png"];
+                    break;
+                }
+                case 1:
+                {
+                    cell.imageView.image = [UIImage imageNamed:@"galochka_30x30.png"];
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+        }
+        case 1:
+        {
+            switch (indexPath.row) {
+                case 0:
+                {
+                    cell.imageView.image = [UIImage imageNamed:@"call_30x30.png"];
+                    break;
+                }
+                case 1:
+                {
+                    cell.imageView.image = [UIImage imageNamed:@"mail_30x30.png"];
+                    break;
+                }
+                case 2:
+                {
+                    cell.imageView.image = [UIImage imageNamed:@"sms_30x30.png"];
+                    break;
+                }
+                case 3:
+                {
+                    cell.imageView.image = [UIImage imageNamed:@"map_30x30.png"];
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+        }
+        default:
+            break;
+    }
     return cell;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            return TITLE_NORMAL;
+            break;
+        case 1:
+            return TITLE_SPECIAL;
+            break;
+        default:
+            return nil;
+            break;
+    }
 }
 
 /*
@@ -116,13 +201,28 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    if(indexPath.section==0){
+        TextViewViewController* nameVC = [[TextViewViewController alloc]init]; 
+        nameVC.isSentByAddWhateverVC = YES;
+        nameVC.parentProject = self.parentProject;
+        nameVC.isAddingProject = (indexPath.row == 0);
+        [self.navigationController pushViewController:nameVC animated:YES];
+    }
 }
 
+
+
+
+
+
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	return YES;
+}
 @end

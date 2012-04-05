@@ -12,10 +12,6 @@
 @interface ProjectsViewController : UITableViewController{
     NSArray* _fetchedProjects;
     NSManagedObjectContext* _context;
-                                                                
-                                                
 }
--(void)addNewProject:(NMTGProject*) newProject;
--(void)reloadData;
--(void)ProjectAddViewControllerDidAddProject;
+
 @end

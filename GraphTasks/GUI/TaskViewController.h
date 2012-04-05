@@ -12,7 +12,11 @@
 @interface TaskViewController : UITableViewController{
     NSManagedObjectContext* _context;
     NSMutableArray* _fetchedProjectsOrTasks;
+    NMTGProject* _parentProject;
 }
+
+@property(nonatomic,retain)NMTGProject* parentProject;
+
 -(void) addNewProjectOrTask;
 -(void) reloadData;
 -(void) projectOrTaskAddViewControllerDidAddProjectOrTask;

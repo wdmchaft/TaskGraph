@@ -1,5 +1,5 @@
 //
-//  AddWhateverViewController.h
+//  ListsViewController.h
 //  GraphTasks
 //
 //  Created by Тимур Юсипов on 03.04.12.
@@ -8,10 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddWhateverViewController : UITableViewController{
+@interface ListsViewController : UITableViewController{
     NSDictionary* _tableData;
-    NMTGProject* _parentProject;
 }
-@property(nonatomic,retain) NMTGProject* parentProject;
 
 @end
