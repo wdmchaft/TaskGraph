@@ -12,6 +12,14 @@
 #define TITLE_REGULAR @"Обычные"
 #define TITLE_CONTEXTED @"С контекстом"
 
+/*
+//
+// Данный контроллер предлагает пользователю выбор типа списка проектов или заданий.
+// "Все", "В фокусе" и различные контекстные списки
+//
+*/
+
+
 @implementation ListsViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
