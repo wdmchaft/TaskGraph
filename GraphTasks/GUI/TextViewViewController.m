@@ -26,7 +26,7 @@
 
 
 @implementation TextViewViewController
-@synthesize isSentByAddWhateverVC = _isSentByAddWhateverVC,
+@synthesize isSentToEnterName = _isSentToEnterName,
                           superVC = _superVC,
                   isAddingProject = _isAddingProject,
                     parentProject = _parentProject;
@@ -46,22 +46,20 @@
 {
     [super viewDidLoad];
     
-    if((self.isAddingProject==NO)&&(self.isSentByAddWhateverVC)){
+    if((self.isAddingProject==NO)&&(self.isSentToEnterName)){
         //значит добавляем задание. 
-        NSLog(@"ДОБАВЛЯЕМ ЗАДАНИЕ //внутри TextViewVC");
         self.navigationItem.title = @"Имя задания";
         UIBarButtonItem* next = [[UIBarButtonItem alloc]initWithTitle:@"Далее" style:UIBarButtonItemStyleDone target:self action:@selector(addingTask)];
         self.navigationItem.rightBarButtonItem = next;
     }
     
-    if((self.isAddingProject==YES)&&(self.isSentByAddWhateverVC)){
-        //значит добавляем проект
-        NSLog(@"ДОБАВЛЯЕМ ПРОЕКТ //внутри TextViewVC");      
+    if((self.isAddingProject==YES)&&(self.isSentToEnterName)){
+        //значит добавляем проект      
         self.navigationItem.title = @"Имя проекта";
-        UIBarButtonItem* next = [[UIBarButtonItem alloc]initWithTitle:@"Далее" style:UIBarButtonItemStyleDone target:self action:@selector(addingProject)];
+        UIBarButtonItem* next = [[UIBarButtonItem alloc]initWithTitle:@"Сохранить" style:UIBarButtonItemStyleDone target:self action:@selector(addingProject)];
         self.navigationItem.rightBarButtonItem = next;
     }
-    if(self.isSentByAddWhateverVC == NO) {
+    if(self.isSentToEnterName == NO) {
         //значит отправитель - AddPropertiesVC. С целью получить комментарий к заданию
         self.navigationItem.title = @"Комментарий";
          UIBarButtonItem* save = [[UIBarButtonItem alloc]initWithTitle:@"Сохранить" style:UIBarButtonItemStyleDone target:self action:@selector(savingComment)];
@@ -71,7 +69,7 @@
     self.navigationItem.rightBarButtonItem.enabled = NO; //сначала нужно будет ввести имя
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     
-    _textViewNameOrComment = [[UITextView alloc]initWithFrame:CGRectMake(5, 40, 310, 180)];
+    _textViewNameOrComment = [[UITextView alloc]initWithFrame:CGRectMake(5, 10, 310, 180)];
     _textViewNameOrComment.returnKeyType =  UIReturnKeyDefault;
     _textViewNameOrComment.delegate = self;
     _textViewNameOrComment.font = [UIFont systemFontOfSize:20.0];

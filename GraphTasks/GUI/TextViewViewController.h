@@ -11,12 +11,12 @@
 
 @interface TextViewViewController : UIViewController<UITextViewDelegate>{
     UITextView* _textViewNameOrComment;
-    BOOL _isSentByAddWhateverVC;
+    BOOL _isSentToEnterName;
     BOOL _isAddingProject;
     AddPropertiesViewController* _superVC;
     NMTGProject* _parentProject;
 }
-@property(nonatomic)BOOL isSentByAddWhateverVC;
+@property(nonatomic)BOOL isSentToEnterName;
 @property(nonatomic,retain) AddPropertiesViewController* superVC;
 @property(nonatomic) BOOL isAddingProject;
 @property(nonatomic,strong) NMTGProject* parentProject;

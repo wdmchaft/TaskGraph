@@ -222,7 +222,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		178D47DA151F2C9A004F0734 /* ProjectsViewController */ = {
+		178D47DA151F2C9A004F0734 /* ProjectsViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				17E308F3152AC453007414A5 /* ListsViewController.h */,
@@ -234,7 +234,7 @@
 				178D47DB151F2F04004F0734 /* TaskViewController.h */,
 				178D47DC151F2F04004F0734 /* TaskViewController.m */,
 			);
-			name = ProjectsViewController;
+			name = ProjectsViewControllers;
 			sourceTree = "<group>";
 		};
 		17E30AC0152DEAA5007414A5 /* AddControllers */ = {
@@ -385,7 +385,7 @@
 			isa = PBXGroup;
 			children = (
 				9C98B61C14FD37C800A4C6F0 /* NMTeamProfileViewController */,
-				178D47DA151F2C9A004F0734 /* ProjectsViewController */,
+				178D47DA151F2C9A004F0734 /* ProjectsViewControllers */,
 				17E30AC0152DEAA5007414A5 /* AddControllers */,
 			);
 			path = GUI;

@@ -95,6 +95,7 @@
     _newTask.alertDate_second = self.projectAlertDateSecond;
     _newTask.comment = self.projectComment;
     _newTask.done = [NSNumber numberWithBool:NO];
+
     
     if(_parentProject == nil){NSLog(@"NILL PARENT PROJ IN ADDPROPERTIES vc");}
     [_parentProject addSubTasksObject:_newTask];
@@ -165,7 +166,7 @@
                 _textFieldName.frame = CGRectMake(70, 10, 150, 40);
                 _textFieldName.returnKeyType = UIReturnKeyDone;
                 _textFieldName.delegate = self;
-                _textFieldName.clearButtonMode = UITextFieldViewModeWhileEditing;
+                _textFieldName.clearButtonMode = UITextFieldViewModeNever;
                 [cell.contentView addSubview:_textFieldName];
                 break;
             }
@@ -214,20 +215,18 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     NSLog(@"%@",textField.text);
-    if((textField.text!=@"")||(textField.text!=nil)) {
-     self.projectName = textField.text;   
+    if([textField.text length]>0) {
+        self.projectName = textField.text;   
     } 
     [textField resignFirstResponder];
     [self.tableView reloadData];
     return YES;
 }
 
-//-(void)textFieldDidEndEditing:(UITextField *)textField
-//{
-//    self.projectName = textField.text;
-//    [textField resignFirstResponder];
-//    [self.tableView reloadData];
-//}
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    textField.text = self.projectName;
+}
 
 
 /*
@@ -278,6 +277,7 @@
         case 0:
         {
             [_textFieldName becomeFirstResponder];
+            [[tableView cellForRowAtIndexPath:indexPath] setHighlighted:NO];
             break;
         }
         case 1:
@@ -296,7 +296,7 @@
                 {
                     TextViewViewController* commentVC = [[TextViewViewController alloc]init];
                     commentVC.superVC = self;
-                    commentVC.isSentByAddWhateverVC = NO;
+                    commentVC.isSentToEnterName = NO;
                     [self.navigationController pushViewController:commentVC animated:YES];
                     break;
                 }   

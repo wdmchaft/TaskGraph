@@ -51,7 +51,6 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-        NSLog(@"\nADD WHATEVER VC~~~~~~~~~~%@",self.parentProject);
 }
 
 -(void)cancel
@@ -203,7 +202,7 @@
 {
     if(indexPath.section==0){
         TextViewViewController* nameVC = [[TextViewViewController alloc]init]; 
-        nameVC.isSentByAddWhateverVC = YES;
+        nameVC.isSentToEnterName = YES;
         nameVC.parentProject = self.parentProject;
         nameVC.isAddingProject = (indexPath.row == 0);
         [self.navigationController pushViewController:nameVC animated:YES];

@@ -8,6 +8,7 @@
 
 #import "ListsViewController.h"
 #import "ProjectsViewController.h"
+#import "FocusedViewController.h"
 
 #define TITLE_REGULAR @"Обычные"
 #define TITLE_CONTEXTED @"С контекстом"
@@ -141,7 +142,8 @@
         [self.navigationController pushViewController:tvc animated:YES];
     }
     if((indexPath.section==0)&&(indexPath.row==1)){
-    
+        FocusedViewController* vc = [[FocusedViewController alloc]initWithStyle:UITableViewStyleGrouped];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 

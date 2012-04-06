@@ -35,10 +35,17 @@
 
 
 -(void) addNewProject{
-    AddWhateverViewController* vc = [[AddWhateverViewController alloc]initWithStyle:UITableViewStyleGrouped];
-    vc.parentProject = nil; //из текущего контроллера мы создаем проекты для верхнего уровня иерархии
+//    AddWhateverViewController* vc = [[AddWhateverViewController alloc]initWithStyle:UITableViewStyleGrouped];
+//    vc.parentProject = nil; //из текущего контроллера мы создаем проекты для верхнего уровня иерархии
+//    
+//    UINavigationController* nvc = [[UINavigationController alloc]initWithRootViewController:vc];
+//    [self presentModalViewController:nvc animated:YES];
     
-    UINavigationController* nvc = [[UINavigationController alloc]initWithRootViewController:vc];
+    TextViewViewController* nameVC = [[TextViewViewController alloc]init]; 
+    nameVC.isSentToEnterName = YES;
+    nameVC.parentProject = nil;
+    nameVC.isAddingProject = YES;
+    UINavigationController* nvc = [[UINavigationController alloc]initWithRootViewController:nameVC];
     [self presentModalViewController:nvc animated:YES];
 }
 
@@ -99,10 +106,9 @@
 //        sw.backgroundColor = [UIColor clearColor];
 //        [cell.contentView addSubview:sw];
 //    }
-    NSLog(@"%@", project.done);
-//    cell.imageView.image = (project.done == [NSNumber numberWithBool: NO]) 
-//                                         ? ([UIImage imageNamed:@"case_30x30.png"])
-//                                         : ([UIImage imageNamed:@"case_30x30_checked.png"]);
+    cell.imageView.image = (project.done == /*[NSNumber numberWithBool: NO]*/ 0) 
+                                         ? ([UIImage imageNamed:@"case_30x30.png"])
+                                         : ([UIImage imageNamed:@"case_30x30_checked.png"]);
     return cell;
 }
 
@@ -154,11 +160,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NMTGProject* selectedProject = [_fetchedProjects objectAtIndex:indexPath.row];
-//    NSLog(@"selectedProject: %@",selectedProject);
-    
-//    NMTaskGraphManager* dataManager = [NMTaskGraphManager sharedManager];
-//    dataManager.projectFantom = selectedProject;
-//    NSLog(@"Project Fantom: %@",dataManager.projectFantom);
     
     TaskViewController* vc = [[TaskViewController alloc]initWithStyle:UITableViewStylePlain];
     vc.parentProject = selectedProject;

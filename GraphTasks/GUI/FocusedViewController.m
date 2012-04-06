@@ -42,8 +42,75 @@
 
 
 -(void)reloadData{
-    NSFetchRequest* request = [[NSFetchRequest alloc]init];
+    NSManagedObjectContext* context = [[NMTaskGraphManager sharedManager]managedContext];
+    NSEntityDescription* entity = [NSEntityDescription entityForName: @"NMTGTask" inManagedObjectContext:context];
+
+    NSFetchRequest* request = [[NSFetchRequest alloc]init];   
+    [request setEntity:entity];
     
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:[NSDate date]];
+    
+    [components setYear:0];
+    [components setMonth:0];
+    [components setDay:0];  
+    [components setHour:-1*components.hour];
+    [components setMinute:-1*components.minute];
+    [components setSecond:-1*components.second];
+
+    NSDate *startDate = [calendar dateByAddingComponents:components toDate:[NSDate date] options:0];
+    //получили текущую дату с нулевым часом, минутой, секундой. Во всяком случае должны были. 
+    //в консоль выводится дата вида 2012-04-05 20:00:00 +0000     20:00 наверно изза локализации
+    
+    [components setYear:0];
+    [components setMonth:0];
+    [components setDay:1];  
+    [components setHour:0];
+    [components setMinute:0];
+    [components setSecond:0];
+    
+    NSDate* endDate = [calendar dateByAddingComponents:components toDate:startDate options:0];
+    //получили дату отличающуюся от предыдущей на 1 день
+    
+    NSLog(@"startdate: %@",startDate);
+    NSLog(@"enddate: %@",endDate);
+    
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:
+      @"(((alertDate_first > %@) && (alertDate_first < %@)) || ((alertDate_second > %@) && (alertDate_second < %@)))",startDate,endDate,startDate,endDate];
+    [request setPredicate:predicate];
+    NSArray* todayTasks = [context executeFetchRequest:request error:nil];
+    for(NMTGAbstract* obj in todayTasks) NSLog(@"today : %@",obj.title);
+    
+    predicate = [NSPredicate predicateWithFormat:@"(alertDate_second < %@)",startDate];
+    [request  setPredicate:predicate];
+    NSArray* overdueTasks = [context executeFetchRequest:request error:nil];
+    for(NMTGAbstract* obj in overdueTasks) NSLog(@"overdue  : %@",obj.title);
+    
+    [components setYear:0];
+    [components setMonth:0];
+    [components setDay:6];  
+    [components setHour:0];
+    [components setMinute:0];
+    [components setSecond:0];
+    
+    startDate = endDate;
+    endDate = [calendar dateByAddingComponents:components toDate:startDate options:0];
+    //получили дату "завтра" и через 7 дней после сегодня
+    NSLog(@"startdate '7': %@",startDate);
+    NSLog(@"enddate '7': %@",endDate);
+    
+    predicate = [NSPredicate predicateWithFormat:
+                              @"(((alertDate_first > %@) && (alertDate_first < %@)) || ((alertDate_second > %@) && (alertDate_second < %@)))",startDate,endDate,startDate,endDate];
+    [request setPredicate:predicate];
+    NSMutableArray* weekTasks = [NSMutableArray arrayWithArray: [context executeFetchRequest:request error:nil]];
+    NSLog(@"weekTasks count:%i",[weekTasks count]);
+    for(NMTGAbstract* obj in weekTasks){
+        if([todayTasks containsObject:obj]){
+//            [weekTasks removeObject:obj];
+        } else {
+            NSLog(@"week: %@",obj.title);
+        }
+    } 
 }
 
 
@@ -53,6 +120,12 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self reloadData];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

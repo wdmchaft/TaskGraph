@@ -74,13 +74,16 @@
 {
     if(self.isLaunchedForAlertDateFirst){
         self.superVC.projectAlertDateFirst = _datePickerAlert.date;
-        if(self.superVC.projectAlertDateFirst > self.superVC.projectAlertDateSecond){
-            NSDate* givenDate   =   _datePickerAlert.date;
-            NSDate* nextDate    =   [NSDate dateWithTimeInterval:2*86400 sinceDate:givenDate];
+        if([self.superVC.projectAlertDateFirst compare:self.superVC.projectAlertDateSecond] == NSOrderedDescending){ 
+            //значит 1ое напоминание позже 2ого. смещаем 2ое на два дня вперед с момента нового 1ого 
             self.superVC.projectAlertDateSecond = [NSDate dateWithTimeInterval:2*86400 sinceDate:_datePickerAlert.date];
         }
     } else {
         self.superVC.projectAlertDateSecond = _datePickerAlert.date;
+        if([self.superVC.projectAlertDateFirst compare:self.superVC.projectAlertDateSecond] == NSOrderedDescending){ 
+            //значит 1ое напоминание позже 2ого. смещаем 1ое на два дня назад с момента нового 2ого 
+            self.superVC.projectAlertDateFirst = [NSDate dateWithTimeInterval:-2*86400 sinceDate:_datePickerAlert.date];
+        }
     }
     [self.superVC.tableView reloadData];
     [self.navigationController popViewControllerAnimated:YES];

@@ -26,8 +26,6 @@
                                       action:@selector(addNewProjectOrTask)];
         
         self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:self.editButtonItem, addbutton, nil];
-        
-        [self.navigationItem setTitle:@"Tasks"];
     }
     
     
@@ -94,8 +92,8 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    [self.navigationItem setTitle:self.parentProject.title];
     [self reloadData];
-    NSLog(@"TASK VC~~~~~~~~~~~~~ %@",self.parentProject);
 }
 
 #pragma mark - Table view data source
@@ -115,24 +113,28 @@
     static NSString *CellIdentifier = @"ProjectsCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     NMTGAbstract* object = (NMTGAbstract*)[_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
     if([object isKindOfClass:[NMTGProject class]]) {
-        cell.imageView.image = [UIImage imageNamed:@"galochka_30x30.png"];
+        cell.imageView.image = [UIImage imageNamed:@"case_30x30.png"];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     if([object isKindOfClass:[NMTGTask class]]) {
-        cell.imageView.image = [UIImage imageNamed:@"case_30x30.png"];
+//        NSLog(@"OBJECT DONE : %@", object.done);
+        if(object.done == 0){
+            cell.imageView.image = [UIImage imageNamed:@"task_30x30.png"];
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        } else {
+            cell.imageView.image = [UIImage imageNamed:@"task_30x30_checked.png"];
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
     }
     [[cell textLabel] setText:object.title];  
     
     NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
     [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:3*86400]];
-    [formatter setShortStandaloneWeekdaySymbols:[NSArray arrayWithObjects:@"ПН", @"ВТ", @"СР", @"ЧТ", @"ПТ", @"СБ", @"ВС", nil]];
-//    [formatter setShortMonthSymbols:[NSArray arrayWithObjects: @"Янв", @"Фев", @"Март", @"Апр", @"Май", @"Июнь", @"Июль", @"Авг", @"Сент", @"Окт", @"Ноя", @"Дек" nil]
-    [formatter setStandaloneMonthSymbols:[NSArray arrayWithObjects: @"Январь", @"Февраль", @"Март", @"Апрель", @"Май", @"Июнь", @"Июль", @"Август", @"Сентябрь", @"Октябрь", @"Ноябрь", @"Декабрь", nil]];
     
     [formatter setDateStyle:NSDateFormatterLongStyle];
-    [formatter setTimeStyle:NSDateFormatterLongStyle];
+    [formatter setTimeStyle:NSDateFormatterNoStyle];
     
     [[cell  detailTextLabel] setText:[NSString stringWithFormat:@"%@",[formatter stringFromDate:object.alertDate_first]]];
     return cell;
@@ -202,19 +204,25 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NMTGProject* selectedObject = [_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
-    //    NSLog(@"selectedProject: %@",selectedProject);
-    
-//    NMTaskGraphManager* dataManager = [NMTaskGraphManager sharedManager];
-//    dataManager.projectFantom = selectedProject;
-    //    NSLog(@"Project Fantom: %@",dataManager.projectFantom);
     
     if([selectedObject isKindOfClass:[NMTGProject class]]){
         TaskViewController* vc = [[TaskViewController alloc]initWithStyle:UITableViewStylePlain];
         vc.parentProject = selectedObject;
         [self.navigationController pushViewController:vc animated:YES];
     }
+    
     if([selectedObject isKindOfClass:[NMTGTask class]]){
-        //Переход в меню настройки параметров задания
+        if (selectedObject.done == [NSNumber numberWithBool:YES]) {
+            //хз че тут делать. потом додумаю
+        } else {
+            selectedObject.done = [NSNumber numberWithBool:YES];
+            NSError* error = nil;
+            if(!([_context save:&error])){
+                NSLog(@"FAILED TO SAVE CONTEXT IN TASK VC IN 'didSelectRowAtIndexPath'");
+                NSLog(@"%@",error);
+            }
+            [self reloadData];
+        }
     }
 }
 
