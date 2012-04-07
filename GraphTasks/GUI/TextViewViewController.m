@@ -22,62 +22,33 @@
     -(void)addingProject;
     -(void)addingTask;
     -(void)savingComment;
+    -(void)cancel;
 @end
 
 
 @implementation TextViewViewController
-@synthesize isSentToEnterName = _isSentToEnterName,
+@synthesize     isSentToEnterName = _isSentToEnterName,
                           superVC = _superVC,
                   isAddingProject = _isAddingProject,
-                    parentProject = _parentProject;
+                    parentProject = _parentProject,
+            textViewNameOrComment = _textViewNameOrComment;
                     
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-//
+        _textViewNameOrComment = [[UITextView alloc]initWithFrame:CGRectMake(5, 10, 310, 180)];
+        _textViewNameOrComment.returnKeyType =  UIReturnKeyDefault;
+        _textViewNameOrComment.delegate = self;
+        _textViewNameOrComment.font = [UIFont systemFontOfSize:20.0];
+        _textViewNameOrComment.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        [_textViewNameOrComment becomeFirstResponder];
+        _textViewNameOrComment.layer.cornerRadius = 15.0;
+        _textViewNameOrComment.clipsToBounds = YES;
+        [self.view addSubview:_textViewNameOrComment];
     }
     return self;
-}
-
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    if((self.isAddingProject==NO)&&(self.isSentToEnterName)){
-        //значит добавляем задание. 
-        self.navigationItem.title = @"Имя задания";
-        UIBarButtonItem* next = [[UIBarButtonItem alloc]initWithTitle:@"Далее" style:UIBarButtonItemStyleDone target:self action:@selector(addingTask)];
-        self.navigationItem.rightBarButtonItem = next;
-    }
-    
-    if((self.isAddingProject==YES)&&(self.isSentToEnterName)){
-        //значит добавляем проект      
-        self.navigationItem.title = @"Имя проекта";
-        UIBarButtonItem* next = [[UIBarButtonItem alloc]initWithTitle:@"Сохранить" style:UIBarButtonItemStyleDone target:self action:@selector(addingProject)];
-        self.navigationItem.rightBarButtonItem = next;
-    }
-    if(self.isSentToEnterName == NO) {
-        //значит отправитель - AddPropertiesVC. С целью получить комментарий к заданию
-        self.navigationItem.title = @"Комментарий";
-         UIBarButtonItem* save = [[UIBarButtonItem alloc]initWithTitle:@"Сохранить" style:UIBarButtonItemStyleDone target:self action:@selector(savingComment)];
-        save.enabled = YES;
-        self.navigationItem.rightBarButtonItem = save;
-        }
-    self.navigationItem.rightBarButtonItem.enabled = NO; //сначала нужно будет ввести имя
-    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    
-    _textViewNameOrComment = [[UITextView alloc]initWithFrame:CGRectMake(5, 10, 310, 180)];
-    _textViewNameOrComment.returnKeyType =  UIReturnKeyDefault;
-    _textViewNameOrComment.delegate = self;
-    _textViewNameOrComment.font = [UIFont systemFontOfSize:20.0];
-    _textViewNameOrComment.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    [_textViewNameOrComment becomeFirstResponder];
-    _textViewNameOrComment.layer.cornerRadius = 15.0;
-    _textViewNameOrComment.clipsToBounds = YES;
-    [self.view addSubview:_textViewNameOrComment];
 }
 
 
@@ -125,23 +96,56 @@
 }
 
 
--(void)savingComment{
+-(void)savingComment
+{
     self.superVC.projectComment = _textViewNameOrComment.text;
     [self.superVC.tableView reloadData];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+-(void)cancel
+{
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"DismissModalController" 
+                                                       object:nil];
+}
 
--(void)viewDidAppear:(BOOL)animated{
+-(void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
+    if((self.isAddingProject==NO)&&(self.isSentToEnterName)){
+        //значит добавляем задание. нужно ввести имя
+        self.navigationItem.title = @"Имя задания";
+        UIBarButtonItem* next = [[UIBarButtonItem alloc]initWithTitle:@"Далее" style:UIBarButtonItemStyleDone target:self action:@selector(addingTask)];
+        self.navigationItem.rightBarButtonItem = next;
+    }
+    
+    if((self.isAddingProject==YES)&&(self.isSentToEnterName)){
+        //значит добавляем проект. нужно ввести имя     
+        self.navigationItem.title = @"Имя проекта";
+        UIBarButtonItem* next = [[UIBarButtonItem alloc]initWithTitle:@"Сохранить" style:UIBarButtonItemStyleDone target:self action:@selector(addingProject)];
+        self.navigationItem.rightBarButtonItem = next;
+        
+        UIBarButtonItem* cancel = [[UIBarButtonItem alloc]initWithTitle:@"Отмена" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
+        self.navigationItem.leftBarButtonItem = cancel;
+    }
+    if(self.isSentToEnterName == NO) {
+        //значит отправитель - AddPropertiesVC. С целью получить комментарий к заданию
+        self.navigationItem.title = @"Комментарий";
+        UIBarButtonItem* save = [[UIBarButtonItem alloc]initWithTitle:@"Сохранить" style:UIBarButtonItemStyleDone target:self action:@selector(savingComment)];
+        save.enabled = YES;
+        self.navigationItem.rightBarButtonItem = save;
+    }
+    self.navigationItem.rightBarButtonItem.enabled = NO; //сначала нужно будет ввести имя
+    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 }
 
 
 
 
-
-
-
+- (void)viewDidLoad
+{
+    [super viewDidLoad];            
+}
 
 - (void)viewDidUnload
 {

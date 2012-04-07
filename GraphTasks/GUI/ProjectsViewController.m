@@ -101,12 +101,7 @@
     [[cell  detailTextLabel]    setText:[NSString stringWithFormat:@"1st Alert Date: %@",str]];
     
     cell.selectionStyle = UITableViewCellSelectionStyleGray;
-//    if(indexPath.row && 1){
-//        UISwitch* sw = [[UISwitch alloc] initWithFrame:CGRectMake(220, 8, 94, 27)];
-//        sw.backgroundColor = [UIColor clearColor];
-//        [cell.contentView addSubview:sw];
-//    }
-    cell.imageView.image = (project.done == /*[NSNumber numberWithBool: NO]*/ 0) 
+    cell.imageView.image = ([project.done isEqualToNumber:[NSNumber numberWithBool:NO]]) 
                                          ? ([UIImage imageNamed:@"case_30x30.png"])
                                          : ([UIImage imageNamed:@"case_30x30_checked.png"]);
     return cell;

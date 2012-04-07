@@ -16,9 +16,10 @@
     AddPropertiesViewController* _superVC;
     NMTGProject* _parentProject;
 }
-@property(nonatomic)BOOL isSentToEnterName;
+@property(nonatomic)        BOOL isSentToEnterName;
 @property(nonatomic,retain) AddPropertiesViewController* superVC;
-@property(nonatomic) BOOL isAddingProject;
+@property(nonatomic)        BOOL isAddingProject;
 @property(nonatomic,strong) NMTGProject* parentProject;
+@property(nonatomic,retain) UITextView* textViewNameOrComment;
 
 @end

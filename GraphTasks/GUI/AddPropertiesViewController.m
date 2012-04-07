@@ -30,7 +30,8 @@
             projectComment = _projectComment,
             projectContext = _projectContext,
             isAddingProject = _isAddingProject,
-            parentProject = _parentProject;
+            parentProject = _parentProject,
+            taskToEdit = _taskToEdit;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -43,11 +44,6 @@
         NSArray* arrayName = [NSArray arrayWithObjects:@"Имя", nil];
         
         _tableDataSourse = [NSDictionary dictionaryWithObjectsAndKeys: arrayName, TITLE_NAME, arrayCommentAndContext,TITLE_COMMENT_AND_CONTEXT,arrayAlertDates,TITLE_ALERT_DATES,nil];
-        
-        self.projectAlertDateFirst = [NSDate dateWithTimeIntervalSinceNow:86400];
-        self.projectAlertDateSecond = [NSDate dateWithTimeIntervalSinceNow:3*86400];
-        self.projectComment = @"";
-        self.projectContext = @"";
     }
     return self;
 }
@@ -57,6 +53,19 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    if(self.taskToEdit == nil){
+        self.projectAlertDateFirst = [NSDate dateWithTimeIntervalSinceNow:86400];
+        self.projectAlertDateSecond = [NSDate dateWithTimeIntervalSinceNow:3*86400];
+        self.projectComment = @"";
+        self.projectContext = @"";
+    } 
+    if((self.taskToEdit != nil)&&(self->_beganEditting == NO)){
+        self.projectAlertDateFirst = self.taskToEdit.alertDate_first;
+        self.projectAlertDateSecond = self.taskToEdit.alertDate_second;
+        self.projectComment = self.taskToEdit.comment;
+        self.projectContext = @"";
+        self.projectName = self.taskToEdit.title;
+    }
 //    NSLog(@"AddPropsVC: name: %@",self.projectName);
 //    NSLog(@"AddPropsVC: alertDate1: %@",self.projectAlertDateFirst);
 //    NSLog(@"AddPropsVC: alertDate2: %@",self.projectAlertDateSecond);
@@ -84,22 +93,29 @@
 }
 
 
--(void) save
+-(void)save
 {    
-    NMTGTask* _newTask = [[NMTGTask alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:_context] insertIntoManagedObjectContext:_context];
-    [_context insertObject:_newTask];
-    
-    
-    _newTask.title = self.projectName;
-    _newTask.alertDate_first = self.projectAlertDateFirst;
-    _newTask.alertDate_second = self.projectAlertDateSecond;
-    _newTask.comment = self.projectComment;
-    _newTask.done = [NSNumber numberWithBool:NO];
+    if (_taskToEdit==nil) {
+        //значит создаем новое задание
+        NMTGTask* _newTask = [[NMTGTask alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:_context] insertIntoManagedObjectContext:_context];
+        [_context insertObject:_newTask];
+        
+        _newTask.title = self.projectName;
+        _newTask.alertDate_first = self.projectAlertDateFirst;
+        _newTask.alertDate_second = self.projectAlertDateSecond;
+        _newTask.comment = self.projectComment;
+        _newTask.done = [NSNumber numberWithBool:NO];
 
-    
-    if(_parentProject == nil){NSLog(@"NILL PARENT PROJ IN ADDPROPERTIES vc");}
-    [_parentProject addSubTasksObject:_newTask];
-    [_newTask setParentProject:_parentProject];
+        if(_parentProject == nil){NSLog(@"NILL PARENT PROJ IN ADDPROPERTIES vc");}
+        [_parentProject addSubTasksObject:_newTask];
+        [_newTask setParentProject:_parentProject];
+    } else {
+        //значит редактируем существующее задание
+        _taskToEdit.title = self.projectName;
+        _taskToEdit.alertDate_first = self.projectAlertDateFirst;
+        _taskToEdit.alertDate_second = self.projectAlertDateSecond;
+        _taskToEdit.comment = self.projectComment;
+    }
     
     NSError* error = nil;
     if(! ([_context save:&error ]) ){
@@ -273,6 +289,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    self->_beganEditting = YES;
     switch (indexPath.section){
         case 0:
         {
@@ -297,6 +314,8 @@
                     TextViewViewController* commentVC = [[TextViewViewController alloc]init];
                     commentVC.superVC = self;
                     commentVC.isSentToEnterName = NO;
+                    commentVC.isAddingProject = NO;
+                    commentVC.textViewNameOrComment.text =self.projectComment;
                     [self.navigationController pushViewController:commentVC animated:YES];
                     break;
                 }   

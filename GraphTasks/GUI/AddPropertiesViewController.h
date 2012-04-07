@@ -13,7 +13,9 @@
     UITextField* _textFieldName;
     NSManagedObjectContext* _context;
     NMTGProject* _parentProject;
+    NMTGTask* _taskToEdit;
     BOOL _isAddingProject;
+    BOOL _beganEditting;
     
     //будущие параметры нового задания
     NSString*   _projectName;
@@ -29,5 +31,5 @@
 @property(nonatomic,retain)NSString* projectContext;
 @property(nonatomic) BOOL isAddingProject;
 @property(nonatomic,retain) NMTGProject* parentProject;
-
+@property(nonatomic,retain) NMTGTask* taskToEdit;
 @end

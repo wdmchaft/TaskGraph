@@ -10,7 +10,7 @@
 #import "NMTGAbstract.h"
 #import "NMTGTask.h"
 #import "AddWhateverViewController.h"
-
+#import "AddPropertiesViewController.h"
 
 @implementation TaskViewController
 
@@ -26,19 +26,22 @@
                                       action:@selector(addNewProjectOrTask)];
         
         self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:self.editButtonItem, addbutton, nil];
+    
+    
+    
+        _context = [[NMTaskGraphManager sharedManager]managedContext];
+        
+        [[NSNotificationCenter defaultCenter]
+                         addObserver:self 
+                            selector:@selector(projectOrTaskAddViewControllerDidAddProjectOrTask) 
+                                name:@"projectOrTaskAddVCDidFinishWorkingWithNewProjectOrTask" 
+                              object:nil];
+        
+        _fetchedProjectsOrTasks =[NSMutableArray arrayWithArray:[self.parentProject.subTasks allObjects]];
+        [_fetchedProjectsOrTasks addObjectsFromArray:[self.parentProject.subProject allObjects]];
+        
+        self.tableView.allowsSelectionDuringEditing = YES;
     }
-    
-    
-    _context = [[NMTaskGraphManager sharedManager]managedContext];
-    
-    [[NSNotificationCenter defaultCenter]
-                     addObserver:self 
-                        selector:@selector(projectOrTaskAddViewControllerDidAddProjectOrTask) 
-                            name:@"projectOrTaskAddVCDidFinishWorkingWithNewProjectOrTask" 
-                          object:nil];
-    
-    _fetchedProjectsOrTasks =[NSMutableArray arrayWithArray:[self.parentProject.subTasks allObjects]];
-    [_fetchedProjectsOrTasks addObjectsFromArray:[self.parentProject.subProject allObjects]];
     return self;
 }
 
@@ -120,13 +123,12 @@
     }
     if([object isKindOfClass:[NMTGTask class]]) {
 //        NSLog(@"OBJECT DONE : %@", object.done);
-        if(object.done == 0){
+        if ([object.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
             cell.imageView.image = [UIImage imageNamed:@"task_30x30.png"];
-            cell.accessoryType = UITableViewCellAccessoryNone;
         } else {
             cell.imageView.image = [UIImage imageNamed:@"task_30x30_checked.png"];
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
+        cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     }
     [[cell textLabel] setText:object.title];  
     
@@ -136,7 +138,7 @@
     [formatter setDateStyle:NSDateFormatterLongStyle];
     [formatter setTimeStyle:NSDateFormatterNoStyle];
     
-    [[cell  detailTextLabel] setText:[NSString stringWithFormat:@"%@",[formatter stringFromDate:object.alertDate_first]]];
+     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",[formatter stringFromDate:object.alertDate_first]];
     return cell;
 }
 
@@ -203,37 +205,69 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NMTGProject* selectedObject = [_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
+    NMTGAbstract* selectedObject = [_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
     
     if([selectedObject isKindOfClass:[NMTGProject class]]){
         TaskViewController* vc = [[TaskViewController alloc]initWithStyle:UITableViewStylePlain];
-        vc.parentProject = selectedObject;
+        vc.parentProject = [_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
         [self.navigationController pushViewController:vc animated:YES];
     }
     
     if([selectedObject isKindOfClass:[NMTGTask class]]){
-        if (selectedObject.done == [NSNumber numberWithBool:YES]) {
-            //хз че тут делать. потом додумаю
+        if ([selectedObject.done isEqualToNumber:[NSNumber numberWithBool:YES]]) {
+            selectedObject.done = [NSNumber numberWithBool:NO];
         } else {
             selectedObject.done = [NSNumber numberWithBool:YES];
-            NSError* error = nil;
-            if(!([_context save:&error])){
-                NSLog(@"FAILED TO SAVE CONTEXT IN TASK VC IN 'didSelectRowAtIndexPath'");
-                NSLog(@"%@",error);
-            }
-            [self reloadData];
         }
+        
+        NSError* error = nil;
+        if(!([_context save:&error])){
+            NSLog(@"FAILED TO SAVE CONTEXT IN TASK VC IN 'didSelectRowAtIndexPath'");
+            NSLog(@"%@",error);
+        }
+        [self reloadData];
+        
+//        //блок проверки заверешен ли проект
+//        NMTGProject* project = [[_fetchedProjectsOrTasks objectAtIndex:indexPath.row] parentProject];
+//        BOOL projectIsDone = NO;
+//        for(NMTGTask* obj in project.subTasks){
+//            if([obj.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
+//                projectIsDone = NO;
+//                break;
+//            }else{NSLog(@"+");}
+//        }
+//        (projectIsDone==YES) ? (project.done = [NSNumber numberWithBool:YES]) 
+//                             : (project.done = [NSNumber numberWithBool:NO]);
+//
+//        
+//        error = nil;
+//        if(!([_context save:&error])){
+//            NSLog(@"FAILED TO SAVE CONTEXT IN TASK VC IN 'didSelectRowAtIndexPath'");
+//            NSLog(@"%@",error);
+//        }
+//        NSLog(@"project Done? :%@",project.done);
     }
 }
 
 
 
+-(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    NMTGAbstract* selectedObject = [_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
+    if([selectedObject isKindOfClass:[NMTGTask class]]){
+        AddPropertiesViewController* vc = [[AddPropertiesViewController alloc]initWithStyle:UITableViewStyleGrouped];
+        vc.taskToEdit = [_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
+        UINavigationController* nvc = [[UINavigationController alloc]initWithRootViewController:vc];
+        [self presentModalViewController:nvc animated:YES];
+    }
+}
+  
 
 
 
 
 
-
+#pragma mark - Rubbish
 - (void)viewDidLoad
 {
     [super viewDidLoad];
