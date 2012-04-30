@@ -11,5 +11,6 @@
 @interface ListsViewController : UITableViewController{
     NSDictionary* _tableData;
 }
+-(void)reloadData;
 
 @end

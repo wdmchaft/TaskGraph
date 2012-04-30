@@ -16,8 +16,7 @@ const   NSString*   NMTaskGraphFileName =   @"NMTaskGraph2.sqlite";
 
 @synthesize managedModel        =   _managedModel,
             managedContext  =   _managedContext,
-            persistenceCoordinator  =   _persistenceCoordinator,
-            projectFantom   =   _projectFantom;
+    persistenceCoordinator  =   _persistenceCoordinator;
 
 #pragma mark    -   LifeCycle
 

@@ -16,17 +16,12 @@ extern  const   NSString*   NMTaskGraphFileName;
     NSManagedObjectContext*         _managedContext;
     NSManagedObjectModel*           _managedModel;
     NSPersistentStoreCoordinator*   _persistenceCoordinator;
-//added
-    NMTGProject* _projectFantom;
 }
 
-@property(nonatomic,    strong) NSManagedObjectModel*           managedModel;
-@property(nonatomic,    strong) NSManagedObjectContext*         managedContext;
-@property(nonatomic,    strong) NSPersistentStoreCoordinator*   persistenceCoordinator;
+@property(nonatomic, strong) NSManagedObjectModel*           managedModel;
+@property(nonatomic, strong) NSManagedObjectContext*         managedContext;
+@property(nonatomic, strong) NSPersistentStoreCoordinator*   persistenceCoordinator;
 
 +   (NMTaskGraphManager*)   sharedManager;
 -   (void) saveContext;
-
-//added
-@property(nonatomic,strong) NMTGProject* projectFantom;
 @end

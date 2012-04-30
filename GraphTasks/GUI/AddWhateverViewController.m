@@ -202,9 +202,9 @@
 {
     if(indexPath.section==0){
         TextViewViewController* nameVC = [[TextViewViewController alloc]init]; 
-        nameVC.isSentToEnterName = YES;
         nameVC.parentProject = self.parentProject;
-        nameVC.isAddingProject = (indexPath.row == 0);
+        nameVC.isAddingProjectName = (indexPath.row == 0);
+        (indexPath.row == 0) ? (nameVC.isAddingProjectName = YES) : (nameVC.isAddingTaskName = YES);
         [self.navigationController pushViewController:nameVC animated:YES];
     }
 }

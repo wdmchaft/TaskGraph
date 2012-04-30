@@ -42,9 +42,8 @@
 //    [self presentModalViewController:nvc animated:YES];
     
     TextViewViewController* nameVC = [[TextViewViewController alloc]init]; 
-    nameVC.isSentToEnterName = YES;
     nameVC.parentProject = nil;
-    nameVC.isAddingProject = YES;
+    nameVC.isAddingProjectName = YES;
     UINavigationController* nvc = [[UINavigationController alloc]initWithRootViewController:nameVC];
     [self presentModalViewController:nvc animated:YES];
 }
@@ -154,11 +153,15 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NMTGProject* selectedProject = [_fetchedProjects objectAtIndex:indexPath.row];
-    
-    TaskViewController* vc = [[TaskViewController alloc]initWithStyle:UITableViewStylePlain];
-    vc.parentProject = selectedProject;
-    [self.navigationController pushViewController:vc animated:YES];
+    if (self.tableView.editing == YES){
+        NSLog(@"AAAAAAA");
+    } else {
+        NMTGProject* selectedProject = [_fetchedProjects objectAtIndex:indexPath.row];
+        
+        TaskViewController* vc = [[TaskViewController alloc]initWithStyle:UITableViewStylePlain];
+        vc.parentProject = selectedProject;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 
@@ -166,14 +169,15 @@
 
 
 
--(void)viewWillAppear:(BOOL)animated{
-    [super  viewWillAppear:animated];
+-(void)viewDidAppear:(BOOL)animated{
+    [super  viewDidAppear:animated];
     [self.tabBarController.navigationItem   setTitle:@"Проекты"];
     [self.navigationItem setTitle:@"Projects"];
     
     UIBarButtonItem* addbutton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewProject)];
     
     self.tabBarController.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:self.editButtonItem,addbutton, nil];
+    [self reloadData];
 }
 
 

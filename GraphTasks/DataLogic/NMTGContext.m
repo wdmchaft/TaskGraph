@@ -1,17 +1,16 @@
 //
-//  NMTGTask.m
+//  NMTGContext.m
 //  GraphTasks
 //
 //  Created by Тимур Юсипов on 27.04.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "NMTGTask.h"
-#import "NMTGProject.h"
+#import "NMTGContext.h"
 
 
-@implementation NMTGTask
+@implementation NMTGContext
 
-@dynamic parentProject;
+@dynamic name;
 
 @end

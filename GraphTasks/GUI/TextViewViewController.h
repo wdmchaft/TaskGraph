@@ -8,18 +8,27 @@
 
 #import <UIKit/UIKit.h>
 #import "AddPropertiesViewController.h"
+#import "ContextsViewController.h"
 
-@interface TextViewViewController : UIViewController<UITextViewDelegate>{
-    UITextView* _textViewNameOrComment;
-    BOOL _isSentToEnterName;
-    BOOL _isAddingProject;
-    AddPropertiesViewController* _superVC;
+@interface TextViewViewController : UIViewController<UITextViewDelegate, UIAlertViewDelegate>{
+    UITextView* _textViewNameOrCommentOrContextText;
+    BOOL _isAddingTaskName;
+    BOOL _isAddingTaskComment;
+    BOOL _isAddingProjectName;
+    BOOL _isAddingContextName;
+    
     NMTGProject* _parentProject;
+    id<ContextAddDelegate> _delegateContextAdd;
+    id<SetNewTasksProperties> _delegateTaskProperties;
 }
-@property(nonatomic)        BOOL isSentToEnterName;
-@property(nonatomic,retain) AddPropertiesViewController* superVC;
-@property(nonatomic)        BOOL isAddingProject;
+@property(nonatomic)        BOOL isAddingTaskName;
+@property(nonatomic)        BOOL isAddingTaskComment;
+@property(nonatomic)        BOOL isAddingProjectName;
+@property(nonatomic)        BOOL isAddingContextName;
+
 @property(nonatomic,strong) NMTGProject* parentProject;
 @property(nonatomic,retain) UITextView* textViewNameOrComment;
+@property(nonatomic,retain) id<ContextAddDelegate> delegateContextAdd;
+@property(nonatomic,retain) id<SetNewTasksProperties> delegateTaskProperties;
 
 @end

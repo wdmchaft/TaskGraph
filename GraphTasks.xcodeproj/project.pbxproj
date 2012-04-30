@@ -9,11 +9,22 @@
 /* Begin PBXBuildFile section */
 		178D46EA151DC554004F0734 /* ProjectsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 178D46E9151DC554004F0734 /* ProjectsViewController.m */; };
 		178D47DD151F2F05004F0734 /* TaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 178D47DC151F2F04004F0734 /* TaskViewController.m */; };
+		179885CB154E6EAA00AA3CC1 /* context_nil_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885C5154E6EAA00AA3CC1 /* context_nil_30x30.png */; };
+		179885CC154E6EAA00AA3CC1 /* context_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885C6154E6EAA00AA3CC1 /* context_30x30.png */; };
+		179885CD154E6EAA00AA3CC1 /* job_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885C7154E6EAA00AA3CC1 /* job_30x30.png */; };
+		179885CE154E6EAA00AA3CC1 /* home_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885C8154E6EAA00AA3CC1 /* home_30x30.png */; };
+		179885CF154E6EAA00AA3CC1 /* family_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885C9154E6EAA00AA3CC1 /* family_30x30.png */; };
+		179885D2154E73E500AA3CC1 /* all_tasks_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885D1154E73E500AA3CC1 /* all_tasks_30x30.png */; };
+		179885D4154E746800AA3CC1 /* focused_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885D3154E746800AA3CC1 /* focused_30x30.png */; };
 		17BBB66A152512DF00184F8B /* NMTGTaskLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB669152512DF00184F8B /* NMTGTaskLocation.m */; };
 		17BBB66D152512DF00184F8B /* NMTeamProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB66C152512DF00184F8B /* NMTeamProfile.m */; };
 		17BBB670152512DF00184F8B /* NMTGTaskPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB66F152512DF00184F8B /* NMTGTaskPhone.m */; };
 		17BBB673152512E000184F8B /* NMTGTaskMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB672152512E000184F8B /* NMTGTaskMail.m */; };
 		17BBB679152512E000184F8B /* NMTGTaskSMS.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB678152512E000184F8B /* NMTGTaskSMS.m */; };
+		17C3E106154A455F00B51CF2 /* NMTGTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 17C3E105154A455F00B51CF2 /* NMTGTask.m */; };
+		17C3E10A154A456000B51CF2 /* NMTGProject.m in Sources */ = {isa = PBXBuildFile; fileRef = 17C3E109154A456000B51CF2 /* NMTGProject.m */; };
+		17C3E10D154A456000B51CF2 /* NMTGAbstract.m in Sources */ = {isa = PBXBuildFile; fileRef = 17C3E10C154A456000B51CF2 /* NMTGAbstract.m */; };
+		17C3E110154B238700B51CF2 /* NMTGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 17C3E10F154B238700B51CF2 /* NMTGContext.m */; };
 		17E308F2152A3DAD007414A5 /* AddWhateverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E308F1152A3DAD007414A5 /* AddWhateverViewController.m */; };
 		17E308F5152AC453007414A5 /* ListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E308F4152AC453007414A5 /* ListsViewController.m */; };
 		17E3092F152AD066007414A5 /* TextViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E3092E152AD066007414A5 /* TextViewViewController.m */; };
@@ -27,9 +38,6 @@
 		17E30AA8152B8299007414A5 /* case_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E30AA7152B8299007414A5 /* case_30x30.png */; };
 		17E30AAB152C2180007414A5 /* ContextsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E30AAA152C2180007414A5 /* ContextsViewController.m */; };
 		17E30AAD152C7210007414A5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17E30AAC152C7210007414A5 /* QuartzCore.framework */; };
-		17E30AB0152D7D55007414A5 /* NMTGProject.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E30AAF152D7D54007414A5 /* NMTGProject.m */; };
-		17E30AB3152D7D56007414A5 /* NMTGAbstract.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E30AB2152D7D56007414A5 /* NMTGAbstract.m */; };
-		17E30AB6152D7D56007414A5 /* NMTGTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E30AB5152D7D56007414A5 /* NMTGTask.m */; };
 		17E30AB9152D7DB4007414A5 /* task_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E30AB7152D7DB4007414A5 /* task_30x30.png */; };
 		17E30ABA152D7DB4007414A5 /* task_30x30_checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E30AB8152D7DB4007414A5 /* task_30x30_checked.png */; };
 		17E30ABC152D7DD5007414A5 /* case_30x30_checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E30ABB152D7DD5007414A5 /* case_30x30_checked.png */; };
@@ -89,6 +97,13 @@
 		178D46E9151DC554004F0734 /* ProjectsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectsViewController.m; sourceTree = "<group>"; };
 		178D47DB151F2F04004F0734 /* TaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskViewController.h; sourceTree = "<group>"; };
 		178D47DC151F2F04004F0734 /* TaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskViewController.m; sourceTree = "<group>"; };
+		179885C5154E6EAA00AA3CC1 /* context_nil_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = context_nil_30x30.png; sourceTree = "<group>"; };
+		179885C6154E6EAA00AA3CC1 /* context_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = context_30x30.png; sourceTree = "<group>"; };
+		179885C7154E6EAA00AA3CC1 /* job_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = job_30x30.png; sourceTree = "<group>"; };
+		179885C8154E6EAA00AA3CC1 /* home_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home_30x30.png; sourceTree = "<group>"; };
+		179885C9154E6EAA00AA3CC1 /* family_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = family_30x30.png; sourceTree = "<group>"; };
+		179885D1154E73E500AA3CC1 /* all_tasks_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = all_tasks_30x30.png; sourceTree = "<group>"; };
+		179885D3154E746800AA3CC1 /* focused_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = focused_30x30.png; sourceTree = "<group>"; };
 		17BBB668152512DF00184F8B /* NMTGTaskLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskLocation.h; sourceTree = "<group>"; };
 		17BBB669152512DF00184F8B /* NMTGTaskLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskLocation.m; sourceTree = "<group>"; };
 		17BBB66B152512DF00184F8B /* NMTeamProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTeamProfile.h; sourceTree = "<group>"; };
@@ -99,6 +114,14 @@
 		17BBB672152512E000184F8B /* NMTGTaskMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskMail.m; sourceTree = "<group>"; };
 		17BBB677152512E000184F8B /* NMTGTaskSMS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskSMS.h; sourceTree = "<group>"; };
 		17BBB678152512E000184F8B /* NMTGTaskSMS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskSMS.m; sourceTree = "<group>"; };
+		17C3E104154A455F00B51CF2 /* NMTGTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTask.h; sourceTree = "<group>"; };
+		17C3E105154A455F00B51CF2 /* NMTGTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTask.m; sourceTree = "<group>"; };
+		17C3E108154A456000B51CF2 /* NMTGProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGProject.h; sourceTree = "<group>"; };
+		17C3E109154A456000B51CF2 /* NMTGProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGProject.m; sourceTree = "<group>"; };
+		17C3E10B154A456000B51CF2 /* NMTGAbstract.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGAbstract.h; sourceTree = "<group>"; };
+		17C3E10C154A456000B51CF2 /* NMTGAbstract.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGAbstract.m; sourceTree = "<group>"; };
+		17C3E10E154B238700B51CF2 /* NMTGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGContext.h; sourceTree = "<group>"; };
+		17C3E10F154B238700B51CF2 /* NMTGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGContext.m; sourceTree = "<group>"; };
 		17E308F0152A3DAD007414A5 /* AddWhateverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddWhateverViewController.h; sourceTree = "<group>"; };
 		17E308F1152A3DAD007414A5 /* AddWhateverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddWhateverViewController.m; sourceTree = "<group>"; };
 		17E308F3152AC453007414A5 /* ListsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ListsViewController.h; path = ../ListsViewController.h; sourceTree = "<group>"; };
@@ -118,12 +141,6 @@
 		17E30AA9152C217F007414A5 /* ContextsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextsViewController.h; sourceTree = "<group>"; };
 		17E30AAA152C2180007414A5 /* ContextsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContextsViewController.m; sourceTree = "<group>"; };
 		17E30AAC152C7210007414A5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		17E30AAE152D7D54007414A5 /* NMTGProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGProject.h; sourceTree = "<group>"; };
-		17E30AAF152D7D54007414A5 /* NMTGProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGProject.m; sourceTree = "<group>"; };
-		17E30AB1152D7D56007414A5 /* NMTGAbstract.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGAbstract.h; sourceTree = "<group>"; };
-		17E30AB2152D7D56007414A5 /* NMTGAbstract.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGAbstract.m; sourceTree = "<group>"; };
-		17E30AB4152D7D56007414A5 /* NMTGTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTask.h; sourceTree = "<group>"; };
-		17E30AB5152D7D56007414A5 /* NMTGTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTask.m; sourceTree = "<group>"; };
 		17E30AB7152D7DB4007414A5 /* task_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_30x30.png; sourceTree = "<group>"; };
 		17E30AB8152D7DB4007414A5 /* task_30x30_checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_30x30_checked.png; sourceTree = "<group>"; };
 		17E30ABB152D7DD5007414A5 /* case_30x30_checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = case_30x30_checked.png; sourceTree = "<group>"; };
@@ -359,14 +376,16 @@
 			isa = PBXGroup;
 			children = (
 				632BDE8414F41B7300A10E0B /* GraphTasks.xcdatamodeld */,
+				17C3E10E154B238700B51CF2 /* NMTGContext.h */,
+				17C3E10F154B238700B51CF2 /* NMTGContext.m */,
 				9C98B62014FD387700A4C6F0 /* NMTaskGraphManager.h */,
 				9C98B62114FD387700A4C6F0 /* NMTaskGraphManager.m */,
-				17E30AAE152D7D54007414A5 /* NMTGProject.h */,
-				17E30AAF152D7D54007414A5 /* NMTGProject.m */,
-				17E30AB4152D7D56007414A5 /* NMTGTask.h */,
-				17E30AB5152D7D56007414A5 /* NMTGTask.m */,
-				17E30AB1152D7D56007414A5 /* NMTGAbstract.h */,
-				17E30AB2152D7D56007414A5 /* NMTGAbstract.m */,
+				17C3E104154A455F00B51CF2 /* NMTGTask.h */,
+				17C3E105154A455F00B51CF2 /* NMTGTask.m */,
+				17C3E108154A456000B51CF2 /* NMTGProject.h */,
+				17C3E109154A456000B51CF2 /* NMTGProject.m */,
+				17C3E10B154A456000B51CF2 /* NMTGAbstract.h */,
+				17C3E10C154A456000B51CF2 /* NMTGAbstract.m */,
 				17BBB677152512E000184F8B /* NMTGTaskSMS.h */,
 				17BBB678152512E000184F8B /* NMTGTaskSMS.m */,
 				17BBB671152512E000184F8B /* NMTGTaskMail.h */,
@@ -507,6 +526,13 @@
 		9C98B62314FD4A7900A4C6F0 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				179885D3154E746800AA3CC1 /* focused_30x30.png */,
+				179885D1154E73E500AA3CC1 /* all_tasks_30x30.png */,
+				179885C5154E6EAA00AA3CC1 /* context_nil_30x30.png */,
+				179885C6154E6EAA00AA3CC1 /* context_30x30.png */,
+				179885C7154E6EAA00AA3CC1 /* job_30x30.png */,
+				179885C8154E6EAA00AA3CC1 /* home_30x30.png */,
+				179885C9154E6EAA00AA3CC1 /* family_30x30.png */,
 				17E30AB7152D7DB4007414A5 /* task_30x30.png */,
 				17E30AB8152D7DB4007414A5 /* task_30x30_checked.png */,
 				17E30AA7152B8299007414A5 /* case_30x30.png */,
@@ -605,6 +631,13 @@
 				17E30AB9152D7DB4007414A5 /* task_30x30.png in Resources */,
 				17E30ABA152D7DB4007414A5 /* task_30x30_checked.png in Resources */,
 				17E30ABC152D7DD5007414A5 /* case_30x30_checked.png in Resources */,
+				179885CB154E6EAA00AA3CC1 /* context_nil_30x30.png in Resources */,
+				179885CC154E6EAA00AA3CC1 /* context_30x30.png in Resources */,
+				179885CD154E6EAA00AA3CC1 /* job_30x30.png in Resources */,
+				179885CE154E6EAA00AA3CC1 /* home_30x30.png in Resources */,
+				179885CF154E6EAA00AA3CC1 /* family_30x30.png in Resources */,
+				179885D2154E73E500AA3CC1 /* all_tasks_30x30.png in Resources */,
+				179885D4154E746800AA3CC1 /* focused_30x30.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -649,10 +682,11 @@
 				17E30932152ADA86007414A5 /* AddPropertiesViewController.m in Sources */,
 				17E30935152AEEF8007414A5 /* AlertDateViewController.m in Sources */,
 				17E30AAB152C2180007414A5 /* ContextsViewController.m in Sources */,
-				17E30AB0152D7D55007414A5 /* NMTGProject.m in Sources */,
-				17E30AB3152D7D56007414A5 /* NMTGAbstract.m in Sources */,
-				17E30AB6152D7D56007414A5 /* NMTGTask.m in Sources */,
 				17E30ABF152D8733007414A5 /* FocusedViewController.m in Sources */,
+				17C3E106154A455F00B51CF2 /* NMTGTask.m in Sources */,
+				17C3E10A154A456000B51CF2 /* NMTGProject.m in Sources */,
+				17C3E10D154A456000B51CF2 /* NMTGAbstract.m in Sources */,
+				17C3E110154B238700B51CF2 /* NMTGContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

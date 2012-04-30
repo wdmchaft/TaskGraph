@@ -9,6 +9,8 @@
 #import "ListsViewController.h"
 #import "ProjectsViewController.h"
 #import "FocusedViewController.h"
+#import "NMTGTask.h"
+#import "NMTGProject.h"
 
 #define TITLE_REGULAR @"Обычные"
 #define TITLE_CONTEXTED @"С контекстом"
@@ -27,9 +29,7 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        NSArray* regularTasks = [NSArray arrayWithObjects:@"Все", @"В фокусе", nil];
-        NSArray* contextedTasks = [NSArray arrayWithObjects:@"Дом", @"Работа", @"Друзья", nil];
-        _tableData = [NSDictionary dictionaryWithObjectsAndKeys:regularTasks,TITLE_REGULAR, contextedTasks, TITLE_CONTEXTED , nil];
+        [self reloadData];
     }
     return self;
 }
@@ -37,19 +37,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -57,11 +49,34 @@
 	return YES;
 }
 
+-(void) reloadData
+{
+    NSArray* regularTasks = [NSArray arrayWithObjects:@"Все", @"В фокусе", nil];
+    
+    NSManagedObjectContext* context = [[NMTaskGraphManager sharedManager]managedContext];
+    NSEntityDescription* entity = [NSEntityDescription entityForName:@"NMTGContext" inManagedObjectContext:context];
+    NSFetchRequest* request = [NSFetchRequest new];
+    [request setEntity:entity];
+    NSArray* contextsUserMade = [context executeFetchRequest:request error:nil];
+    
+    NSMutableArray* allContexts = [NSMutableArray arrayWithObjects:@"Дом", @"Работа", @"Семья", nil];
+    [allContexts addObjectsFromArray:contextsUserMade];
+    
+    _tableData = [NSDictionary dictionaryWithObjectsAndKeys:regularTasks,TITLE_REGULAR, allContexts, TITLE_CONTEXTED , nil];
+    [self.tableView reloadData];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self reloadData];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [_tableData count];
+    return [[_tableData allKeys]count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -75,13 +90,49 @@
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if(!cell){
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        
-        NSArray* allKeys = [_tableData allKeys];
-        NSString* particularKey = [allKeys objectAtIndex:indexPath.section];
-        NSArray* array = [_tableData objectForKey:particularKey];
-        cell.textLabel.text = [array objectAtIndex:indexPath.row];
+    cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    
+    NSArray* allKeys = [_tableData allKeys];
+    NSString* particularKey = [allKeys objectAtIndex:indexPath.section];
+    NSArray* array = [_tableData objectForKey:particularKey];
+    switch (indexPath.section) {
+        case 0: //иконки и лэйблы для ВСЕ и В ФОКУСЕ
+        {
+            cell.textLabel.text = [array objectAtIndex:indexPath.row];
+            switch (indexPath.row) {
+                case 0:
+                    cell.imageView.image = [UIImage imageNamed:@"all_tasks_30x30.png"];
+                    break;
+                case 1:
+                    cell.imageView.image = [UIImage imageNamed:@"focused_30x30.png"];
+                    break;
+                default:
+                    break;
+            }
+            break;
+        }
+        case 1: //иконки и лэйблы для списков с контекстом
+        {
+            if (indexPath.row >=3) cell.textLabel.text = [[array objectAtIndex:indexPath.row] name];
+            else cell.textLabel.text = [array objectAtIndex:indexPath.row];
+            switch (indexPath.row) {
+                case 0:
+                    cell.imageView.image = [UIImage imageNamed:@"home_30x30.png"];
+                    break;
+                case 1:
+                    cell.imageView.image = [UIImage imageNamed:@"job_30x30.png"];  
+                    break;
+                case 2:
+                    cell.imageView.image = [UIImage imageNamed:@"family_30x30.png"];      
+                    break;
+                default:
+                    cell.imageView.image = [UIImage imageNamed:@"context_30x30.png"];                    
+                    break;
+            }
+            break;
+        }
+        default:
+            break;
     }
     
     return cell;
@@ -142,10 +193,24 @@
         [self.navigationController pushViewController:tvc animated:YES];
     }
     if((indexPath.section==0)&&(indexPath.row==1)){
-        FocusedViewController* vc = [[FocusedViewController alloc]initWithStyle:UITableViewStyleGrouped];
+        FocusedViewController* vc = [[FocusedViewController alloc]initWithStyle:UITableViewStylePlain];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
+-(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            return TITLE_REGULAR;
+            break;
+        case 1:
+            return TITLE_CONTEXTED;
+            break;
+        default:
+            return @"";
+            break;
+    }
+}
 
 @end

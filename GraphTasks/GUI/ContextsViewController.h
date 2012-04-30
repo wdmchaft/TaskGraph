@@ -7,9 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AddPropertiesViewController.h"
 
-@interface ContextsViewController : UITableViewController{
+@protocol ContextAddDelegate <NSObject>
+-(void)setContextName:(NSString*)name;
+-(NSArray*) getData;
+@end
+
+@interface ContextsViewController : UITableViewController <ContextAddDelegate>{
     NSMutableDictionary* _tableDataSource;
+    NSInteger _numberOfAddedContexts;
+    NSString* _defaultContextName;
+    id<SetNewTasksProperties> _delegate;
 }
+@property(nonatomic,retain) id<SetNewTasksProperties> delegate;
+@property(nonatomic,retain) NSString* defaultContextName;
 
+-(void) addContext;
+-(void) reloadData;
 @end

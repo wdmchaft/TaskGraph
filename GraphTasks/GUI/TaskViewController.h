@@ -20,6 +20,7 @@
 -(void) addNewProjectOrTask;
 -(void) reloadData;
 -(void) projectOrTaskAddViewControllerDidAddProjectOrTask;
-
+-(BOOL) checkProjectIsDone:(NMTGProject*) aProject;
+  
 @end
 

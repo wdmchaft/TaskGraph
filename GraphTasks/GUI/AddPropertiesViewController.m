@@ -9,6 +9,7 @@
 #import "AddPropertiesViewController.h"
 #import "AlertDateViewController.h"
 #import "TextViewViewController.h"
+#import "ContextsViewController.h"
 
 #import "NMTaskGraphManager.h"
 #import "NMTGTask.h"
@@ -24,13 +25,7 @@
 */ 
 @implementation AddPropertiesViewController
 
-@synthesize projectName = _projectName,
-            projectAlertDateFirst = _projectAlertDateFirst,
-            projectAlertDateSecond = _projectAlertDateSecond,
-            projectComment = _projectComment,
-            projectContext = _projectContext,
-            isAddingProject = _isAddingProject,
-            parentProject = _parentProject,
+@synthesize parentProject = _parentProject,
             taskToEdit = _taskToEdit;
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -53,23 +48,24 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     if(self.taskToEdit == nil){
-        self.projectAlertDateFirst = [NSDate dateWithTimeIntervalSinceNow:86400];
-        self.projectAlertDateSecond = [NSDate dateWithTimeIntervalSinceNow:3*86400];
-        self.projectComment = @"";
-        self.projectContext = @"";
+        _taskAlertDateFirst = [NSDate dateWithTimeIntervalSinceNow:0];
+        _taskAlertDateSecond = [NSDate dateWithTimeIntervalSinceNow:3*86400];
+        _taskComment = @"";
+        _taskContext = @"";
     } 
     if((self.taskToEdit != nil)&&(self->_beganEditting == NO)){
-        self.projectAlertDateFirst = self.taskToEdit.alertDate_first;
-        self.projectAlertDateSecond = self.taskToEdit.alertDate_second;
-        self.projectComment = self.taskToEdit.comment;
-        self.projectContext = @"";
-        self.projectName = self.taskToEdit.title;
+        _taskAlertDateFirst = self.taskToEdit.alertDate_first;
+        _taskAlertDateSecond = self.taskToEdit.alertDate_second;
+        _taskComment = self.taskToEdit.comment;
+        _taskContext = self.taskToEdit.context;
+        _taskName = self.taskToEdit.title;
     }
-//    NSLog(@"AddPropsVC: name: %@",self.projectName);
-//    NSLog(@"AddPropsVC: alertDate1: %@",self.projectAlertDateFirst);
-//    NSLog(@"AddPropsVC: alertDate2: %@",self.projectAlertDateSecond);
-//    NSLog(@"AddPropsVC: comment: %@",self.projectComment);
+    NSLog(@"AddPropsVC: name: %@",_taskName);
+    NSLog(@"AddPropsVC: alertDate1: %@",_taskAlertDateFirst);
+    NSLog(@"AddPropsVC: alertDate2: %@",_taskAlertDateSecond);
+    NSLog(@"AddPropsVC: comment: %@",_taskComment);
 
 //                NSDateFormatter* df = ...; [df setDateStyle:]
 //                    NSDateFormatterNoStyle   ==   
@@ -100,10 +96,11 @@
         NMTGTask* _newTask = [[NMTGTask alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:_context] insertIntoManagedObjectContext:_context];
         [_context insertObject:_newTask];
         
-        _newTask.title = self.projectName;
-        _newTask.alertDate_first = self.projectAlertDateFirst;
-        _newTask.alertDate_second = self.projectAlertDateSecond;
-        _newTask.comment = self.projectComment;
+        _newTask.title = _taskName;
+        _newTask.alertDate_first = _taskAlertDateFirst;
+        _newTask.alertDate_second = _taskAlertDateSecond;
+        _newTask.comment = _taskComment;
+        _newTask.context = _taskContext;
         _newTask.done = [NSNumber numberWithBool:NO];
 
         if(_parentProject == nil){NSLog(@"NILL PARENT PROJ IN ADDPROPERTIES vc");}
@@ -111,10 +108,11 @@
         [_newTask setParentProject:_parentProject];
     } else {
         //значит редактируем существующее задание
-        _taskToEdit.title = self.projectName;
-        _taskToEdit.alertDate_first = self.projectAlertDateFirst;
-        _taskToEdit.alertDate_second = self.projectAlertDateSecond;
-        _taskToEdit.comment = self.projectComment;
+        _taskToEdit.title = _taskName;
+        _taskToEdit.alertDate_first = _taskAlertDateFirst;
+        _taskToEdit.alertDate_second = _taskAlertDateSecond;
+        _taskToEdit.comment = _taskComment;
+        _taskToEdit.context = _taskContext;
     }
     
     NSError* error = nil;
@@ -164,48 +162,46 @@
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-//    if(!cell){
-        (cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier]);
-        
-        NSArray* allKeys = [_tableDataSourse allKeys];
-        NSString* particularKey = [allKeys objectAtIndex:indexPath.section];  
-        NSArray* cellDataSourse = [_tableDataSourse objectForKey:particularKey];
-        cell.textLabel.text = [cellDataSourse objectAtIndex:indexPath.row];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        switch (indexPath.section) {
-            case 0:
-            {
-                cell.detailTextLabel.text = self.projectName;
-                
-                cell.accessoryType = UITableViewCellAccessoryNone;
-                _textFieldName = [[UITextField alloc]init];
-                _textFieldName.frame = CGRectMake(70, 10, 150, 40);
-                _textFieldName.returnKeyType = UIReturnKeyDone;
-                _textFieldName.delegate = self;
-                _textFieldName.clearButtonMode = UITextFieldViewModeNever;
-                [cell.contentView addSubview:_textFieldName];
-                break;
-            }
-            case 1:
-            {
-                NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
-                formatter.dateStyle = NSDateFormatterLongStyle;
-                cell.detailTextLabel.text = (indexPath.row == 0) 
-                                ? ([formatter stringFromDate: self.projectAlertDateFirst]) 
-                                : ([formatter stringFromDate: self.projectAlertDateSecond]);
-                break;
-            }
-            case 2:
-            {
-                cell.detailTextLabel.text = (indexPath.row == 0) 
-                                ? (self.projectComment) 
-                                : (self.projectContext);
-                break;
-            }
-            default:
-                break;
+    (cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier]);
+    
+    NSArray* allKeys = [_tableDataSourse allKeys];
+    NSString* particularKey = [allKeys objectAtIndex:indexPath.section];  
+    NSArray* cellDataSourse = [_tableDataSourse objectForKey:particularKey];
+    cell.textLabel.text = [cellDataSourse objectAtIndex:indexPath.row];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    switch (indexPath.section) {
+        case 0: //имя задания
+        {
+            cell.detailTextLabel.text = _taskName;
+            
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            _textFieldName = [[UITextField alloc]init];
+            _textFieldName.frame = CGRectMake(70, 10, 150, 40);
+            _textFieldName.returnKeyType = UIReturnKeyDone;
+            _textFieldName.delegate = self;
+            _textFieldName.clearButtonMode = UITextFieldViewModeNever;
+            [cell.contentView addSubview:_textFieldName];
+            break;
         }
-//    }
+        case 1: //даты напоминаний
+        {
+            NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
+            formatter.dateStyle = NSDateFormatterLongStyle;
+            cell.detailTextLabel.text = (indexPath.row == 0) 
+                            ? ([formatter stringFromDate: _taskAlertDateFirst]) 
+                            : ([formatter stringFromDate: _taskAlertDateSecond]);
+            break;
+        }
+        case 2: //комментарий и контекст
+        {
+            cell.detailTextLabel.text = (indexPath.row == 0) 
+                            ? (_taskComment) 
+                            : (_taskContext);
+            break;
+        }
+        default:
+            break;
+    }
     return cell;
 }
 
@@ -232,7 +228,7 @@
 {
     NSLog(@"%@",textField.text);
     if([textField.text length]>0) {
-        self.projectName = textField.text;   
+        _taskName = textField.text;   
     } 
     [textField resignFirstResponder];
     [self.tableView reloadData];
@@ -241,7 +237,7 @@
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    textField.text = self.projectName;
+    textField.text = _taskName;
 }
 
 
@@ -291,34 +287,52 @@
 {
     self->_beganEditting = YES;
     switch (indexPath.section){
-        case 0:
+        case 0: //появляется клавиатура для ввода имени задания
         {
             [_textFieldName becomeFirstResponder];
-            [[tableView cellForRowAtIndexPath:indexPath] setHighlighted:NO];
+            [[tableView cellForRowAtIndexPath:indexPath] setEditing:NO];
+            [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO];
             break;
         }
-        case 1:
+        case 1: //добавляется дата напоминания
         {
             AlertDateViewController* alertDateVC = [[AlertDateViewController alloc]init];
-            alertDateVC.superVC = self;
-            
-            (indexPath.row == 0) ? (alertDateVC.isLaunchedForAlertDateFirst = YES) : (alertDateVC.isLaunchedForAlertDateFirst = NO);
+            if (indexPath.row == 0) {
+                NSDate* now =  [NSDate dateWithTimeIntervalSinceNow:0];
+                (_taskAlertDateFirst == nil) ? (alertDateVC.defaultDate = now)
+                                             : (alertDateVC.defaultDate = _taskAlertDateFirst);
+
+                alertDateVC.isLaunchedForAlertDateFirst = YES;
+            } else if (indexPath.row == 1) {
+                NSDate* threeDaysAfterNow = [NSDate dateWithTimeIntervalSinceNow:3*86400];
+                (_taskAlertDateSecond == nil) ? (alertDateVC.defaultDate = threeDaysAfterNow) 
+                                              : (alertDateVC.defaultDate = _taskAlertDateSecond);
+                alertDateVC.isLaunchedForAlertDateFirst = NO;
+            }
+            alertDateVC.delegate = self;
             [self.navigationController pushViewController:alertDateVC animated:YES];
             break;
         }
-        case 2:
+        case 2: //добавляется комментарий и контекст
         {
             switch (indexPath.row) {
                 case 0:
                 {
                     TextViewViewController* commentVC = [[TextViewViewController alloc]init];
-                    commentVC.superVC = self;
-                    commentVC.isSentToEnterName = NO;
-                    commentVC.isAddingProject = NO;
-                    commentVC.textViewNameOrComment.text =self.projectComment;
+                    commentVC.delegateTaskProperties = self;
+                    commentVC.isAddingTaskComment = YES;
+                    commentVC.textViewNameOrComment.text = _taskComment;
                     [self.navigationController pushViewController:commentVC animated:YES];
                     break;
                 }   
+                case 1:
+                {
+                    ContextsViewController* contextVC = [[ContextsViewController alloc]initWithStyle: UITableViewStyleGrouped];
+                    contextVC.defaultContextName = _taskContext;
+                    contextVC.delegate = self;
+                    [self.navigationController pushViewController:contextVC animated:YES];
+                    break;
+                }
                 default:
                     break;
             }
@@ -326,5 +340,45 @@
         }
     }
 }
+
+
+#pragma mark - SetNewTasksProperties protocol implementation
+-(void) setTasksName: (NSString*)name
+{
+    _taskName = name;
+    [self.tableView reloadData];
+}
+
+-(void) setTasksAlertDateFirst: (NSDate*)date
+{
+    _taskAlertDateFirst = date;
+    if([_taskAlertDateFirst compare:_taskAlertDateSecond] == NSOrderedDescending){ 
+        //значит 1ое напоминание позже 2ого. смещаем 2ое на два дня вперед с момента нового 1ого 
+        _taskAlertDateSecond = [NSDate dateWithTimeInterval:2*86400 sinceDate:_taskAlertDateFirst];
+    }
+    [self.tableView reloadData];
+}
+
+-(void) setTasksAlertDateSecond: (NSDate*)date
+{
+    _taskAlertDateSecond = date;
+    if([_taskAlertDateFirst compare:_taskAlertDateSecond] == NSOrderedDescending){ 
+        //значит 1ое напоминание позже 2ого. смещаем 1ое на два дня назад с момента нового 2ого 
+        _taskAlertDateFirst = [NSDate dateWithTimeInterval:-2*86400 sinceDate:_taskAlertDateSecond]; 
+    }
+    [self.tableView reloadData];
+}
+
+-(void) setTasksComment: (NSString*)comment
+{
+    _taskComment= comment;
+    [self.tableView reloadData];
+}
+-(void) setTasksContext: (NSString*)context
+{
+    _taskContext = context;
+    [self.tableView reloadData];
+}
+
 
 @end

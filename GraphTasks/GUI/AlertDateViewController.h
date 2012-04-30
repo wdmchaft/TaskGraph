@@ -12,14 +12,14 @@
 @interface AlertDateViewController : UIViewController<UITabBarDelegate,UITableViewDataSource>
 {
     UIDatePicker* _datePickerAlert;
-    AddPropertiesViewController* _superVC;//В этот контроллер из текущего будут выставляться даты напоминаний.        
-                                         //Когда superVC выполнит push в текущий контроллер, он уставновит 
-                                         //значение superVC в self
+    NSDate* _defaultDate;
+    id<SetNewTasksProperties> _delegate;
     
     BOOL _isLaunchedForAlertDateFirst;
 }
 
-@property(nonatomic,retain) AddPropertiesViewController* superVC;
-@property(nonatomic) BOOL isLaunchedForAlertDateFirst;
+@property(nonatomic,retain) id<SetNewTasksProperties> delegate;
+@property(nonatomic       ) BOOL isLaunchedForAlertDateFirst;
+@property(nonatomic,retain) NSDate* defaultDate;
 
 @end

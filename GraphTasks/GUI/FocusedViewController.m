@@ -30,7 +30,7 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        // Custom initialization
+        _tableDataSource = [NSMutableDictionary new];
     }
     return self;
 }
@@ -72,45 +72,61 @@
     NSDate* endDate = [calendar dateByAddingComponents:components toDate:startDate options:0];
     //получили дату отличающуюся от предыдущей на 1 день
     
-    NSLog(@"startdate: %@",startDate);
-    NSLog(@"enddate: %@",endDate);
+//NSLog(@"startdate: %@",startDate);
+//NSLog(@"enddate: %@",endDate);
     
     NSPredicate* predicate = [NSPredicate predicateWithFormat:
       @"(((alertDate_first > %@) && (alertDate_first < %@)) || ((alertDate_second > %@) && (alertDate_second < %@)))",startDate,endDate,startDate,endDate];
     [request setPredicate:predicate];
     NSArray* todayTasks = [context executeFetchRequest:request error:nil];
-    for(NMTGAbstract* obj in todayTasks) NSLog(@"today : %@",obj.title);
-    
-    predicate = [NSPredicate predicateWithFormat:@"(alertDate_second < %@)",startDate];
-    [request  setPredicate:predicate];
-    NSArray* overdueTasks = [context executeFetchRequest:request error:nil];
-    for(NMTGAbstract* obj in overdueTasks) NSLog(@"overdue  : %@",obj.title);
+    NSLog(@"today count:%i", todayTasks.count);
+    [_tableDataSource setObject:todayTasks forKey:TITLE_TODAY];
+
+    //_________________________________________________________________________________________
     
     [components setYear:0];
     [components setMonth:0];
-    [components setDay:6];  
+    [components setDay:7];  
     [components setHour:0];
     [components setMinute:0];
     [components setSecond:0];
     
-    startDate = endDate;
     endDate = [calendar dateByAddingComponents:components toDate:startDate options:0];
-    //получили дату "завтра" и через 7 дней после сегодня
-    NSLog(@"startdate '7': %@",startDate);
-    NSLog(@"enddate '7': %@",endDate);
     
-    predicate = [NSPredicate predicateWithFormat:
-                              @"(((alertDate_first > %@) && (alertDate_first < %@)) || ((alertDate_second > %@) && (alertDate_second < %@)))",startDate,endDate,startDate,endDate];
-    [request setPredicate:predicate];
+    //получили дату "завтра" и через 7 дней после сегодня
+//NSLog(@"startdate '7': %@",startDate);
+//NSLog(@"enddate '7': %@",endDate);
+    
     NSMutableArray* weekTasks = [NSMutableArray arrayWithArray: [context executeFetchRequest:request error:nil]];
-    NSLog(@"weekTasks count:%i",[weekTasks count]);
-    for(NMTGAbstract* obj in weekTasks){
-        if([todayTasks containsObject:obj]){
-//            [weekTasks removeObject:obj];
-        } else {
-            NSLog(@"week: %@",obj.title);
+    NSMutableArray* weekTasksWithoutTodayTasks = [NSMutableArray arrayWithArray:weekTasks];
+    for(NMTGAbstract* task in weekTasks){
+        if([todayTasks containsObject:task]){ [weekTasksWithoutTodayTasks removeObject:task]; }
+    } 
+    [_tableDataSource setObject:weekTasksWithoutTodayTasks forKey:TITLE_THIS_WEEK ];
+    
+    
+    //________________________________________________________________________________________
+    [components setYear:0];
+    [components setMonth:0];
+    [components setDay:30];  
+    [components setHour:0];
+    [components setMinute:0];
+    [components setSecond:0];
+    
+    endDate = [calendar dateByAddingComponents:components toDate:startDate options:0];
+    NSMutableArray* monthTasks = [NSMutableArray arrayWithArray:[context executeFetchRequest:request error:nil]];
+    NSMutableArray* monthTasksWithoutTodayAndWeekTasks = [NSMutableArray arrayWithArray: monthTasks];
+    for(NMTGAbstract* task in monthTasks){
+        if([todayTasks containsObject:task]){ 
+            [monthTasksWithoutTodayAndWeekTasks removeObject:task]; 
+            continue;
+        }
+        if([weekTasksWithoutTodayTasks containsObject:task]) {
+            [monthTasksWithoutTodayAndWeekTasks removeObject:task]; 
         }
     } 
+    [_tableDataSource setObject:monthTasksWithoutTodayAndWeekTasks forKey:TITLE_THIS_MONTH];
+    [self.tableView reloadData];
 }
 
 
@@ -125,6 +141,7 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    self.navigationItem.title = @"Текущие";
     [self reloadData];
 }
 
@@ -137,24 +154,53 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
+    switch (section) {
+        case 0:
+            return [[_tableDataSource objectForKey:TITLE_TODAY] count];
+            break;
+        case 1:
+            return [[_tableDataSource objectForKey:TITLE_THIS_WEEK] count];
+            break;            
+        case 2:
+            return [[_tableDataSource objectForKey:TITLE_THIS_MONTH] count];
+            break;
+        case 3:
+            return [[_tableDataSource objectForKey:TITLE_OVERDUE] count];
+            break;            
+        default:
+            break;
+    }
     return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    // Configure the cell...
+    cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+    switch (indexPath.section) {
+        case 0:
+            cell.textLabel.text = [[[_tableDataSource objectForKey:TITLE_TODAY] objectAtIndex:indexPath.row] title];
+            break;
+        case 1:
+            cell.textLabel.text = [[[_tableDataSource objectForKey:TITLE_THIS_WEEK] objectAtIndex:indexPath.row] title];
+            break;
+        case 2:
+            cell.textLabel.text = [[[_tableDataSource objectForKey:TITLE_THIS_MONTH] objectAtIndex:indexPath.row] title];
+            break;
+        case 3:
+            cell.textLabel.text = [[[_tableDataSource objectForKey:TITLE_OVERDUE] objectAtIndex:indexPath.row] title];
+            break;            
+        default:
+            break;
+    }
     
     return cell;
 }
@@ -202,13 +248,36 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+
+}
+
+-(NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            if ([[_tableDataSource objectForKey:TITLE_TODAY] count] > 0) {
+                return TITLE_TODAY;
+            } else return @"";
+            break;
+        case 1:
+            if ([[_tableDataSource objectForKey:TITLE_THIS_WEEK] count] > 0) {            
+                return TITLE_THIS_WEEK;
+            } else return @"";
+            break;
+        case 2:
+            if ([[_tableDataSource objectForKey:TITLE_THIS_MONTH] count] > 0) {            
+                return TITLE_THIS_MONTH;
+            } else return @"";
+            break;
+        case 3:
+            if ([[_tableDataSource objectForKey:TITLE_OVERDUE] count] > 0) {            
+                return TITLE_OVERDUE;
+            } else return @"";
+            break;
+        default:
+            return @"";
+            break;
+    }
 }
 
 @end

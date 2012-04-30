@@ -1,5 +1,5 @@
 //
-//  NMTGTask.h
+//  NMTGContext.h
 //  GraphTasks
 //
 //  Created by Тимур Юсипов on 27.04.12.
@@ -8,12 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "NMTGAbstract.h"
 
-@class NMTGProject;
 
-@interface NMTGTask : NMTGAbstract
+@interface NMTGContext : NSManagedObject
 
-@property (nonatomic, retain) NMTGProject *parentProject;
+@property (nonatomic, retain) NSString * name;
 
 @end

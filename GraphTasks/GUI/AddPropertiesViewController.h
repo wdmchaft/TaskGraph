@@ -8,28 +8,31 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddPropertiesViewController : UITableViewController<UITextFieldDelegate>{
+@protocol SetNewTasksProperties <NSObject>
+-(void) setTasksName: (NSString*)name;
+-(void) setTasksAlertDateFirst: (NSDate*)date;
+-(void) setTasksAlertDateSecond: (NSDate*)date;
+-(void) setTasksComment: (NSString*)comment;
+-(void) setTasksContext: (NSString*)context;
+@end
+
+
+
+@interface AddPropertiesViewController : UITableViewController<UITextFieldDelegate, SetNewTasksProperties>{
     NSDictionary* _tableDataSourse;
     UITextField* _textFieldName;
     NSManagedObjectContext* _context;
     NMTGProject* _parentProject;
-    NMTGTask* _taskToEdit;
-    BOOL _isAddingProject;
+    NMTGTask* _taskToEdit; 
     BOOL _beganEditting;
     
     //будущие параметры нового задания
-    NSString*   _projectName;
-    NSDate*     _projectAlertDateFirst;
-    NSDate*     _projectAlertDateSecond;
-    NSString*   _projectComment;
-    NSString*   _projectContext;
+    NSString*   _taskName;
+    NSDate*     _taskAlertDateFirst;
+    NSDate*     _taskAlertDateSecond;
+    NSString*   _taskComment;
+    NSString*   _taskContext;
 }
-@property(nonatomic,retain)NSString* projectName;
-@property(nonatomic,retain)NSDate* projectAlertDateFirst;
-@property(nonatomic,retain)NSDate* projectAlertDateSecond;
-@property(nonatomic,retain)NSString* projectComment;
-@property(nonatomic,retain)NSString* projectContext;
-@property(nonatomic) BOOL isAddingProject;
 @property(nonatomic,retain) NMTGProject* parentProject;
 @property(nonatomic,retain) NMTGTask* taskToEdit;
 @end

@@ -117,14 +117,15 @@ CGRect  kNMGSettingsRect;
 
 -   (void)  tasksButtonClicked{
     
-    ProjectsViewController* pvc = [[ProjectsViewController alloc]init];
-    [pvc setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"Projects" image:nil tag:0]];
+//    ProjectsViewController* pvc = [[ProjectsViewController alloc]init];
+    ListsViewController* LstVC = [[ListsViewController alloc]initWithStyle:UITableViewStylePlain];
+    [LstVC setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"Проекты" image:nil tag:0]];
     
     UIViewController* VASILENKO_VIEW_CONTROLLER = [UIViewController new];
-    [VASILENKO_VIEW_CONTROLLER setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"VASILENKO" image:nil tag:0]];
+    [VASILENKO_VIEW_CONTROLLER setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"Графы" image:nil tag:0]];
     
     UITabBarController* tvc = [[UITabBarController alloc]init];
-    [tvc setViewControllers:[NSArray arrayWithObjects:pvc, VASILENKO_VIEW_CONTROLLER, nil]];
+    [tvc setViewControllers:[NSArray arrayWithObjects:LstVC, VASILENKO_VIEW_CONTROLLER, nil]];
     [self.navigationController pushViewController:tvc animated:YES];
 //    [self.navigationController pushViewController:pvc animated:YES];    
 }
@@ -135,13 +136,11 @@ CGRect  kNMGSettingsRect;
 }
 
 -   (void)  contextsButtonClicked{
-    AddWhateverViewController*    tvc =   [[AddWhateverViewController   alloc]  initWithStyle:UITableViewStyleGrouped];
-    [self.navigationController  pushViewController:tvc animated:YES];
+    //
 }
 
 -   (void)  settingsButtonClicked{
-    ListsViewController* LstVC = [[ListsViewController alloc]initWithStyle:UITableViewStyleGrouped];
-    [self.navigationController pushViewController:LstVC animated:YES];
+    //
 }
 
 

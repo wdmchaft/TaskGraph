@@ -2,7 +2,7 @@
 //  NMTGAbstract.h
 //  GraphTasks
 //
-//  Created by Тимур Юсипов on 05.04.12.
+//  Created by Тимур Юсипов on 27.04.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
@@ -19,6 +19,7 @@
 @property (nonatomic, retain) NSNumber * done;
 @property (nonatomic, retain) NSDate * finishDate;
 @property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) NSString * context;
 @property (nonatomic, retain) NSSet *employers;
 @end
 

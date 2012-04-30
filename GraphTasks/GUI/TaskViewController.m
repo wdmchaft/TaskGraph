@@ -73,6 +73,31 @@
 }
 
 
+-(BOOL) checkProjectIsDone:(NMTGProject *)aProject
+{
+    NSSet* subProjects = aProject.subProject;
+    NSSet* subTasks = aProject.subTasks;
+    
+    for(NMTGProject* proj in subProjects) {
+        if ([self checkProjectIsDone:proj] == NO) {
+            NSLog(@"'if1' returned NO");
+            return NO;
+        }    
+    }
+    
+    NSArray* subTasksIndexed = [subTasks allObjects];
+    for(int i=0; i<subTasksIndexed.count; i++){
+        NMTGTask* task = [subTasksIndexed objectAtIndex:i];
+        if([task.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
+            NSLog(@"'if2' returned NO");
+            return NO;
+        } 
+    }
+    NSLog(@"returned YES");
+    return YES;
+}
+
+
 -(void)addNewProjectOrTask{
 //    ProjectOrTaskAddViewController* vc = [[ProjectOrTaskAddViewController alloc]init];
 //    
@@ -89,7 +114,6 @@
 -(void) projectOrTaskAddViewControllerDidAddProjectOrTask{
     [self reloadData];
     [self dismissModalViewControllerAnimated:YES];
-    //and push?
 }
 
 
@@ -118,7 +142,9 @@
     cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     NMTGAbstract* object = (NMTGAbstract*)[_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
     if([object isKindOfClass:[NMTGProject class]]) {
-        cell.imageView.image = [UIImage imageNamed:@"case_30x30.png"];
+        cell.imageView.image = ([object.done isEqualToNumber:[NSNumber numberWithBool:NO]]) 
+        ? ([UIImage imageNamed:@"case_30x30.png"])
+        : ([UIImage imageNamed:@"case_30x30_checked.png"]);
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     if([object isKindOfClass:[NMTGTask class]]) {
@@ -225,27 +251,30 @@
             NSLog(@"FAILED TO SAVE CONTEXT IN TASK VC IN 'didSelectRowAtIndexPath'");
             NSLog(@"%@",error);
         }
-        [self reloadData];
         
-//        //блок проверки заверешен ли проект
-//        NMTGProject* project = [[_fetchedProjectsOrTasks objectAtIndex:indexPath.row] parentProject];
+        //блок проверки заверешен ли проект
+        NMTGProject* parent_project = [[_fetchedProjectsOrTasks objectAtIndex:indexPath.row] parentProject];
 //        BOOL projectIsDone = NO;
-//        for(NMTGTask* obj in project.subTasks){
-//            if([obj.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
+//        NSSet* subTasks = parent_project.subTasks;
+//        NSArray* subTasksIndexed = subTasks.allObjects;
+//        for(int i=0; i<subTasksIndexed.count; i++){
+//            NMTGTask* task = [subTasksIndexed objectAtIndex:i];
+//            if([task.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
 //                projectIsDone = NO;
 //                break;
-//            }else{NSLog(@"+");}
+//            } else if (i==subTasksIndexed.count-1) { //если это последняя итерация 
+//                projectIsDone = YES;
+//            }
 //        }
-//        (projectIsDone==YES) ? (project.done = [NSNumber numberWithBool:YES]) 
-//                             : (project.done = [NSNumber numberWithBool:NO]);
-//
-//        
-//        error = nil;
-//        if(!([_context save:&error])){
-//            NSLog(@"FAILED TO SAVE CONTEXT IN TASK VC IN 'didSelectRowAtIndexPath'");
-//            NSLog(@"%@",error);
-//        }
-//        NSLog(@"project Done? :%@",project.done);
+//        parent_project.done = [NSNumber numberWithBool:projectIsDone];
+        parent_project.done = [NSNumber numberWithBool: [self checkProjectIsDone:parent_project]];
+
+        error = nil;
+        if(!([_context save:&error])){
+            NSLog(@"FAILED TO SAVE CONTEXT IN TASK VC IN 'didSelectRowAtIndexPath'");
+            NSLog(@"%@",error);
+        }
+        [self reloadData];
     }
 }
 

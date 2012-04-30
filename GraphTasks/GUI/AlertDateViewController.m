@@ -26,7 +26,8 @@
 
 @implementation AlertDateViewController
 
-@synthesize superVC = _superVC,
+@synthesize delegate = _delegate,
+            defaultDate = _defaultDate,
             isLaunchedForAlertDateFirst = _isLaunchedForAlertDateFirst;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -54,38 +55,22 @@
     [self.view addSubview: _datePickerAlert];
     
     if(self.isLaunchedForAlertDateFirst){
-        [self.navigationItem setTitle:@"Дата первого напоминания"];
+        [self.navigationItem setTitle:@"Первое напоминание"];
     } else {
-        [self.navigationItem setTitle:@"Дата второго напоминания"];
+        [self.navigationItem setTitle:@"Второе напоминание"];
     }
 }
 
--(void)viewWillAppear:(BOOL)animated
+-(void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
-    if(self.isLaunchedForAlertDateFirst){
-        _datePickerAlert.date = self.superVC.projectAlertDateFirst;
-    } else {
-        _datePickerAlert.date = self.superVC.projectAlertDateSecond;
-    }
+    [super viewDidAppear:animated];
+    _datePickerAlert.date = _defaultDate;
 }
 
 -(void)save
 {
-    if(self.isLaunchedForAlertDateFirst){
-        self.superVC.projectAlertDateFirst = _datePickerAlert.date;
-        if([self.superVC.projectAlertDateFirst compare:self.superVC.projectAlertDateSecond] == NSOrderedDescending){ 
-            //значит 1ое напоминание позже 2ого. смещаем 2ое на два дня вперед с момента нового 1ого 
-            self.superVC.projectAlertDateSecond = [NSDate dateWithTimeInterval:2*86400 sinceDate:_datePickerAlert.date];
-        }
-    } else {
-        self.superVC.projectAlertDateSecond = _datePickerAlert.date;
-        if([self.superVC.projectAlertDateFirst compare:self.superVC.projectAlertDateSecond] == NSOrderedDescending){ 
-            //значит 1ое напоминание позже 2ого. смещаем 1ое на два дня назад с момента нового 2ого 
-            self.superVC.projectAlertDateFirst = [NSDate dateWithTimeInterval:-2*86400 sinceDate:_datePickerAlert.date];
-        }
-    }
-    [self.superVC.tableView reloadData];
+    (self.isLaunchedForAlertDateFirst) ? ([_delegate setTasksAlertDateFirst:_datePickerAlert.date])
+                                       : ([_delegate setTasksAlertDateSecond:_datePickerAlert.date]);
     [self.navigationController popViewControllerAnimated:YES];
 }
 
