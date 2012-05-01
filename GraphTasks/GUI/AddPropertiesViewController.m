@@ -183,10 +183,13 @@
         case 1: //даты напоминаний
         {
             NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
-            formatter.dateStyle = NSDateFormatterLongStyle;
+formatter.dateStyle = NSDateFormatterFullStyle;
             cell.detailTextLabel.text = (indexPath.row == 0) 
-                            ? ([formatter stringFromDate: _taskAlertDateFirst]) 
-                            : ([formatter stringFromDate: _taskAlertDateSecond]);
+? ([formatter stringFromDate: _taskAlertDateFirst]) 
+: ([formatter stringFromDate: _taskAlertDateSecond]);
+            
+//            ? [NSString stringWithFormat:@"%@",_taskAlertDateFirst]
+//            : [NSString stringWithFormat:@"%@",_taskAlertDateSecond];
             break;
         }
         case 2: //комментарий и контекст

@@ -8,7 +8,7 @@
 
 #import "ListsViewController.h"
 #import "ProjectsViewController.h"
-#import "FocusedViewController.h"
+#import "FocusedAndContextedViewController.h"
 #import "NMTGTask.h"
 #import "NMTGProject.h"
 #import "TasksWithContextViewController.h"
@@ -205,7 +205,7 @@
                 }
                 case 1: //В ФОКУСЕ
                 {
-                    FocusedViewController* vc = [[FocusedViewController alloc]initWithStyle:UITableViewStylePlain];
+                    FocusedAndContextedViewController* vc = [[FocusedAndContextedViewController alloc]initWithStyle:UITableViewStylePlain];
                     [self.navigationController pushViewController:vc animated:YES];
                     break;
                 }
@@ -217,13 +217,14 @@
         case 1: //тут список контекстов
         {
             NSArray* allContexts = [_tableDataSource objectForKey:TITLE_CONTEXTED];
-            TasksWithContextViewController* taskContextVC = [[TasksWithContextViewController alloc]initWithStyle:UITableViewStylePlain];
+//            TasksWithContextViewController* taskContextVC = [[TasksWithContextViewController alloc]initWithStyle:UITableViewStylePlain];
+            FocusedAndContextedViewController* focusedVC = [[FocusedAndContextedViewController alloc]initWithStyle:UITableViewStylePlain];
             if (indexPath.row >= 4) {
-                taskContextVC.contextToFilterTasks = [[allContexts objectAtIndex:indexPath.row]name];
+                /*taskContextVC*/focusedVC.contextToFilterTasks = [[allContexts objectAtIndex:indexPath.row]name];
             } else {
-                taskContextVC.contextToFilterTasks = [allContexts objectAtIndex:indexPath.row];
+                /*taskContextVC*/focusedVC.contextToFilterTasks = [allContexts objectAtIndex:indexPath.row];
             }
-            [self.navigationController pushViewController:taskContextVC animated:YES];
+            [self.navigationController pushViewController:/*taskContextVC*/focusedVC animated:YES];
             break;
         }
             

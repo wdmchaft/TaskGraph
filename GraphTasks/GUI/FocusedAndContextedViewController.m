@@ -1,21 +1,21 @@
 //
-//  FocusedViewController.m
+//  FocusedAndContextedViewController.m
 //  GraphTasks
 //
-//  Created by Тимур Юсипов on 05.04.12.
+//  Created by Тимур Юсипов on 02.05.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "FocusedViewController.h"
+#import "FocusedAndContextedViewController.h"
 #import "NMTGTask.h"
 #import "ProjectsViewController.h"
 
 /*
-//
-// Данный контроллер вызывается для отображения заданий, разбитых на группы по временному критеию
-// "Просроченные", "Сегодня", "В течение недели" "В этом месяце"
-//
-*/
+ //
+ // Данный контроллер вызывается для отображения заданий, разбитых на группы по временному критеию
+ // "Просроченные", "Сегодня", "В течение недели" "В этом месяце", при этом фильтруя задания по контексту
+ //
+ */
 
 #define TITLE_OVERDUE @"Просроченные"
 #define TITLE_TODAY @"Сегодня"
@@ -23,7 +23,7 @@
 #define TITLE_THIS_MONTH @"В этом месяце"
 
 
-@implementation FocusedViewController
+@implementation FocusedAndContextedViewController
 
 @synthesize contextToFilterTasks = _contextToFilterTasks;
 
@@ -47,7 +47,7 @@
 -(void)reloadData{
     NSManagedObjectContext* context = [[NMTaskGraphManager sharedManager]managedContext];
     NSEntityDescription* entity = [NSEntityDescription entityForName: @"NMTGTask" inManagedObjectContext:context];
-
+    
     NSFetchRequest* request = [[NSFetchRequest alloc]init];   
     [request setEntity:entity];
     
@@ -64,7 +64,7 @@
         NSLog(@"%@ /*%@  %@",task.title, task.alertDate_first, task.alertDate_second);
     }
     
-
+    
     NSDate* now = [[NSDate alloc]initWithTimeInterval:86400 sinceDate: [NSDate date]];
     
     NSTimeInterval secondssTilNow= [now timeIntervalSinceDate:[NSDate dateWithTimeIntervalSince1970:0]];
@@ -75,31 +75,31 @@
     NSDate* endDateThisWeek = [[NSDate alloc]initWithTimeInterval:6*86400+1 sinceDate:startDate];
     NSDate* endDateThisMonth = [[NSDate alloc]initWithTimeInterval:29*86400+1 sinceDate:startDate];
     
-
+    
     NSMutableArray* todayTasks = [NSMutableArray new];
     NSMutableArray* weekTasks = [NSMutableArray new];
     NSMutableArray* monthTasks = [NSMutableArray new];
-
+    
     for (NMTGTask* task in allTasks) {
         if ( ([task.alertDate_first compare:startDate] == NSOrderedDescending && 
               [task.alertDate_first compare:endDateToday] == NSOrderedAscending ) || 
-             ([task.alertDate_second compare:startDate] == NSOrderedDescending && 
-              [task.alertDate_second compare:endDateToday] == NSOrderedAscending )) {
-            [todayTasks addObject:task];
-        } else 
-        if ( ([task.alertDate_first compare:startDate] == NSOrderedDescending && 
-              [task.alertDate_first compare:endDateThisWeek] == NSOrderedAscending ) || 
-             ([task.alertDate_second compare:startDate] == NSOrderedDescending && 
-              [task.alertDate_second compare:endDateThisWeek] == NSOrderedAscending )) {
-            [weekTasks addObject:task];
-         } else 
-         if ( ([task.alertDate_first compare:startDate] == NSOrderedDescending && 
-               [task.alertDate_first compare:endDateThisMonth] == NSOrderedAscending ) || 
-             ([task.alertDate_second compare:startDate] == NSOrderedDescending && 
-              [task.alertDate_second compare:endDateThisMonth] == NSOrderedAscending )) {
-             [monthTasks addObject:task];
-         }
-
+            ([task.alertDate_second compare:startDate] == NSOrderedDescending && 
+             [task.alertDate_second compare:endDateToday] == NSOrderedAscending )) {
+                [todayTasks addObject:task];
+            } else 
+                if ( ([task.alertDate_first compare:startDate] == NSOrderedDescending && 
+                      [task.alertDate_first compare:endDateThisWeek] == NSOrderedAscending ) || 
+                    ([task.alertDate_second compare:startDate] == NSOrderedDescending && 
+                     [task.alertDate_second compare:endDateThisWeek] == NSOrderedAscending )) {
+                        [weekTasks addObject:task];
+                    } else 
+                        if ( ([task.alertDate_first compare:startDate] == NSOrderedDescending && 
+                              [task.alertDate_first compare:endDateThisMonth] == NSOrderedAscending ) || 
+                            ([task.alertDate_second compare:startDate] == NSOrderedDescending && 
+                             [task.alertDate_second compare:endDateThisMonth] == NSOrderedAscending )) {
+                                [monthTasks addObject:task];
+                            }
+        
     }
     [_tableDataSource setObject:todayTasks forKey:TITLE_TODAY];
     [_tableDataSource setObject:/*weekTasksWithoutTodayTasks*/weekTasks forKey:TITLE_THIS_WEEK ];
@@ -119,7 +119,24 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationItem.title = @"Текущие";
+    if (self.contextToFilterTasks != nil) {
+        
+        NSManagedObjectContext* context = [[NMTaskGraphManager sharedManager]managedContext];
+        NSEntityDescription* entity = [NSEntityDescription entityForName:@"NMTGContext" inManagedObjectContext:context];
+        NSFetchRequest* request = [NSFetchRequest new];
+        [request setEntity:entity];
+        NSArray* contextsUserMade = [context executeFetchRequest:request error:nil];
+        
+        NSMutableArray* allContexts = [NSMutableArray arrayWithObjects:@"Дом", @"Работа", @"Семья", @"", nil]; //пустая строка - для пустого контекста. В tableViewCell будет написано (без контекста)
+        [allContexts addObjectsFromArray:contextsUserMade];
+        if ([allContexts containsObject:self.contextToFilterTasks]) {
+            self.navigationItem.title = ([self.contextToFilterTasks isEqualToString:@""]) 
+                            ? (@"(Без контекста)") 
+                            : (self.contextToFilterTasks);
+        }
+    } else {
+          self.navigationItem.title = @"Текущие";     
+    }
     [self reloadData];
 }
 
@@ -195,43 +212,43 @@
 }
 
 /*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
 
 /*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ }   
+ else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }   
+ }
+ */
 
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+ }
+ */
 
 /*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 #pragma mark - Table view delegate
 
@@ -250,9 +267,9 @@
     NSLog(@"project: %@",project);
     ProjectsViewController* projectsVC = [[ProjectsViewController alloc]initWithStyle:UITableViewStylePlain];
     
-//    NSLog(@"projectsVC.selectedProject DO    :%@",projectsVC.selectedProject);    
+    //    NSLog(@"projectsVC.selectedProject DO    :%@",projectsVC.selectedProject);    
     projectsVC.selectedProject = project;
-//    NSLog(@"projectsVC.selectedProject posle :%@",projectsVC.selectedProject);
+    //    NSLog(@"projectsVC.selectedProject posle :%@",projectsVC.selectedProject);
     
     projectsVC.shouldPushEmidiately = YES;
     [self.navigationController pushViewController:projectsVC animated:YES];

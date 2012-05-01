@@ -174,7 +174,7 @@
     [formatter setDateStyle:NSDateFormatterLongStyle];
     [formatter setTimeStyle:NSDateFormatterNoStyle];
     
-     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",[formatter stringFromDate:object.alertDate_first]];
+     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ =-= %@",[formatter stringFromDate:object.alertDate_first],[formatter stringFromDate:object.alertDate_second]];
     return cell;
 }
 

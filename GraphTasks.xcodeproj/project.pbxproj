@@ -18,6 +18,8 @@
 		179885D4154E746800AA3CC1 /* focused_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885D3154E746800AA3CC1 /* focused_30x30.png */; };
 		179885D7154E82A100AA3CC1 /* TasksWithContextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 179885D6154E82A100AA3CC1 /* TasksWithContextViewController.m */; };
 		179885DD154E935500AA3CC1 /* settings_25x25.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885DB154E935500AA3CC1 /* settings_25x25.png */; };
+		179885E315507D5E00AA3CC1 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 179885E215507D5E00AA3CC1 /* CoreFoundation.framework */; };
+		179885E61550969900AA3CC1 /* FocusedAndContextedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 179885E51550969900AA3CC1 /* FocusedAndContextedViewController.m */; };
 		17BBB66A152512DF00184F8B /* NMTGTaskLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB669152512DF00184F8B /* NMTGTaskLocation.m */; };
 		17BBB66D152512DF00184F8B /* NMTeamProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB66C152512DF00184F8B /* NMTeamProfile.m */; };
 		17BBB670152512DF00184F8B /* NMTGTaskPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB66F152512DF00184F8B /* NMTGTaskPhone.m */; };
@@ -109,6 +111,9 @@
 		179885D5154E82A100AA3CC1 /* TasksWithContextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TasksWithContextViewController.h; sourceTree = "<group>"; };
 		179885D6154E82A100AA3CC1 /* TasksWithContextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TasksWithContextViewController.m; sourceTree = "<group>"; };
 		179885DB154E935500AA3CC1 /* settings_25x25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_25x25.png; sourceTree = "<group>"; };
+		179885E215507D5E00AA3CC1 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		179885E41550969900AA3CC1 /* FocusedAndContextedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FocusedAndContextedViewController.h; sourceTree = "<group>"; };
+		179885E51550969900AA3CC1 /* FocusedAndContextedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FocusedAndContextedViewController.m; sourceTree = "<group>"; };
 		17BBB668152512DF00184F8B /* NMTGTaskLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskLocation.h; sourceTree = "<group>"; };
 		17BBB669152512DF00184F8B /* NMTGTaskLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskLocation.m; sourceTree = "<group>"; };
 		17BBB66B152512DF00184F8B /* NMTeamProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTeamProfile.h; sourceTree = "<group>"; };
@@ -233,6 +238,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				179885E315507D5E00AA3CC1 /* CoreFoundation.framework in Frameworks */,
 				17E30AAD152C7210007414A5 /* QuartzCore.framework in Frameworks */,
 				632BDE3814F4157F00A10E0B /* UIKit.framework in Frameworks */,
 				632BDE3A14F4157F00A10E0B /* Foundation.framework in Frameworks */,
@@ -257,6 +263,8 @@
 				178D47DC151F2F04004F0734 /* TaskViewController.m */,
 				179885D5154E82A100AA3CC1 /* TasksWithContextViewController.h */,
 				179885D6154E82A100AA3CC1 /* TasksWithContextViewController.m */,
+				179885E41550969900AA3CC1 /* FocusedAndContextedViewController.h */,
+				179885E51550969900AA3CC1 /* FocusedAndContextedViewController.m */,
 			);
 			name = ProjectsViewControllers;
 			sourceTree = "<group>";
@@ -281,6 +289,7 @@
 		632BDE2814F4157F00A10E0B = {
 			isa = PBXGroup;
 			children = (
+				179885E215507D5E00AA3CC1 /* CoreFoundation.framework */,
 				17E30AAC152C7210007414A5 /* QuartzCore.framework */,
 				632BDE6D14F41A8800A10E0B /* Default-Portrait~ipad.png */,
 				632BDE6E14F41A8800A10E0B /* Default-Landscape~ipad.png */,
@@ -697,6 +706,7 @@
 				17C3E10D154A456000B51CF2 /* NMTGAbstract.m in Sources */,
 				17C3E110154B238700B51CF2 /* NMTGContext.m in Sources */,
 				179885D7154E82A100AA3CC1 /* TasksWithContextViewController.m in Sources */,
+				179885E61550969900AA3CC1 /* FocusedAndContextedViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
