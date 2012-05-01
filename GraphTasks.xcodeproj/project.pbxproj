@@ -16,7 +16,6 @@
 		179885CF154E6EAA00AA3CC1 /* family_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885C9154E6EAA00AA3CC1 /* family_30x30.png */; };
 		179885D2154E73E500AA3CC1 /* all_tasks_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885D1154E73E500AA3CC1 /* all_tasks_30x30.png */; };
 		179885D4154E746800AA3CC1 /* focused_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885D3154E746800AA3CC1 /* focused_30x30.png */; };
-		179885D7154E82A100AA3CC1 /* TasksWithContextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 179885D6154E82A100AA3CC1 /* TasksWithContextViewController.m */; };
 		179885DD154E935500AA3CC1 /* settings_25x25.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885DB154E935500AA3CC1 /* settings_25x25.png */; };
 		179885E315507D5E00AA3CC1 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 179885E215507D5E00AA3CC1 /* CoreFoundation.framework */; };
 		179885E61550969900AA3CC1 /* FocusedAndContextedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 179885E51550969900AA3CC1 /* FocusedAndContextedViewController.m */; };
@@ -45,7 +44,6 @@
 		17E30AB9152D7DB4007414A5 /* task_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E30AB7152D7DB4007414A5 /* task_30x30.png */; };
 		17E30ABA152D7DB4007414A5 /* task_30x30_checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E30AB8152D7DB4007414A5 /* task_30x30_checked.png */; };
 		17E30ABC152D7DD5007414A5 /* case_30x30_checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 17E30ABB152D7DD5007414A5 /* case_30x30_checked.png */; };
-		17E30ABF152D8733007414A5 /* FocusedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E30ABE152D8733007414A5 /* FocusedViewController.m */; };
 		632BDE3814F4157F00A10E0B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 632BDE3714F4157F00A10E0B /* UIKit.framework */; };
 		632BDE3A14F4157F00A10E0B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 632BDE3914F4157F00A10E0B /* Foundation.framework */; };
 		632BDE3C14F4157F00A10E0B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 632BDE3B14F4157F00A10E0B /* CoreGraphics.framework */; };
@@ -108,8 +106,6 @@
 		179885C9154E6EAA00AA3CC1 /* family_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = family_30x30.png; sourceTree = "<group>"; };
 		179885D1154E73E500AA3CC1 /* all_tasks_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = all_tasks_30x30.png; sourceTree = "<group>"; };
 		179885D3154E746800AA3CC1 /* focused_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = focused_30x30.png; sourceTree = "<group>"; };
-		179885D5154E82A100AA3CC1 /* TasksWithContextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TasksWithContextViewController.h; sourceTree = "<group>"; };
-		179885D6154E82A100AA3CC1 /* TasksWithContextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TasksWithContextViewController.m; sourceTree = "<group>"; };
 		179885DB154E935500AA3CC1 /* settings_25x25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_25x25.png; sourceTree = "<group>"; };
 		179885E215507D5E00AA3CC1 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		179885E41550969900AA3CC1 /* FocusedAndContextedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FocusedAndContextedViewController.h; sourceTree = "<group>"; };
@@ -154,8 +150,6 @@
 		17E30AB7152D7DB4007414A5 /* task_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_30x30.png; sourceTree = "<group>"; };
 		17E30AB8152D7DB4007414A5 /* task_30x30_checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = task_30x30_checked.png; sourceTree = "<group>"; };
 		17E30ABB152D7DD5007414A5 /* case_30x30_checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = case_30x30_checked.png; sourceTree = "<group>"; };
-		17E30ABD152D8733007414A5 /* FocusedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FocusedViewController.h; sourceTree = "<group>"; };
-		17E30ABE152D8733007414A5 /* FocusedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FocusedViewController.m; sourceTree = "<group>"; };
 		632BDE3314F4157F00A10E0B /* GraphTasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GraphTasks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		632BDE3714F4157F00A10E0B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		632BDE3914F4157F00A10E0B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -257,12 +251,8 @@
 				17E308F4152AC453007414A5 /* ListsViewController.m */,
 				178D46E8151DC554004F0734 /* ProjectsViewController.h */,
 				178D46E9151DC554004F0734 /* ProjectsViewController.m */,
-				17E30ABD152D8733007414A5 /* FocusedViewController.h */,
-				17E30ABE152D8733007414A5 /* FocusedViewController.m */,
 				178D47DB151F2F04004F0734 /* TaskViewController.h */,
 				178D47DC151F2F04004F0734 /* TaskViewController.m */,
-				179885D5154E82A100AA3CC1 /* TasksWithContextViewController.h */,
-				179885D6154E82A100AA3CC1 /* TasksWithContextViewController.m */,
 				179885E41550969900AA3CC1 /* FocusedAndContextedViewController.h */,
 				179885E51550969900AA3CC1 /* FocusedAndContextedViewController.m */,
 			);
@@ -700,12 +690,10 @@
 				17E30932152ADA86007414A5 /* AddPropertiesViewController.m in Sources */,
 				17E30935152AEEF8007414A5 /* AlertDateViewController.m in Sources */,
 				17E30AAB152C2180007414A5 /* ContextsViewController.m in Sources */,
-				17E30ABF152D8733007414A5 /* FocusedViewController.m in Sources */,
 				17C3E106154A455F00B51CF2 /* NMTGTask.m in Sources */,
 				17C3E10A154A456000B51CF2 /* NMTGProject.m in Sources */,
 				17C3E10D154A456000B51CF2 /* NMTGAbstract.m in Sources */,
 				17C3E110154B238700B51CF2 /* NMTGContext.m in Sources */,
-				179885D7154E82A100AA3CC1 /* TasksWithContextViewController.m in Sources */,
 				179885E61550969900AA3CC1 /* FocusedAndContextedViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
