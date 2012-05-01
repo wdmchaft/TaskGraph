@@ -17,13 +17,6 @@
 //
 */
 
-@interface TextViewViewController(internal)
-    -(void)addingProjectName;
-    -(void)addingTaskName;
-    -(void)addingTaskComment;
-    -(void)addingContextName;
-    -(void)cancel;
-@end
 
 
 @implementation TextViewViewController
@@ -33,11 +26,13 @@
             isAddingTaskComment = _isAddingTaskComment,
             isAddingProjectName = _isAddingProjectName,
             isAddingContextName = _isAddingContextName,
+            isRenamingProject = _isRenamingProject,
 
             parentProject = _parentProject,
             textViewNameOrComment = _textViewNameOrCommentOrContextText,
             delegateContextAdd = _delegateContextAdd,
-            delegateTaskProperties = _delegateTaskProperties;
+            delegateTaskProperties = _delegateTaskProperties,
+            delegateProjectProperties = _delegateProjectProperties;
                     
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -57,6 +52,13 @@
     return self;
 }
 
+-(void)modifyTextViewsText
+{
+    NSMutableString* string = [NSMutableString stringWithString:_textViewNameOrCommentOrContextText.text];
+    NSRegularExpression* reg_expr = [NSRegularExpression regularExpressionWithPattern:@"\n" options:NSRegularExpressionCaseInsensitive error:nil];
+    [reg_expr replaceMatchesInString:string options:NSMatchingCompleted range:NSMakeRange(0, string.length) withTemplate:@" "];
+    _textViewNameOrCommentOrContextText.text = string;
+}
 
 -(void)textViewDidChange:(UITextView *)textView
 {
@@ -65,9 +67,9 @@
     }
 }
 
-
 -(void)addingTaskName
 {
+    [self modifyTextViewsText];
     AddPropertiesViewController* addPropertiesVC = [[AddPropertiesViewController alloc]initWithStyle:UITableViewStyleGrouped];
     [addPropertiesVC setTasksName:_textViewNameOrCommentOrContextText.text];
     addPropertiesVC.parentProject = self.parentProject;
@@ -77,7 +79,7 @@
 -(void)addingProjectName
 {
     //надо просто сохранить проект и отправить уведомление о закрытии модального контроллера
-
+    [self modifyTextViewsText];
     NSManagedObjectContext* _context = [[NMTaskGraphManager sharedManager]managedContext];
     NMTGProject* _newProject = [[NMTGProject alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGProject" inManagedObjectContext:_context] insertIntoManagedObjectContext:_context];
     [_context insertObject:_newProject];
@@ -103,19 +105,28 @@
 
 -(void)addingTaskComment
 {
+    [self modifyTextViewsText];
     [self.delegateTaskProperties setTasksComment:_textViewNameOrCommentOrContextText.text];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void) addingContextName
 {
+    [self modifyTextViewsText];
     NSArray* contextNamesThatAlreadyExist = [self.delegateContextAdd getData];
     if ([contextNamesThatAlreadyExist containsObject:_textViewNameOrCommentOrContextText.text]) {
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Такой контекст уже существует" message:@"Введите другое имя контектса" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Такой контекст уже существует" message:@"Введите другое имя контекста" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
         return;
     } 
     [self.delegateContextAdd setContextName:_textViewNameOrCommentOrContextText.text];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)renamingProject
+{
+    [self modifyTextViewsText];
+    [self.delegateProjectProperties setProjectsName:_textViewNameOrCommentOrContextText.text];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -124,49 +135,47 @@
     if (self.isAddingTaskName || self.isAddingProjectName) {
         [[NSNotificationCenter defaultCenter]postNotificationName:@"DismissModalController" 
                                                            object:nil];
-    } else if (self.isAddingContextName || self.isAddingTaskComment) {
+    } else if (self.isAddingContextName || self.isAddingTaskComment || self.isRenamingProject) {
         [self.navigationController popViewControllerAnimated:YES];
     }
     
 }
 
--(void)viewDidAppear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
+
     if(self.isAddingTaskName){
         //значит добавляем задание. нужно ввести имя
         self.navigationItem.title = @"Имя задания";
-        UIBarButtonItem* next = [[UIBarButtonItem alloc]initWithTitle:@"Далее" style:UIBarButtonItemStyleDone target:self action:@selector(addingTaskName)];
-        self.navigationItem.rightBarButtonItem = next;
+        _buttonItem = [[UIBarButtonItem alloc]initWithTitle:@"Далее" style:UIBarButtonItemStyleDone target:self action:@selector(addingTaskName)];
     }
     
-     else if(self.isAddingProjectName){
+     else if (self.isAddingProjectName){
         //значит добавляем проект. нужно ввести имя     
         self.navigationItem.title = @"Имя проекта";
-        UIBarButtonItem* next = [[UIBarButtonItem alloc]initWithTitle:@"Сохранить" style:UIBarButtonItemStyleDone target:self action:@selector(addingProjectName)];
-        self.navigationItem.rightBarButtonItem = next;
+        _buttonItem = [[UIBarButtonItem alloc]initWithTitle:@"Сохранить" style:UIBarButtonItemStyleDone target:self action:@selector(addingProjectName)];
     }
-    else if(self.isAddingTaskComment) {
+    else if (self.isAddingTaskComment) {
         //комментарий к заданию
         self.navigationItem.title = @"Комментарий";
-        UIBarButtonItem* save = [[UIBarButtonItem alloc]initWithTitle:@"Сохранить" style:UIBarButtonItemStyleDone target:self action:@selector(addingTaskComment)];
-        self.navigationItem.rightBarButtonItem = save;
+        _buttonItem = [[UIBarButtonItem alloc]initWithTitle:@"Сохранить" style:UIBarButtonItemStyleDone target:self action:@selector(addingTaskComment)];
     }
-    else if(self.isAddingContextName) {
+    else if (self.isAddingContextName) {
         //значит вводим имя контекста
         self.navigationItem.title = @"Имя контекста";
         UIBarButtonItem* save = [[UIBarButtonItem alloc]initWithTitle:@"Сохранить" style:UIBarButtonItemStyleDone target:self action:@selector(addingContextName)];
-        self.navigationItem.rightBarButtonItem = save;
+    } else if (self.isRenamingProject) {
+        self.navigationItem.title = @"Имя проекта";
+        _buttonItem = [[UIBarButtonItem alloc]initWithTitle:@"Сохранить" style:UIBarButtonItemStyleDone target:self action:@selector(renamingProject)];
     }
-    
+    self.navigationItem.rightBarButtonItem = _buttonItem;
     
     UIBarButtonItem* cancel = [[UIBarButtonItem alloc]initWithTitle:@"Отмена" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
     self.navigationItem.leftBarButtonItem = cancel;
     self.navigationItem.rightBarButtonItem.enabled = NO; //сначала нужно будет ввести имя
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 }
-
-
 
 
 - (void)viewDidLoad

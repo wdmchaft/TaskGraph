@@ -16,6 +16,8 @@
 		179885CF154E6EAA00AA3CC1 /* family_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885C9154E6EAA00AA3CC1 /* family_30x30.png */; };
 		179885D2154E73E500AA3CC1 /* all_tasks_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885D1154E73E500AA3CC1 /* all_tasks_30x30.png */; };
 		179885D4154E746800AA3CC1 /* focused_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885D3154E746800AA3CC1 /* focused_30x30.png */; };
+		179885D7154E82A100AA3CC1 /* TasksWithContextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 179885D6154E82A100AA3CC1 /* TasksWithContextViewController.m */; };
+		179885DD154E935500AA3CC1 /* settings_25x25.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885DB154E935500AA3CC1 /* settings_25x25.png */; };
 		17BBB66A152512DF00184F8B /* NMTGTaskLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB669152512DF00184F8B /* NMTGTaskLocation.m */; };
 		17BBB66D152512DF00184F8B /* NMTeamProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB66C152512DF00184F8B /* NMTeamProfile.m */; };
 		17BBB670152512DF00184F8B /* NMTGTaskPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB66F152512DF00184F8B /* NMTGTaskPhone.m */; };
@@ -104,6 +106,9 @@
 		179885C9154E6EAA00AA3CC1 /* family_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = family_30x30.png; sourceTree = "<group>"; };
 		179885D1154E73E500AA3CC1 /* all_tasks_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = all_tasks_30x30.png; sourceTree = "<group>"; };
 		179885D3154E746800AA3CC1 /* focused_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = focused_30x30.png; sourceTree = "<group>"; };
+		179885D5154E82A100AA3CC1 /* TasksWithContextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TasksWithContextViewController.h; sourceTree = "<group>"; };
+		179885D6154E82A100AA3CC1 /* TasksWithContextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TasksWithContextViewController.m; sourceTree = "<group>"; };
+		179885DB154E935500AA3CC1 /* settings_25x25.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_25x25.png; sourceTree = "<group>"; };
 		17BBB668152512DF00184F8B /* NMTGTaskLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskLocation.h; sourceTree = "<group>"; };
 		17BBB669152512DF00184F8B /* NMTGTaskLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskLocation.m; sourceTree = "<group>"; };
 		17BBB66B152512DF00184F8B /* NMTeamProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTeamProfile.h; sourceTree = "<group>"; };
@@ -250,6 +255,8 @@
 				17E30ABE152D8733007414A5 /* FocusedViewController.m */,
 				178D47DB151F2F04004F0734 /* TaskViewController.h */,
 				178D47DC151F2F04004F0734 /* TaskViewController.m */,
+				179885D5154E82A100AA3CC1 /* TasksWithContextViewController.h */,
+				179885D6154E82A100AA3CC1 /* TasksWithContextViewController.m */,
 			);
 			name = ProjectsViewControllers;
 			sourceTree = "<group>";
@@ -526,6 +533,7 @@
 		9C98B62314FD4A7900A4C6F0 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				179885DB154E935500AA3CC1 /* settings_25x25.png */,
 				179885D3154E746800AA3CC1 /* focused_30x30.png */,
 				179885D1154E73E500AA3CC1 /* all_tasks_30x30.png */,
 				179885C5154E6EAA00AA3CC1 /* context_nil_30x30.png */,
@@ -638,6 +646,7 @@
 				179885CF154E6EAA00AA3CC1 /* family_30x30.png in Resources */,
 				179885D2154E73E500AA3CC1 /* all_tasks_30x30.png in Resources */,
 				179885D4154E746800AA3CC1 /* focused_30x30.png in Resources */,
+				179885DD154E935500AA3CC1 /* settings_25x25.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -687,6 +696,7 @@
 				17C3E10A154A456000B51CF2 /* NMTGProject.m in Sources */,
 				17C3E10D154A456000B51CF2 /* NMTGAbstract.m in Sources */,
 				17C3E110154B238700B51CF2 /* NMTGContext.m in Sources */,
+				179885D7154E82A100AA3CC1 /* TasksWithContextViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,11 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TaskViewController.h"
 @class NMTGProject;
 
-@interface ProjectsViewController : UITableViewController{
-    NSArray* _fetchedProjects;
+@interface ProjectsViewController : UITableViewController<SetProjectsProperties>{
+    NSArray* _tableDataSource;
     NSManagedObjectContext* _context;
+    NMTGProject* _selectedProject;
+    BOOL _shouldPushEmidiately;
 }
 
+@property(nonatomic,retain) NMTGProject* selectedProject;
+@property(nonatomic,      ) BOOL shouldPushEmidiately;
+
+-(void)addNewProject:(NMTGProject*) newProject;
+-(void)reloadData;
+-(void)ProjectAddViewControllerDidAddProject;
 @end

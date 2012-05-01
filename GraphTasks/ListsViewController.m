@@ -11,6 +11,7 @@
 #import "FocusedViewController.h"
 #import "NMTGTask.h"
 #import "NMTGProject.h"
+#import "TasksWithContextViewController.h"
 
 #define TITLE_REGULAR @"Обычные"
 #define TITLE_CONTEXTED @"С контекстом"
@@ -59,10 +60,10 @@
     [request setEntity:entity];
     NSArray* contextsUserMade = [context executeFetchRequest:request error:nil];
     
-    NSMutableArray* allContexts = [NSMutableArray arrayWithObjects:@"Дом", @"Работа", @"Семья", nil];
+    NSMutableArray* allContexts = [NSMutableArray arrayWithObjects:@"Дом", @"Работа", @"Семья", @"", nil]; //пустая строка - для пустого контекста. В tableViewCell будет написано (без контекста)
     [allContexts addObjectsFromArray:contextsUserMade];
     
-    _tableData = [NSDictionary dictionaryWithObjectsAndKeys:regularTasks,TITLE_REGULAR, allContexts, TITLE_CONTEXTED , nil];
+    _tableDataSource = [NSDictionary dictionaryWithObjectsAndKeys:regularTasks,TITLE_REGULAR, allContexts, TITLE_CONTEXTED , nil];
     [self.tableView reloadData];
 }
 
@@ -76,14 +77,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[_tableData allKeys]count];
+    return [[_tableDataSource allKeys]count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray* allKeys = [_tableData allKeys];
+    NSArray* allKeys = [_tableDataSource allKeys];
     NSString* particularKey = [allKeys objectAtIndex:section];
-    return [[_tableData objectForKey:particularKey]count];
+    return [[_tableDataSource objectForKey:particularKey]count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -92,9 +93,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     
-    NSArray* allKeys = [_tableData allKeys];
+    NSArray* allKeys = [_tableDataSource allKeys];
     NSString* particularKey = [allKeys objectAtIndex:indexPath.section];
-    NSArray* array = [_tableData objectForKey:particularKey];
+    NSArray* array = [_tableDataSource objectForKey:particularKey];
     switch (indexPath.section) {
         case 0: //иконки и лэйблы для ВСЕ и В ФОКУСЕ
         {
@@ -113,7 +114,7 @@
         }
         case 1: //иконки и лэйблы для списков с контекстом
         {
-            if (indexPath.row >=3) cell.textLabel.text = [[array objectAtIndex:indexPath.row] name];
+            if (indexPath.row >=4) cell.textLabel.text = [[array objectAtIndex:indexPath.row] name];
             else cell.textLabel.text = [array objectAtIndex:indexPath.row];
             switch (indexPath.row) {
                 case 0:
@@ -124,6 +125,10 @@
                     break;
                 case 2:
                     cell.imageView.image = [UIImage imageNamed:@"family_30x30.png"];      
+                    break;
+                case 3:
+                    cell.imageView.image = [UIImage imageNamed:@"context_nil_30x30.png"];
+                    cell.textLabel.text = @"(Без контекста)";
                     break;
                 default:
                     cell.imageView.image = [UIImage imageNamed:@"context_30x30.png"];                    
@@ -181,21 +186,51 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if((indexPath.section==0)&&(indexPath.row==0)){
-        ProjectsViewController* pvc = [[ProjectsViewController alloc]init];
-        [pvc setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"Projects" image:nil tag:0]];
-        
-        UIViewController* VASILENKO_VIEW_CONTROLLER = [UIViewController new];
-        [VASILENKO_VIEW_CONTROLLER setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"VASILENKO" image:nil tag:0]];
-        
-        UITabBarController* tvc = [[UITabBarController alloc]init];
-        [tvc setViewControllers:[NSArray arrayWithObjects:pvc, VASILENKO_VIEW_CONTROLLER, nil]];
-        [self.navigationController pushViewController:tvc animated:YES];
+    switch (indexPath.section) {
+        case 0: //тут ВСЕ и В ФОКУСЕ
+        {
+            switch (indexPath.row) {
+                case 0: //ВСЕ
+                {
+                    ProjectsViewController* pvc = [[ProjectsViewController alloc]init];
+                    [pvc setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"Projects" image:nil tag:0]];
+                    
+                    UIViewController* VASILENKO_VIEW_CONTROLLER = [UIViewController new];
+                    [VASILENKO_VIEW_CONTROLLER setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"VASILENKO" image:nil tag:0]];
+                    
+                    UITabBarController* tvc = [[UITabBarController alloc]init];
+                    [tvc setViewControllers:[NSArray arrayWithObjects:pvc, VASILENKO_VIEW_CONTROLLER, nil]];
+                    [self.navigationController pushViewController:tvc animated:YES];
+                    break;
+                }
+                case 1: //В ФОКУСЕ
+                {
+                    FocusedViewController* vc = [[FocusedViewController alloc]initWithStyle:UITableViewStylePlain];
+                    [self.navigationController pushViewController:vc animated:YES];
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+        }
+        case 1: //тут список контекстов
+        {
+            NSArray* allContexts = [_tableDataSource objectForKey:TITLE_CONTEXTED];
+            TasksWithContextViewController* taskContextVC = [[TasksWithContextViewController alloc]initWithStyle:UITableViewStylePlain];
+            if (indexPath.row >= 4) {
+                taskContextVC.contextToFilterTasks = [[allContexts objectAtIndex:indexPath.row]name];
+            } else {
+                taskContextVC.contextToFilterTasks = [allContexts objectAtIndex:indexPath.row];
+            }
+            [self.navigationController pushViewController:taskContextVC animated:YES];
+            break;
+        }
+            
+        default:
+            break;
     }
-    if((indexPath.section==0)&&(indexPath.row==1)){
-        FocusedViewController* vc = [[FocusedViewController alloc]initWithStyle:UITableViewStylePlain];
-        [self.navigationController pushViewController:vc animated:YES];
-    }
+
 }
 
 -(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section

@@ -12,14 +12,10 @@
 #import "AddWhateverViewController.h"
 #import "TextViewViewController.h"
 
-
-@interface ProjectsViewController (internal)
-    -(void)addNewProject:(NMTGProject*) newProject;
-    -(void)reloadData;
-    -(void)ProjectAddViewControllerDidAddProject;
-@end
-
 @implementation ProjectsViewController
+
+@synthesize selectedProject = _selectedProject,
+            shouldPushEmidiately = _shouldPushEmidiately;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -29,7 +25,8 @@
         _context = [[NMTaskGraphManager sharedManager] managedContext];
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ProjectAddViewControllerDidAddProject) name:@"DismissModalController" object:nil];
-        }
+        self.tableView.allowsSelectionDuringEditing = YES;
+    }
     return self;
 }
 
@@ -66,7 +63,7 @@
     [request setPredicate:pred];
     
     NSError* error = nil;
-    _fetchedProjects = [_context executeFetchRequest:request error:&error];
+    _tableDataSource = [_context executeFetchRequest:request error:&error];
     [self.tableView reloadData];
 }
 
@@ -83,7 +80,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_fetchedProjects count];
+    return [_tableDataSource count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -92,7 +89,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    NMTGProject* project = [_fetchedProjects objectAtIndex:indexPath.row]; 
+    NMTGProject* project = [_tableDataSource objectAtIndex:indexPath.row]; 
         
     [[cell textLabel] setText: project.title];
     
@@ -120,7 +117,7 @@
  {
      if (editingStyle == UITableViewCellEditingStyleDelete) {
          // Delete the row from the data source
-         NMTGProject* project = [_fetchedProjects objectAtIndex:indexPath.row];
+         NMTGProject* project = [_tableDataSource objectAtIndex:indexPath.row];
          [_context deleteObject:project];
          
          NSError* eror = nil;
@@ -153,13 +150,20 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (self.tableView.editing == YES){
-        NSLog(@"AAAAAAA");
+    if (self.shouldPushEmidiately == YES) {
+        self.shouldPushEmidiately = NO;
+    }
+    if (self.tableView.isEditing == YES){
+        TextViewViewController* textVC = [TextViewViewController new];
+        textVC.delegateProjectProperties = self;
+        textVC.isRenamingProject = YES;
+        textVC.textViewNameOrComment.text = _selectedProject.title;
+        [self.navigationController pushViewController:textVC animated:YES];
     } else {
-        NMTGProject* selectedProject = [_fetchedProjects objectAtIndex:indexPath.row];
+        _selectedProject = [_tableDataSource objectAtIndex:indexPath.row];
         
         TaskViewController* vc = [[TaskViewController alloc]initWithStyle:UITableViewStylePlain];
-        vc.parentProject = selectedProject;
+        vc.parentProject = _selectedProject;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -169,15 +173,35 @@
 
 
 
--(void)viewDidAppear:(BOOL)animated{
-    [super  viewDidAppear:animated];
+-(void)viewWillAppear:(BOOL)animated{
+    [super  viewWillAppear:animated];
+    [self reloadData];
+//    NSLog(@"self.selectedProject: %@",self.selectedProject);
+//    NSLog(@"self.selectedProject.title: %@", self.selectedProject.title);
+    if (self.shouldPushEmidiately == YES) {
+//        NSArray* allIndexPath = self.tableView.indexPathsForVisibleRows;
+//        for (NSIndexPath* indexPath in allIndexPath) {
+//            if ([_tableDataSource objectAtIndex:indexPath.row] == _selectedProject) {
+//                NSLog(@"SUCCESS");
+//                [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+//                break;
+//            }
+//        }
+        
+        NSLog(@"selected: %@",_selectedProject);
+        NSLog(@"table data: %@", _tableDataSource);
+        
+        int row = [_tableDataSource indexOfObject:_selectedProject];
+        NSLog(@"row: %i",row);
+        [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
+        
+    }
     [self.tabBarController.navigationItem   setTitle:@"Проекты"];
     [self.navigationItem setTitle:@"Projects"];
     
     UIBarButtonItem* addbutton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewProject)];
     
     self.tabBarController.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:self.editButtonItem,addbutton, nil];
-    [self reloadData];
 }
 
 
@@ -201,5 +225,16 @@
     return (interfaceOrientation !=UIInterfaceOrientationPortraitUpsideDown);
 }
 
+#pragma mark - SetNewTasksProperties protocol implementation
+-(void)setProjectsName:(NSString *)name
+{
+    _selectedProject.title = name;
+    NSError* error = nil;
+    if (![_context save:&error]) {
+        NSLog(@"FAILED TO SAVE CONTEXT in TaskVC in setProjectsName:");
+        NSLog(@"%@",error);
+    }
+    [self reloadData];
+}
 
 @end

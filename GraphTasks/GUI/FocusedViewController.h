@@ -10,6 +10,10 @@
 
 @interface FocusedViewController : UITableViewController{
     NSMutableDictionary* _tableDataSource;
+    NSArray* _titles;
+    NSString* _contextToFilterTasks;
 }
+@property(nonatomic,retain) NSString* contextToFilterTasks;
 
+-(void)reloadData;
 @end

@@ -112,6 +112,9 @@
                 break;
             case 3:
                 cell.imageView.image = [UIImage imageNamed:@"context_nil_30x30.png"];
+                if ([self.defaultContextName isEqualToString:@""]) {
+                    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                }
                 break;
             default:
                 break;
@@ -126,7 +129,7 @@
 
     if ([cell.textLabel.text isEqualToString:self.defaultContextName]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    }
+    } 
     return cell;
 }
 
@@ -134,7 +137,6 @@
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Return NO if you do not want the specified item to be editable.
     if (indexPath.section == 0) return NO;
     return YES;
 }

@@ -7,6 +7,7 @@
 //
 
 #import "TaskViewController.h"
+#import "TextViewViewController.h"
 #import "NMTGAbstract.h"
 #import "NMTGTask.h"
 #import "AddWhateverViewController.h"
@@ -20,15 +21,9 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        UIBarButtonItem* addbutton = [ [UIBarButtonItem alloc]
-                 initWithBarButtonSystemItem:UIBarButtonSystemItemAdd 
-                                      target:self 
-                                      action:@selector(addNewProjectOrTask)];
+        _plusOrSettingsButtonItem = [ [UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewProjectOrTask)];
+        self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:self.editButtonItem, _plusOrSettingsButtonItem, nil];
         
-        self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:self.editButtonItem, addbutton, nil];
-    
-    
-    
         _context = [[NMTaskGraphManager sharedManager]managedContext];
         
         [[NSNotificationCenter defaultCenter]
@@ -99,10 +94,6 @@
 
 
 -(void)addNewProjectOrTask{
-//    ProjectOrTaskAddViewController* vc = [[ProjectOrTaskAddViewController alloc]init];
-//    
-//    NMTaskGraphManager* dataManager = [NMTaskGraphManager sharedManager];
-//    vc.parentProject = dataManager.projectFantom;
     AddWhateverViewController* vc = [[AddWhateverViewController alloc]initWithStyle:UITableViewStyleGrouped];
     vc.parentProject = self.parentProject;
     
@@ -110,6 +101,14 @@
     [self presentModalViewController:nvc animated:YES];
 }
 
+-(void)changeCurrentProjectsSettings
+{
+    TextViewViewController* textVC = [[TextViewViewController alloc]init];
+    textVC.delegateProjectProperties = self;
+    textVC.isRenamingProject = YES;
+    textVC.textViewNameOrComment.text = self.parentProject.title;
+    [self.navigationController pushViewController:textVC animated:YES];
+}
 
 -(void) projectOrTaskAddViewControllerDidAddProjectOrTask{
     [self reloadData];
@@ -117,13 +116,24 @@
 }
 
 
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     [self.navigationItem setTitle:self.parentProject.title];
     [self reloadData];
 }
 
 #pragma mark - Table view data source
+
+-(void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+    [super setEditing:editing animated:animated];
+    if (editing == YES) {
+        _plusOrSettingsButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"settings_25x25.png"] style:UIBarStyleDefault target:self action:@selector(changeCurrentProjectsSettings)];
+    } else {
+        _plusOrSettingsButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewProjectOrTask)];
+    } 
+    self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:self.editButtonItem, _plusOrSettingsButtonItem, nil];
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -254,19 +264,6 @@
         
         //блок проверки заверешен ли проект
         NMTGProject* parent_project = [[_fetchedProjectsOrTasks objectAtIndex:indexPath.row] parentProject];
-//        BOOL projectIsDone = NO;
-//        NSSet* subTasks = parent_project.subTasks;
-//        NSArray* subTasksIndexed = subTasks.allObjects;
-//        for(int i=0; i<subTasksIndexed.count; i++){
-//            NMTGTask* task = [subTasksIndexed objectAtIndex:i];
-//            if([task.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
-//                projectIsDone = NO;
-//                break;
-//            } else if (i==subTasksIndexed.count-1) { //если это последняя итерация 
-//                projectIsDone = YES;
-//            }
-//        }
-//        parent_project.done = [NSNumber numberWithBool:projectIsDone];
         parent_project.done = [NSNumber numberWithBool: [self checkProjectIsDone:parent_project]];
 
         error = nil;
@@ -312,4 +309,18 @@
 {
 	return YES;
 }
+
+#pragma mark - SetNewTasksProperties protocol implementation
+-(void)setProjectsName:(NSString *)name
+{
+    _parentProject.title = name;
+    NSError* error = nil;
+    if (![_context save:&error]) {
+        NSLog(@"FAILED TO SAVE CONTEXT in TaskVC in setProjectsName:");
+        NSLog(@"%@",error);
+    }
+    [self reloadData];
+}
+
+
 @end

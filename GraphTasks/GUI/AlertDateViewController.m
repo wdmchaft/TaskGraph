@@ -69,8 +69,22 @@
 
 -(void)save
 {
-    (self.isLaunchedForAlertDateFirst) ? ([_delegate setTasksAlertDateFirst:_datePickerAlert.date])
-                                       : ([_delegate setTasksAlertDateSecond:_datePickerAlert.date]);
+    NSDate* date = _datePickerAlert.date;
+    
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit) fromDate:date];
+    
+    [components setYear:0];
+    [components setMonth:0];
+    [components setDay:0];  
+    [components setHour:-1*components.hour];
+    [components setMinute:-1*components.minute];
+    [components setSecond:-1*components.second];
+    
+    NSDate *dateToSet = [calendar dateByAddingComponents:components toDate:date options:0];
+    
+    (self.isLaunchedForAlertDateFirst) ? ([_delegate setTasksAlertDateFirst:dateToSet])
+                                       : ([_delegate setTasksAlertDateSecond:dateToSet]);
     [self.navigationController popViewControllerAnimated:YES];
 }
 

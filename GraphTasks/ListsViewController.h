@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface ListsViewController : UITableViewController{
-    NSDictionary* _tableData;
+    NSDictionary* _tableDataSource;
 }
 -(void)reloadData;
 

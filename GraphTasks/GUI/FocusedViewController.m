@@ -7,6 +7,8 @@
 //
 
 #import "FocusedViewController.h"
+#import "NMTGTask.h"
+#import "ProjectsViewController.h"
 
 /*
 //
@@ -20,17 +22,18 @@
 #define TITLE_THIS_WEEK @"На этой неделе"
 #define TITLE_THIS_MONTH @"В этом месяце"
 
-@interface FocusedViewController (internal)
-    -(void)reloadData;
-@end
 
 @implementation FocusedViewController
+
+@synthesize contextToFilterTasks = _contextToFilterTasks;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
         _tableDataSource = [NSMutableDictionary new];
+        _titles = [NSArray arrayWithObjects:TITLE_TODAY, TITLE_THIS_WEEK, TITLE_THIS_MONTH, TITLE_OVERDUE, nil];
+        _contextToFilterTasks = nil;
     }
     return self;
 }
@@ -71,15 +74,14 @@
     
     NSDate* endDate = [calendar dateByAddingComponents:components toDate:startDate options:0];
     //получили дату отличающуюся от предыдущей на 1 день
-    
-//NSLog(@"startdate: %@",startDate);
-//NSLog(@"enddate: %@",endDate);
+    NSLog(@"start: %@ , end: %@",startDate,endDate);
     
     NSPredicate* predicate = [NSPredicate predicateWithFormat:
       @"(((alertDate_first > %@) && (alertDate_first < %@)) || ((alertDate_second > %@) && (alertDate_second < %@)))",startDate,endDate,startDate,endDate];
     [request setPredicate:predicate];
+
     NSArray* todayTasks = [context executeFetchRequest:request error:nil];
-    NSLog(@"today count:%i", todayTasks.count);
+    NSLog(@"today count: %i", todayTasks.count);
     [_tableDataSource setObject:todayTasks forKey:TITLE_TODAY];
 
     //_________________________________________________________________________________________
@@ -92,12 +94,10 @@
     [components setSecond:0];
     
     endDate = [calendar dateByAddingComponents:components toDate:startDate options:0];
-    
-    //получили дату "завтра" и через 7 дней после сегодня
-//NSLog(@"startdate '7': %@",startDate);
-//NSLog(@"enddate '7': %@",endDate);
+    //получили дату через 7 дней после сегодня
     
     NSMutableArray* weekTasks = [NSMutableArray arrayWithArray: [context executeFetchRequest:request error:nil]];
+    NSLog(@"week count: %i",weekTasks.count);
     NSMutableArray* weekTasksWithoutTodayTasks = [NSMutableArray arrayWithArray:weekTasks];
     for(NMTGAbstract* task in weekTasks){
         if([todayTasks containsObject:task]){ [weekTasksWithoutTodayTasks removeObject:task]; }
@@ -116,6 +116,7 @@
     endDate = [calendar dateByAddingComponents:components toDate:startDate options:0];
     NSMutableArray* monthTasks = [NSMutableArray arrayWithArray:[context executeFetchRequest:request error:nil]];
     NSMutableArray* monthTasksWithoutTodayAndWeekTasks = [NSMutableArray arrayWithArray: monthTasks];
+    NSLog(@"monthTasks count: %i", monthTasks.count);
     for(NMTGAbstract* task in monthTasks){
         if([todayTasks containsObject:task]){ 
             [monthTasksWithoutTodayAndWeekTasks removeObject:task]; 
@@ -138,9 +139,9 @@
     // e.g. self.myOutlet = nil;
 }
 
--(void)viewDidAppear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
     self.navigationItem.title = @"Текущие";
     [self reloadData];
 }
@@ -185,21 +186,31 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+    NMTGTask* aTask;
     switch (indexPath.section) {
         case 0:
-            cell.textLabel.text = [[[_tableDataSource objectForKey:TITLE_TODAY] objectAtIndex:indexPath.row] title];
+            aTask = [[_tableDataSource objectForKey:TITLE_TODAY] objectAtIndex:indexPath.row];
+            cell.textLabel.text = [aTask title];
             break;
         case 1:
-            cell.textLabel.text = [[[_tableDataSource objectForKey:TITLE_THIS_WEEK] objectAtIndex:indexPath.row] title];
+            aTask = [[_tableDataSource objectForKey:TITLE_THIS_WEEK] objectAtIndex:indexPath.row];
+            cell.textLabel.text = [aTask title];
             break;
         case 2:
-            cell.textLabel.text = [[[_tableDataSource objectForKey:TITLE_THIS_MONTH] objectAtIndex:indexPath.row] title];
+            aTask = [[_tableDataSource objectForKey:TITLE_THIS_MONTH] objectAtIndex:indexPath.row];
+            cell.textLabel.text = [aTask title];
             break;
         case 3:
-            cell.textLabel.text = [[[_tableDataSource objectForKey:TITLE_OVERDUE] objectAtIndex:indexPath.row] title];
+            aTask = [[_tableDataSource objectForKey:TITLE_OVERDUE] objectAtIndex:indexPath.row];
+            cell.textLabel.text = [aTask title];
             break;            
         default:
             break;
+    }
+    if ([[aTask done] isEqualToNumber:[NSNumber numberWithBool:NO]]){
+        cell.imageView.image = [UIImage imageNamed:@"task_30x30.png"];
+    } else {
+        cell.imageView.image = [UIImage imageNamed:@"task_30x30_checked.png"];
     }
     
     return cell;
@@ -248,7 +259,25 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    
+    NMTGTask* selectedTask = [[_tableDataSource objectForKey:[_titles objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]; 
+    NMTGProject* project = selectedTask.parentProject;
+    for(;;){
+        if (project.parentProject != nil) {
+            project = project.parentProject;
+        } else {
+            break;
+        }
+    }
+    NSLog(@"project: %@",project);
+    ProjectsViewController* projectsVC = [[ProjectsViewController alloc]initWithStyle:UITableViewStylePlain];
+    
+//    NSLog(@"projectsVC.selectedProject DO    :%@",projectsVC.selectedProject);    
+    projectsVC.selectedProject = project;
+//    NSLog(@"projectsVC.selectedProject posle :%@",projectsVC.selectedProject);
+    
+    projectsVC.shouldPushEmidiately = YES;
+    [self.navigationController pushViewController:projectsVC animated:YES];
 }
 
 -(NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section

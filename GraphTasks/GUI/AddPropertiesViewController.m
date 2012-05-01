@@ -49,23 +49,20 @@
 {
     [super viewWillAppear:animated];
     
-    if(self.taskToEdit == nil){
+    if(self.taskToEdit == nil && self->_beganEditting == NO){
         _taskAlertDateFirst = [NSDate dateWithTimeIntervalSinceNow:0];
         _taskAlertDateSecond = [NSDate dateWithTimeIntervalSinceNow:3*86400];
         _taskComment = @"";
         _taskContext = @"";
     } 
-    if((self.taskToEdit != nil)&&(self->_beganEditting == NO)){
+    if(self.taskToEdit != nil && self->_beganEditting == NO){
         _taskAlertDateFirst = self.taskToEdit.alertDate_first;
         _taskAlertDateSecond = self.taskToEdit.alertDate_second;
         _taskComment = self.taskToEdit.comment;
         _taskContext = self.taskToEdit.context;
         _taskName = self.taskToEdit.title;
     }
-    NSLog(@"AddPropsVC: name: %@",_taskName);
-    NSLog(@"AddPropsVC: alertDate1: %@",_taskAlertDateFirst);
-    NSLog(@"AddPropsVC: alertDate2: %@",_taskAlertDateSecond);
-    NSLog(@"AddPropsVC: comment: %@",_taskComment);
+    self->_beganEditting = YES;
 
 //                NSDateFormatter* df = ...; [df setDateStyle:]
 //                    NSDateFormatterNoStyle   ==   
@@ -196,7 +193,8 @@
         {
             cell.detailTextLabel.text = (indexPath.row == 0) 
                             ? (_taskComment) 
-                            : (_taskContext);
+                            : ([_taskContext isEqualToString:@""]) ? ( @"(Без контекста)")
+                                                                   : (_taskContext);
             break;
         }
         default:

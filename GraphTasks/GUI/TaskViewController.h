@@ -9,10 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "NMTGProject.h"
 
-@interface TaskViewController : UITableViewController{
+@protocol SetProjectsProperties <NSObject>
+
+-(void) setProjectsName: (NSString*)name;
+
+@end
+
+@interface TaskViewController : UITableViewController<SetProjectsProperties>{
     NSManagedObjectContext* _context;
     NSMutableArray* _fetchedProjectsOrTasks;
     NMTGProject* _parentProject;
+    UIBarButtonItem* _plusOrSettingsButtonItem;
 }
 
 @property(nonatomic,retain)NMTGProject* parentProject;
@@ -21,6 +28,7 @@
 -(void) reloadData;
 -(void) projectOrTaskAddViewControllerDidAddProjectOrTask;
 -(BOOL) checkProjectIsDone:(NMTGProject*) aProject;
+-(void) changeParentProjectsSettings;
   
 @end
 
