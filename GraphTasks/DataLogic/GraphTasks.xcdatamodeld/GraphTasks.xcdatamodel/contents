@@ -5,6 +5,7 @@
         <attribute name="alertDate_second" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="comment" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="context" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="done" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="finishDate" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
@@ -36,6 +37,7 @@
     <entity name="NMTGTaskSMS" representedClassName="NMTGTaskSMS" parentEntity="NMTGTask" syncable="YES"/>
     <elements>
         <element name="NMTGAbstract" positionX="-3125" positionY="-1881" width="128" height="150"/>
+        <element name="NMTGContext" positionX="-2655" positionY="-1683" width="128" height="60"/>
         <element name="NMTGProfile" positionX="-2916" positionY="-1653" width="128" height="150"/>
         <element name="NMTGProject" positionX="-3123" positionY="-2079" width="128" height="90"/>
         <element name="NMTGTask" positionX="-2745" positionY="-1860" width="128" height="60"/>
@@ -43,6 +45,5 @@
         <element name="NMTGTaskMail" positionX="-2477" positionY="-1656" width="128" height="45"/>
         <element name="NMTGTaskPhone" positionX="-2592" positionY="-1566" width="128" height="45"/>
         <element name="NMTGTaskSMS" positionX="-2477" positionY="-1764" width="128" height="45"/>
-        <element name="NMTGContext" positionX="-2655" positionY="-1683" width="128" height="60"/>
     </elements>
 </model>

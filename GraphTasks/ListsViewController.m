@@ -11,7 +11,7 @@
 #import "FocusedAndContextedViewController.h"
 #import "NMTGTask.h"
 #import "NMTGProject.h"
-#import "TasksWithContextViewController.h"
+
 
 #define TITLE_REGULAR @"Обычные"
 #define TITLE_CONTEXTED @"С контекстом"

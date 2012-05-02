@@ -99,6 +99,7 @@
         _newTask.comment = _taskComment;
         _newTask.context = _taskContext;
         _newTask.done = [NSNumber numberWithBool:NO];
+        _newTask.created = [NSDate date];
 
         if(_parentProject == nil){NSLog(@"NILL PARENT PROJ IN ADDPROPERTIES vc");}
         [_parentProject addSubTasksObject:_newTask];
@@ -172,21 +173,21 @@
             cell.detailTextLabel.text = _taskName;
             
             cell.accessoryType = UITableViewCellAccessoryNone;
-            _textFieldName = [[UITextField alloc]init];
-            _textFieldName.frame = CGRectMake(70, 10, 150, 40);
-            _textFieldName.returnKeyType = UIReturnKeyDone;
-            _textFieldName.delegate = self;
-            _textFieldName.clearButtonMode = UITextFieldViewModeNever;
-            [cell.contentView addSubview:_textFieldName];
+//            _textFieldName = [[UITextField alloc]init];
+//            _textFieldName.frame = CGRectMake(70, 10, 150, 40);
+//            _textFieldName.returnKeyType = UIReturnKeyDone;
+//            _textFieldName.delegate = self;
+//            _textFieldName.clearButtonMode = UITextFieldViewModeNever;
+//            [cell.contentView addSubview:_textFieldName];
             break;
         }
         case 1: //даты напоминаний
         {
             NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
-formatter.dateStyle = NSDateFormatterFullStyle;
+            formatter.dateStyle = NSDateFormatterFullStyle;
             cell.detailTextLabel.text = (indexPath.row == 0) 
-? ([formatter stringFromDate: _taskAlertDateFirst]) 
-: ([formatter stringFromDate: _taskAlertDateSecond]);
+                        ? ([formatter stringFromDate: _taskAlertDateFirst]) 
+                        : ([formatter stringFromDate: _taskAlertDateSecond]);
             
 //            ? [NSString stringWithFormat:@"%@",_taskAlertDateFirst]
 //            : [NSString stringWithFormat:@"%@",_taskAlertDateSecond];
@@ -225,21 +226,6 @@ formatter.dateStyle = NSDateFormatterFullStyle;
 }
 
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    NSLog(@"%@",textField.text);
-    if([textField.text length]>0) {
-        _taskName = textField.text;   
-    } 
-    [textField resignFirstResponder];
-    [self.tableView reloadData];
-    return YES;
-}
-
--(void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    textField.text = _taskName;
-}
 
 
 /*
@@ -290,9 +276,12 @@ formatter.dateStyle = NSDateFormatterFullStyle;
     switch (indexPath.section){
         case 0: //появляется клавиатура для ввода имени задания
         {
-            [_textFieldName becomeFirstResponder];
-            [[tableView cellForRowAtIndexPath:indexPath] setEditing:NO];
-            [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO];
+            TextViewViewController* textViewVC = [TextViewViewController new];
+            textViewVC.delegateTaskProperties = self;
+            textViewVC.isRenamingTask = YES;
+            textViewVC.textViewNameOrComment.text = _taskName;
+            [self.navigationController pushViewController:textViewVC animated:YES];
+            
             break;
         }
         case 1: //добавляется дата напоминания

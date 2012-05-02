@@ -18,13 +18,16 @@
     BOOL _isAddingProjectName;
     BOOL _isAddingContextName;
     BOOL _isRenamingProject;
+    BOOL _isRenamingTask;
     
     NMTGProject* _parentProject;
     id<ContextAddDelegate> _delegateContextAdd;
-    id<SetNewTasksProperties> _delegateTaskProperties;
+    id<SetTasksProperties> _delegateTaskProperties;
     id<SetProjectsProperties> _delegateProjectProperties;
     
     UIBarButtonItem* _buttonItem;
+    UILabel* _placeholderLabel;
+    NSString* _placeHolderText;
     
 }
 @property(nonatomic)        BOOL isAddingTaskName;
@@ -32,11 +35,12 @@
 @property(nonatomic)        BOOL isAddingProjectName;
 @property(nonatomic)        BOOL isAddingContextName;
 @property(nonatomic)        BOOL isRenamingProject;
+@property(nonatomic)        BOOL isRenamingTask;
 
 @property(nonatomic,strong) NMTGProject* parentProject;
 @property(nonatomic,retain) UITextView* textViewNameOrComment;
 @property(nonatomic,retain) id<ContextAddDelegate> delegateContextAdd;
-@property(nonatomic,retain) id<SetNewTasksProperties> delegateTaskProperties;
+@property(nonatomic,retain) id<SetTasksProperties> delegateTaskProperties;
 @property(nonatomic,retain) id<SetProjectsProperties> delegateProjectProperties;
 
 -(void)addingProjectName;

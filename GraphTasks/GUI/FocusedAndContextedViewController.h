@@ -10,13 +10,14 @@
 
 @interface FocusedAndContextedViewController : UITableViewController {
     NSMutableDictionary* _tableDataSource;
+    NSMutableDictionary* _tableColorDataSource;
     NSArray* _titles;
     NSString* _contextToFilterTasks;
 }
 @property(nonatomic,retain) NSString* contextToFilterTasks;
 
 -(void)reloadData;
-
+-(BOOL) checkProjectIsDone:(NMTGProject*) aProject;
 
 @end
 

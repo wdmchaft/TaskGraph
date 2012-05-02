@@ -27,6 +27,7 @@
             isAddingProjectName = _isAddingProjectName,
             isAddingContextName = _isAddingContextName,
             isRenamingProject = _isRenamingProject,
+            isRenamingTask = _isRenamingTask,
 
             parentProject = _parentProject,
             textViewNameOrComment = _textViewNameOrCommentOrContextText,
@@ -52,6 +53,7 @@
     return self;
 }
 
+//устранение косяка связанного с появлением "..." при вводе \n в имя проекта или задания
 -(void)modifyTextViewsText
 {
     NSMutableString* string = [NSMutableString stringWithString:_textViewNameOrCommentOrContextText.text];
@@ -63,7 +65,8 @@
 -(void)textViewDidChange:(UITextView *)textView
 {
     if(textView == _textViewNameOrCommentOrContextText){
-        [self.navigationItem.rightBarButtonItem setEnabled:([textView.text length] > 0) ? (YES) :   (NO)];
+        [self.navigationItem.rightBarButtonItem setEnabled:([textView.text length] > 0) ? (YES) : (NO)];
+        [_placeholderLabel setHidden:([textView.text length] > 0) ? (YES) : (NO)];
     }
 }
 
@@ -86,6 +89,7 @@
     _newProject.title =  _textViewNameOrCommentOrContextText.text;
     _newProject.alertDate_first = [NSDate dateWithTimeIntervalSinceNow:7*86400];
     _newProject.done = [NSNumber numberWithBool:NO];
+    _newProject.created = [NSDate date];
     
     if(self.parentProject == nil) NSLog(@"ДОБАВЛЯЕМ ПРОЕКТ НА ВЕРХНИЙ УРОВЕНЬ");
     if(self.parentProject != nil){
@@ -130,12 +134,19 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+-(void)renamingTask
+{
+    [self modifyTextViewsText];
+    [self.delegateTaskProperties setTasksName:_textViewNameOrCommentOrContextText.text];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 -(void)cancel
 {
     if (self.isAddingTaskName || self.isAddingProjectName) {
         [[NSNotificationCenter defaultCenter]postNotificationName:@"DismissModalController" 
                                                            object:nil];
-    } else if (self.isAddingContextName || self.isAddingTaskComment || self.isRenamingProject) {
+    } else if (self.isAddingContextName || self.isAddingTaskComment || self.isRenamingProject || self.isRenamingTask) {
         [self.navigationController popViewControllerAnimated:YES];
     }
     
@@ -144,7 +155,16 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    _placeHolderText = _textViewNameOrCommentOrContextText.text;
 
+    _placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, _textViewNameOrCommentOrContextText.frame.size.width - 20.0, 34.0)];
+    [_placeholderLabel setText:_placeHolderText];
+    [_placeholderLabel setBackgroundColor:[UIColor clearColor]];
+    [_placeholderLabel setTextColor:[UIColor lightGrayColor]];
+    [_placeholderLabel setFont:_textViewNameOrCommentOrContextText.font];
+    [_placeholderLabel setHidden:YES];
+    [_textViewNameOrCommentOrContextText addSubview:_placeholderLabel];
+    
     if(self.isAddingTaskName){
         //значит добавляем задание. нужно ввести имя
         self.navigationItem.title = @"Имя задания";
@@ -164,16 +184,19 @@
     else if (self.isAddingContextName) {
         //значит вводим имя контекста
         self.navigationItem.title = @"Имя контекста";
-        UIBarButtonItem* save = [[UIBarButtonItem alloc]initWithTitle:@"Сохранить" style:UIBarButtonItemStyleDone target:self action:@selector(addingContextName)];
+        _buttonItem = [[UIBarButtonItem alloc]initWithTitle:@"Сохранить" style:UIBarButtonItemStyleDone target:self action:@selector(addingContextName)];
     } else if (self.isRenamingProject) {
         self.navigationItem.title = @"Имя проекта";
         _buttonItem = [[UIBarButtonItem alloc]initWithTitle:@"Сохранить" style:UIBarButtonItemStyleDone target:self action:@selector(renamingProject)];
+    } else if (self.isRenamingTask) {
+        self.navigationItem.title = @"Имя задания";
+        _buttonItem = [[UIBarButtonItem alloc]initWithTitle:@"Сохранить" style:UIBarButtonItemStyleDone target:self action:@selector(renamingTask)];
     }
     self.navigationItem.rightBarButtonItem = _buttonItem;
     
     UIBarButtonItem* cancel = [[UIBarButtonItem alloc]initWithTitle:@"Отмена" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
     self.navigationItem.leftBarButtonItem = cancel;
-    self.navigationItem.rightBarButtonItem.enabled = NO; //сначала нужно будет ввести имя
+    self.navigationItem.rightBarButtonItem.enabled = (self.isRenamingTask || self.isRenamingProject) ? YES : NO; //сначала нужно будет ввести имя
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
 }
 

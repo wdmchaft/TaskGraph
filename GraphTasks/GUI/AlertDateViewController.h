@@ -13,12 +13,12 @@
 {
     UIDatePicker* _datePickerAlert;
     NSDate* _defaultDate;
-    id<SetNewTasksProperties> _delegate;
+    id<SetTasksProperties> _delegate;
     
     BOOL _isLaunchedForAlertDateFirst;
 }
 
-@property(nonatomic,retain) id<SetNewTasksProperties> delegate;
+@property(nonatomic,retain) id<SetTasksProperties> delegate;
 @property(nonatomic       ) BOOL isLaunchedForAlertDateFirst;
 @property(nonatomic,retain) NSDate* defaultDate;
 

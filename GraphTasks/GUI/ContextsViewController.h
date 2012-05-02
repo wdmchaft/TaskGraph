@@ -18,9 +18,9 @@
     NSMutableDictionary* _tableDataSource;
     NSInteger _numberOfAddedContexts;
     NSString* _defaultContextName;
-    id<SetNewTasksProperties> _delegate;
+    id<SetTasksProperties> _delegate;
 }
-@property(nonatomic,retain) id<SetNewTasksProperties> delegate;
+@property(nonatomic,retain) id<SetTasksProperties> delegate;
 @property(nonatomic,retain) NSString* defaultContextName;
 
 -(void) addContext;

@@ -72,16 +72,16 @@
     NSDate* date = _datePickerAlert.date;
     
 
-    NSTimeInterval secondssTilNow= [date timeIntervalSinceDate:[NSDate dateWithTimeIntervalSince1970:0]];
-    int daysTilNow = (int)secondssTilNow/86400;
-
-    NSDate* dateToSet = [NSDate dateWithTimeIntervalSince1970:daysTilNow*86400.0];
+//    NSTimeInterval secondssTilNow= [date timeIntervalSinceDate:[NSDate dateWithTimeIntervalSince1970:0]];
+//    int daysTilNow = (int)secondssTilNow/86400;
+//
+//    NSDate* dateToSet = [NSDate dateWithTimeIntervalSince1970:daysTilNow*86400.0];
+//    
+//    NSLog(@"date:      %@",date);
+//    NSLog(@"dateToSet: %@",dateToSet);
     
-    NSLog(@"date:      %@",date);
-    NSLog(@"dateToSet: %@",dateToSet);
-    
-    (self.isLaunchedForAlertDateFirst) ? ([_delegate setTasksAlertDateFirst:dateToSet])
-    : ([_delegate setTasksAlertDateSecond:dateToSet]);
+    (self.isLaunchedForAlertDateFirst) ? ([_delegate setTasksAlertDateFirst:/*dateToSet*/date])
+                                       : ([_delegate setTasksAlertDateSecond:/*dateToSet*/date]);
     [self.navigationController popViewControllerAnimated:YES];
 }
 

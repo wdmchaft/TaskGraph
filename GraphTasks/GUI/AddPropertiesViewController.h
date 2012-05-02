@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol SetNewTasksProperties <NSObject>
+@protocol SetTasksProperties <NSObject>
 -(void) setTasksName: (NSString*)name;
 -(void) setTasksAlertDateFirst: (NSDate*)date;
 -(void) setTasksAlertDateSecond: (NSDate*)date;
@@ -18,9 +18,8 @@
 
 
 
-@interface AddPropertiesViewController : UITableViewController<UITextFieldDelegate, SetNewTasksProperties>{
+@interface AddPropertiesViewController : UITableViewController<SetTasksProperties>{
     NSDictionary* _tableDataSourse;
-    UITextField* _textFieldName;
     NSManagedObjectContext* _context;
     NMTGProject* _parentProject;
     NMTGTask* _taskToEdit; 
@@ -32,6 +31,7 @@
     NSDate*     _taskAlertDateSecond;
     NSString*   _taskComment;
     NSString*   _taskContext;
+    NSDate*     _creationOrRenamingDate;
 }
 @property(nonatomic,retain) NMTGProject* parentProject;
 @property(nonatomic,retain) NMTGTask* taskToEdit;
