@@ -13,10 +13,13 @@
     NSMutableDictionary* _tableColorDataSource;
     NSArray* _titles;
     NSString* _contextToFilterTasks;
+    UIBarButtonItem* _showAllOrShowUnDoneOnly;
+    BOOL _shouldShowOnlyUnDone;
 }
 @property(nonatomic,retain) NSString* contextToFilterTasks;
 
--(void)reloadData;
+-(void) reloadData;
+-(void) showAllOrShowUnDoneOnlyClicked;
 -(BOOL) checkProjectIsDone:(NMTGProject*) aProject;
 
 @end

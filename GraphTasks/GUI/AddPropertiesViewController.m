@@ -196,7 +196,8 @@
         case 2: //комментарий и контекст
         {
             cell.detailTextLabel.text = (indexPath.row == 0) 
-                            ? (_taskComment) 
+                            ? /*([_taskComment isEqualToString:@""]) ? ( @"(Без комментария)")
+                                                                   :*/ (_taskComment)
                             : ([_taskContext isEqualToString:@""]) ? ( @"(Без контекста)")
                                                                    : (_taskContext);
             break;
@@ -342,7 +343,10 @@
 -(void) setTasksAlertDateFirst: (NSDate*)date
 {
     _taskAlertDateFirst = date;
-    if([_taskAlertDateFirst compare:_taskAlertDateSecond] == NSOrderedDescending){ 
+    
+    NSDate* modified_alert_First = [NSDate dateWithTimeIntervalSince1970:((int)([_taskAlertDateFirst timeIntervalSince1970]/86400)) * (86400.0) + 1];
+    NSDate* modified_alert_Second = [NSDate dateWithTimeIntervalSince1970:((int)([_taskAlertDateSecond timeIntervalSince1970]/86400)) * (86400.0) + 1];
+    if([modified_alert_First compare:modified_alert_Second] == NSOrderedDescending){ 
         //значит 1ое напоминание позже 2ого. смещаем 2ое на два дня вперед с момента нового 1ого 
         _taskAlertDateSecond = [NSDate dateWithTimeInterval:2*86400 sinceDate:_taskAlertDateFirst];
     }
@@ -352,7 +356,10 @@
 -(void) setTasksAlertDateSecond: (NSDate*)date
 {
     _taskAlertDateSecond = date;
-    if([_taskAlertDateFirst compare:_taskAlertDateSecond] == NSOrderedDescending){ 
+    
+    NSDate* modified_alert_First = [NSDate dateWithTimeIntervalSince1970:((int)([_taskAlertDateFirst timeIntervalSince1970]/86400)) * (86400.0)];
+    NSDate* modified_alert_Second = [NSDate dateWithTimeIntervalSince1970:((int)([_taskAlertDateSecond timeIntervalSince1970]/86400)) * (86400.0)];
+    if([modified_alert_First compare:modified_alert_Second] == NSOrderedDescending){ 
         //значит 1ое напоминание позже 2ого. смещаем 1ое на два дня назад с момента нового 2ого 
         _taskAlertDateFirst = [NSDate dateWithTimeInterval:-2*86400 sinceDate:_taskAlertDateSecond]; 
     }

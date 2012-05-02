@@ -12,6 +12,7 @@
 @interface AlertDateViewController : UIViewController<UITabBarDelegate,UITableViewDataSource>
 {
     UIDatePicker* _datePickerAlert;
+    UIButton* _buttonToday;
     NSDate* _defaultDate;
     id<SetTasksProperties> _delegate;
     
@@ -21,5 +22,7 @@
 @property(nonatomic,retain) id<SetTasksProperties> delegate;
 @property(nonatomic       ) BOOL isLaunchedForAlertDateFirst;
 @property(nonatomic,retain) NSDate* defaultDate;
+
+-(void)buttonTodayClicked;
 
 @end

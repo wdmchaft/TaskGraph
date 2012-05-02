@@ -61,27 +61,53 @@
     }
 }
 
--(void)viewDidAppear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
     _datePickerAlert.date = _defaultDate;
+    _buttonToday = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [_buttonToday setFrame:CGRectMake(5, 60, 310, 40)];
+    [_buttonToday setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    
+    
+    NSTimeInterval secsSince1970TilTodayStarted = [[NSDate date] timeIntervalSince1970] / 86400;
+    NSDate* aDate = [NSDate dateWithTimeIntervalSince1970:( (int)secsSince1970TilTodayStarted) * 86400.0];
+    //дата сегодня с нулем часов минут и секунд
+    
+    NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
+    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:3*86400]];
+    [formatter setDateStyle:NSDateFormatterLongStyle];
+    [formatter setTimeStyle:NSDateFormatterNoStyle];
+    [_buttonToday setTitle:[NSString stringWithFormat:@"Установить на: %@ (сегодня)",[formatter stringFromDate:aDate]] forState:UIControlStateNormal];
+    
+    
+    [_buttonToday addTarget:self action:@selector(buttonTodayClicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_buttonToday];
 }
+
+
+-(void)buttonTodayClicked
+{
+    NSTimeInterval secsSince1970TilTodayStarted = [[NSDate date] timeIntervalSince1970] / 86400;
+    _datePickerAlert.date = [NSDate dateWithTimeIntervalSince1970:( (int)secsSince1970TilTodayStarted) * 86400.0];
+}
+
 
 -(void)save
 {
     NSDate* date = _datePickerAlert.date;
     
 
-//    NSTimeInterval secondssTilNow= [date timeIntervalSinceDate:[NSDate dateWithTimeIntervalSince1970:0]];
-//    int daysTilNow = (int)secondssTilNow/86400;
-//
-//    NSDate* dateToSet = [NSDate dateWithTimeIntervalSince1970:daysTilNow*86400.0];
-//    
-//    NSLog(@"date:      %@",date);
-//    NSLog(@"dateToSet: %@",dateToSet);
+    NSTimeInterval secondssTilDate= [date timeIntervalSinceDate:[NSDate dateWithTimeIntervalSince1970:0]];
+    int daysTilDate = (int)secondssTilDate/86400;
+
+    NSDate* dateToSet = [NSDate dateWithTimeIntervalSince1970:daysTilDate*86400.0 + 1];
     
-    (self.isLaunchedForAlertDateFirst) ? ([_delegate setTasksAlertDateFirst:/*dateToSet*/date])
-                                       : ([_delegate setTasksAlertDateSecond:/*dateToSet*/date]);
+    NSLog(@"date:      %@",date);
+    NSLog(@"dateToSet: %@",dateToSet);
+    
+    (self.isLaunchedForAlertDateFirst) ? ([_delegate setTasksAlertDateFirst:dateToSet/*date*/])
+                                       : ([_delegate setTasksAlertDateSecond:dateToSet/*date*/]);
     [self.navigationController popViewControllerAnimated:YES];
 }
 
