@@ -16,11 +16,16 @@ extern  const   NSString*   NMTaskGraphFileName;
     NSManagedObjectContext*         _managedContext;
     NSManagedObjectModel*           _managedModel;
     NSPersistentStoreCoordinator*   _persistenceCoordinator;
+    NSMutableString* _path;   
+    NSMutableArray* _pathComponents;
+
 }
 
 @property(nonatomic, strong) NSManagedObjectModel*           managedModel;
 @property(nonatomic, strong) NSManagedObjectContext*         managedContext;
 @property(nonatomic, strong) NSPersistentStoreCoordinator*   persistenceCoordinator;
+@property(nonatomic, retain) NSMutableString* path;
+@property(nonatomic, retain) NSMutableArray* pathComponents;
 
 +   (NMTaskGraphManager*)   sharedManager;
 -   (void) saveContext;

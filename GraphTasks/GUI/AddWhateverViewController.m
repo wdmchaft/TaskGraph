@@ -37,6 +37,7 @@
             [NSArray arrayWithObjects:@"Позвонить контакту", @"Отправить e-mail контакту", @"Отправить SMS контакту", @"Посетить место", nil];
         _tableData = [NSDictionary dictionaryWithObjectsAndKeys:
             taskTypeNormal,TITLE_NORMAL,taskTypeSpecial,TITLE_SPECIAL,nil];
+        _indexPathOfSelectedCell = [NSIndexPath indexPathForRow:-1 inSection:-1];
     }
     return self;
 }
@@ -49,8 +50,10 @@
     self.navigationItem.leftBarButtonItem = cancel;
 }
 
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    NSLog(@"indexPath: %@", _indexPathOfSelectedCell);
+    [self.tableView reloadData];
 }
 
 -(void)cancel
@@ -87,7 +90,14 @@
     NSArray* cellDataSourse = [_tableData objectForKey:particularKey];
     
     cell.textLabel.text = [cellDataSourse objectAtIndex:indexPath.row];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    BOOL indexPathIsLastSelected = NO;
+    indexPathIsLastSelected = (indexPath.row == _indexPathOfSelectedCell.row)&&
+                              (indexPath.section == _indexPathOfSelectedCell.section);
+//    cell.accessoryType = (indexPath==_indexPathOfSelectedCell) ? UITableViewCellAccessoryCheckmark 
+//    : UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryType = (indexPathIsLastSelected == YES) ? UITableViewCellAccessoryCheckmark 
+                                                          : UITableViewCellAccessoryNone; 
     
     switch (indexPath.section) {
         case 0:
@@ -207,6 +217,8 @@
         (indexPath.row == 0) ? (nameVC.isAddingProjectName = YES) : (nameVC.isAddingTaskName = YES);
         [self.navigationController pushViewController:nameVC animated:YES];
     }
+    _indexPathOfSelectedCell = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
+    NSLog(@"%@",_indexPathOfSelectedCell);
 }
 
 

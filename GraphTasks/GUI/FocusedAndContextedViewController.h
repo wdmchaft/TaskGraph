@@ -21,6 +21,7 @@
 -(void) reloadData;
 -(void) showAllOrShowUnDoneOnlyClicked;
 -(BOOL) checkProjectIsDone:(NMTGProject*) aProject;
+-(void) hideModalController;
 
 @end
 

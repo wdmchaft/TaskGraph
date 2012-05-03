@@ -11,6 +11,7 @@
 @interface AddWhateverViewController : UITableViewController{
     NSDictionary* _tableData;
     NMTGProject* _parentProject;
+    NSIndexPath* _indexPathOfSelectedCell;
 }
 @property(nonatomic,retain) NMTGProject* parentProject;
 

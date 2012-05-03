@@ -53,6 +53,7 @@
     CGSize pickerSize = [_datePickerAlert sizeThatFits:CGSizeZero];
     _datePickerAlert.frame = CGRectMake(0, 200, pickerSize.width, pickerSize.height);
     [self.view addSubview: _datePickerAlert];
+    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     
     if(self.isLaunchedForAlertDateFirst){
         [self.navigationItem setTitle:@"Первое напоминание"];
@@ -66,19 +67,19 @@
     [super viewWillAppear:animated];
     _datePickerAlert.date = _defaultDate;
     _buttonToday = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [_buttonToday setFrame:CGRectMake(5, 60, 310, 40)];
+    [_buttonToday setFrame:CGRectMake(5, 70, 310, 40)];
     [_buttonToday setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     
     
-    NSTimeInterval secsSince1970TilTodayStarted = [[NSDate date] timeIntervalSince1970] / 86400;
-    NSDate* aDate = [NSDate dateWithTimeIntervalSince1970:( (int)secsSince1970TilTodayStarted) * 86400.0];
-    //дата сегодня с нулем часов минут и секунд
+//    NSTimeInterval secsSince1970TilTodayStarted = [[NSDate date] timeIntervalSince1970] / 86400;
+//    NSDate* aDate = [NSDate dateWithTimeIntervalSince1970:( (int)secsSince1970TilTodayStarted) * 86400.0];
+//    //дата сегодня с нулем часов минут и секунд
     
     NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
-    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:3*86400]];
+//    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:3*86400]];
     [formatter setDateStyle:NSDateFormatterLongStyle];
     [formatter setTimeStyle:NSDateFormatterNoStyle];
-    [_buttonToday setTitle:[NSString stringWithFormat:@"Установить на: %@ (сегодня)",[formatter stringFromDate:aDate]] forState:UIControlStateNormal];
+    [_buttonToday setTitle:[NSString stringWithFormat:@"Установить на: %@ (сегодня)",[formatter stringFromDate:/*aDate*/[NSDate date]]] forState:UIControlStateNormal];
     
     
     [_buttonToday addTarget:self action:@selector(buttonTodayClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -88,8 +89,7 @@
 
 -(void)buttonTodayClicked
 {
-    NSTimeInterval secsSince1970TilTodayStarted = [[NSDate date] timeIntervalSince1970] / 86400;
-    _datePickerAlert.date = [NSDate dateWithTimeIntervalSince1970:( (int)secsSince1970TilTodayStarted) * 86400.0];
+    _datePickerAlert.date = [NSDate date];
 }
 
 
@@ -101,13 +101,13 @@
     NSTimeInterval secondssTilDate= [date timeIntervalSinceDate:[NSDate dateWithTimeIntervalSince1970:0]];
     int daysTilDate = (int)secondssTilDate/86400;
 
-    NSDate* dateToSet = [NSDate dateWithTimeIntervalSince1970:daysTilDate*86400.0 + 1];
+    NSDate* dateToSet = [NSDate dateWithTimeIntervalSince1970:daysTilDate*86400.0 + 43200.0];
     
     NSLog(@"date:      %@",date);
     NSLog(@"dateToSet: %@",dateToSet);
     
-    (self.isLaunchedForAlertDateFirst) ? ([_delegate setTasksAlertDateFirst:dateToSet/*date*/])
-                                       : ([_delegate setTasksAlertDateSecond:dateToSet/*date*/]);
+    (self.isLaunchedForAlertDateFirst) ? ([_delegate setTasksAlertDateFirst:/*dateToSet*/date])
+                                       : ([_delegate setTasksAlertDateSecond:/*dateToSet*/date]);
     [self.navigationController popViewControllerAnimated:YES];
 }
 

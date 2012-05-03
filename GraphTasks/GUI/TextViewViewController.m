@@ -8,7 +8,7 @@
 
 #import "TextViewViewController.h"
 #import "AddPropertiesViewController.h"
-
+#import "NMTGTask.h"
 #import <QuartzCore/QuartzCore.h>
 
 /*
@@ -49,6 +49,8 @@
         _textViewNameOrCommentOrContextText.layer.cornerRadius = 15.0;
         _textViewNameOrCommentOrContextText.clipsToBounds = YES;
         [self.view addSubview:_textViewNameOrCommentOrContextText];
+        
+        _namesDataSource = [NSMutableDictionary new];
     }
     return self;
 }
@@ -69,20 +71,52 @@
         [_placeholderLabel setHidden:([textView.text length] > 0) ? (YES) : (NO)];
     }
 }
+-(void)alertShow
+{
+    NSString* str;
+    if (self.isRenamingTask || self.isAddingTaskName) {
+        str = @"В данной папке уже есть задание с таким именем";
+    }
+    if (self.isRenamingProject || self.isAddingProjectName) {
+        str = @"В данной папке уже есть проект с таким именем";
+    }
+    
+    UIAlertView* alert = [[UIAlertView alloc]initWithTitle:str message:@"Введите другое имя" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alert show];
+}
 
 -(void)addingTaskName
 {
     [self modifyTextViewsText];
+    
+    for (NSString* taskName in [_namesDataSource objectForKey:TITLE_SUBTASK_NAMES]){
+        if ([_textViewNameOrCommentOrContextText.text isEqualToString:taskName]) {
+            [self alertShow];
+            return;
+        }
+    }
+    
     AddPropertiesViewController* addPropertiesVC = [[AddPropertiesViewController alloc]initWithStyle:UITableViewStyleGrouped];
     [addPropertiesVC setTasksName:_textViewNameOrCommentOrContextText.text];
     addPropertiesVC.parentProject = self.parentProject;
     [self.navigationController pushViewController:addPropertiesVC animated:YES];
+
+
 }
 
 -(void)addingProjectName
 {
     //надо просто сохранить проект и отправить уведомление о закрытии модального контроллера
+    
     [self modifyTextViewsText];
+    
+    for (NSString* projectName in [_namesDataSource objectForKey:TITLE_SUBPROJECT_NAMES]){
+        if ([_textViewNameOrCommentOrContextText.text isEqualToString:projectName]) {
+            [self alertShow];
+            return;
+        }
+    }
+    
     NSManagedObjectContext* _context = [[NMTaskGraphManager sharedManager]managedContext];
     NMTGProject* _newProject = [[NMTGProject alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGProject" inManagedObjectContext:_context] insertIntoManagedObjectContext:_context];
     [_context insertObject:_newProject];
@@ -130,6 +164,14 @@
 -(void)renamingProject
 {
     [self modifyTextViewsText];
+    
+    for (NSString* projectName in [_namesDataSource objectForKey:TITLE_SUBPROJECT_NAMES]){
+        if ([_textViewNameOrCommentOrContextText.text isEqualToString:projectName]) {
+            [self alertShow];
+            return;
+        }
+    }
+    
     [self.delegateProjectProperties setProjectsName:_textViewNameOrCommentOrContextText.text];
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -137,6 +179,14 @@
 -(void)renamingTask
 {
     [self modifyTextViewsText];
+    
+    for (NSString* taskName in [_namesDataSource objectForKey:TITLE_SUBTASK_NAMES]){
+        if ([_textViewNameOrCommentOrContextText.text isEqualToString:taskName]) {
+            [self alertShow];
+            return;
+        }
+    }
+    
     [self.delegateTaskProperties setTasksName:_textViewNameOrCommentOrContextText.text];
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -195,9 +245,24 @@
     self.navigationItem.rightBarButtonItem = _buttonItem;
     
     UIBarButtonItem* cancel = [[UIBarButtonItem alloc]initWithTitle:@"Отмена" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
-    self.navigationItem.leftBarButtonItem = cancel;
+    if (self.isAddingTaskName || (self.isAddingProjectName && self.parentProject != nil)) {    
+        self.navigationItem.leftBarButtonItem = nil;
+    } else {
+        self.navigationItem.leftBarButtonItem = cancel;
+    }
     self.navigationItem.rightBarButtonItem.enabled = (self.isRenamingTask || self.isRenamingProject) ? YES : NO; //сначала нужно будет ввести имя
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    
+    NSMutableArray* projectNames = [NSMutableArray new];
+    for (NMTGProject* proj in _parentProject.subProject) {
+        [projectNames addObject:proj.title];
+    }
+    NSMutableArray* taskNames = [NSMutableArray new];
+    for (NMTGTask* task in _parentProject.subTasks) {
+        [taskNames addObject:task.title];
+    }
+    [_namesDataSource setObject:taskNames forKey:TITLE_SUBTASK_NAMES];
+    [_namesDataSource setObject:projectNames forKey:TITLE_SUBPROJECT_NAMES];
 }
 
 

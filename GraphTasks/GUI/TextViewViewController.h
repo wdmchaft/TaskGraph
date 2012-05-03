@@ -11,6 +11,10 @@
 #import "AddPropertiesViewController.h"
 #import "ContextsViewController.h"
 
+
+#define TITLE_SUBPROJECT_NAMES @"Имена подпроектов"
+#define TITLE_SUBTASK_NAMES @"Имена подзадач"
+
 @interface TextViewViewController : UIViewController<UITextViewDelegate, UIAlertViewDelegate>{
     UITextView* _textViewNameOrCommentOrContextText;
     BOOL _isAddingTaskName;
@@ -21,6 +25,7 @@
     BOOL _isRenamingTask;
     
     NMTGProject* _parentProject;
+    NSMutableDictionary* _namesDataSource;
     id<ContextAddDelegate> _delegateContextAdd;
     id<SetTasksProperties> _delegateTaskProperties;
     id<SetProjectsProperties> _delegateProjectProperties;
@@ -49,6 +54,7 @@
 -(void)addingContextName;
 -(void)cancel;
 -(void)renamingProject;
+-(void)alertShow;
 
 -(void)modifyTextViewsText;
 @end

@@ -16,7 +16,9 @@ const   NSString*   NMTaskGraphFileName =   @"NMTaskGraph2.sqlite";
 
 @synthesize managedModel        =   _managedModel,
             managedContext  =   _managedContext,
-    persistenceCoordinator  =   _persistenceCoordinator;
+            persistenceCoordinator  =   _persistenceCoordinator,
+            path = _path,
+            pathComponents = _pathComponents ;
 
 #pragma mark    -   LifeCycle
 
@@ -43,6 +45,8 @@ const   NSString*   NMTaskGraphFileName =   @"NMTaskGraph2.sqlite";
             _managedContext =   [[NSManagedObjectContext alloc] init];
             [_managedContext    setPersistentStoreCoordinator:_persistenceCoordinator];
         }
+        _path = [NSMutableString new];
+        _pathComponents = [NSMutableArray new];
     }
     
     return self;

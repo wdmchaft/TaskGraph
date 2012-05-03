@@ -171,14 +171,7 @@
         case 0: //имя задания
         {
             cell.detailTextLabel.text = _taskName;
-            
             cell.accessoryType = UITableViewCellAccessoryNone;
-//            _textFieldName = [[UITextField alloc]init];
-//            _textFieldName.frame = CGRectMake(70, 10, 150, 40);
-//            _textFieldName.returnKeyType = UIReturnKeyDone;
-//            _textFieldName.delegate = self;
-//            _textFieldName.clearButtonMode = UITextFieldViewModeNever;
-//            [cell.contentView addSubview:_textFieldName];
             break;
         }
         case 1: //даты напоминаний
@@ -188,9 +181,6 @@
             cell.detailTextLabel.text = (indexPath.row == 0) 
                         ? ([formatter stringFromDate: _taskAlertDateFirst]) 
                         : ([formatter stringFromDate: _taskAlertDateSecond]);
-            
-//            ? [NSString stringWithFormat:@"%@",_taskAlertDateFirst]
-//            : [NSString stringWithFormat:@"%@",_taskAlertDateSecond];
             break;
         }
         case 2: //комментарий и контекст

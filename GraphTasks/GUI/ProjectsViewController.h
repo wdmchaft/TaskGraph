@@ -14,13 +14,12 @@
     NSArray* _tableDataSource;
     NSManagedObjectContext* _context;
     NMTGProject* _selectedProject;
-    BOOL _shouldPushEmidiately;
 }
 
-@property(nonatomic,retain) NMTGProject* selectedProject;
-@property(nonatomic,      ) BOOL shouldPushEmidiately;
+@property(nonatomic, retain) NMTGProject* selectedProject;
 
 -(void)addNewProject:(NMTGProject*) newProject;
 -(void)reloadData;
 -(void)ProjectAddViewControllerDidAddProject;
+-(void)hide;
 @end

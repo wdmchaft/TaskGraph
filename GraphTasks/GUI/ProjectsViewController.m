@@ -8,14 +8,15 @@
 
 #import "ProjectsViewController.h"
 #import "NMTGProject.h"
+#import "NMTGAbstract.h"
 #import "TaskViewController.h"
 #import "AddWhateverViewController.h"
 #import "TextViewViewController.h"
 
+
 @implementation ProjectsViewController
 
-@synthesize selectedProject = _selectedProject,
-            shouldPushEmidiately = _shouldPushEmidiately;
+@synthesize selectedProject = _selectedProject;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -150,9 +151,6 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (self.shouldPushEmidiately == YES) {
-        self.shouldPushEmidiately = NO;
-    }
     if (self.tableView.isEditing == YES){
         TextViewViewController* textVC = [TextViewViewController new];
         textVC.delegateProjectProperties = self;
@@ -161,7 +159,6 @@
         [self.navigationController pushViewController:textVC animated:YES];
     } else {
         _selectedProject = [_tableDataSource objectAtIndex:indexPath.row];
-        
         TaskViewController* vc = [[TaskViewController alloc]initWithStyle:UITableViewStylePlain];
         vc.parentProject = _selectedProject;
         [self.navigationController pushViewController:vc animated:YES];
@@ -176,25 +173,24 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super  viewWillAppear:animated];
     [self reloadData];
-//    NSLog(@"self.selectedProject: %@",self.selectedProject);
-//    NSLog(@"self.selectedProject.title: %@", self.selectedProject.title);
-    if (self.shouldPushEmidiately == YES) {
-//        NSArray* allIndexPath = self.tableView.indexPathsForVisibleRows;
-//        for (NSIndexPath* indexPath in allIndexPath) {
-//            if ([_tableDataSource objectAtIndex:indexPath.row] == _selectedProject) {
-//                NSLog(@"SUCCESS");
-//                [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
-//                break;
-//            }
-//        }
-        
-        NSLog(@"selected: %@",_selectedProject);
-        NSLog(@"table data: %@", _tableDataSource);
-        
-        int row = [_tableDataSource indexOfObject:_selectedProject];
+    
+    BOOL shouldPushEmmediately = ([NMTaskGraphManager sharedManager].pathComponents.count != 0);
+    if (shouldPushEmmediately == NO) { 
+        [self reloadData];
+    } else {
+        UIBarButtonItem* hide = [[UIBarButtonItem alloc]initWithTitle:@"Скрыть" style:UIBarButtonItemStylePlain target:self action:@selector(hide)];
+        self.navigationItem.leftBarButtonItem = hide;
+        int row = 0;
+        for (NMTGProject* proj in _tableDataSource) {
+            if ([proj.title isEqualToString:[[NMTaskGraphManager sharedManager].pathComponents objectAtIndex:0]] == NO ){
+                    row++;
+            } else {
+                    break;
+            }
+        }
         NSLog(@"row: %i",row);
+        [[NMTaskGraphManager sharedManager].pathComponents removeObjectAtIndex:0];
         [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
-        
     }
     [self.tabBarController.navigationItem   setTitle:@"Проекты"];
     [self.navigationItem setTitle:@"Projects"];
@@ -204,13 +200,15 @@
     self.tabBarController.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:self.editButtonItem,addbutton, nil];
 }
 
+-(void) hide
+{
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"HideModalControllerINFocusedVC" object:nil];
+}
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    
-    [self reloadData];
 }
 
 - (void)viewDidUnload

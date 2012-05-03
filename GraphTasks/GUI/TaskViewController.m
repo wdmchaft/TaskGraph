@@ -119,7 +119,38 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.navigationItem setTitle:self.parentProject.title];
-    [self reloadData];
+//    UIBarButtonItem* hide = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"focused_30x30.png"] style:UIBarButtonSystemItemAction target:self action:@selector(hide)];
+    UIBarButtonItem* hide = [[UIBarButtonItem alloc]initWithTitle:@"123" style:UIBarButtonSystemItemFastForward target:self action:@selector(hide)];    
+    if ([NMTaskGraphManager sharedManager].pathComponents.count == 0) {
+        [self reloadData];
+        return;
+    } else if ([NMTaskGraphManager sharedManager].pathComponents.count == 1) {
+        //выделение ячейки
+        // ...
+        //
+        [[NMTaskGraphManager sharedManager].pathComponents removeObjectAtIndex:0];
+        self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:self.navigationItem.backBarButtonItem, hide, nil];
+        [self reloadData];
+    } else {
+        NSUInteger row = 0;
+        for (NMTGProject* proj in _fetchedProjectsOrTasks) {
+            if ([proj.title isEqualToString:[[NMTaskGraphManager sharedManager].pathComponents objectAtIndex:0]] ) {
+                break;
+            } else {
+                row++;
+            }
+        }
+        [[NMTaskGraphManager sharedManager].pathComponents removeObjectAtIndex:0];
+        self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:self.navigationItem.backBarButtonItem, hide, nil];
+        [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
+        [self reloadData];
+    }
+}
+
+
+-(void) hide
+{
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"HideModalControllerINFocusedVC" object:nil];
 }
 
 #pragma mark - Table view data source

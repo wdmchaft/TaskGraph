@@ -29,6 +29,7 @@
 -(void) projectOrTaskAddViewControllerDidAddProjectOrTask;
 -(BOOL) checkProjectIsDone:(NMTGProject*) aProject;
 -(void) changeParentProjectsSettings;
-  
+-(void)hide;
+
 @end
 

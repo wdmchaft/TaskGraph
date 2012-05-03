@@ -30,5 +30,5 @@
 - (void)removeEmployersObject:(NMTeamProfile *)value;
 - (void)addEmployers:(NSSet *)values;
 - (void)removeEmployers:(NSSet *)values;
-
+- (BOOL)compare:(NMTGAbstract*)objectToCompareWith;
 @end

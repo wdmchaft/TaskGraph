@@ -34,6 +34,7 @@
         _tableDataSource = [NSMutableDictionary new];
         _titles = [NSArray arrayWithObjects:TITLE_TODAY, TITLE_THIS_WEEK, TITLE_THIS_MONTH, TITLE_OVERDUE, nil];
         _contextToFilterTasks = nil;
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(hideModalController) name:@"HideModalControllerINFocusedVC" object:nil];
     }
     return self;
 }
@@ -41,6 +42,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+}
+
+-(void) hideModalController
+{
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 
@@ -76,10 +82,14 @@
     NSTimeInterval secondssTilNow= [now timeIntervalSinceDate:[NSDate dateWithTimeIntervalSince1970:0]];
     int daysTilNow = (int)secondssTilNow/86400;
     
-    NSDate* startDate = [NSDate dateWithTimeIntervalSince1970:daysTilNow*86400.0];                                                                   
+    NSDate* startDate = [NSDate dateWithTimeIntervalSince1970:(daysTilNow-1)*86400.0 + 1];                                                                   
     NSDate* endDateToday = [[NSDate alloc]initWithTimeInterval:1*86400 sinceDate:startDate];
     NSDate* endDateThisWeek = [[NSDate alloc]initWithTimeInterval:7*86400 sinceDate:startDate];
     NSDate* endDateThisMonth = [[NSDate alloc]initWithTimeInterval:30*86400 sinceDate:startDate];
+//NSLog(@"startDate: %@",startDate);
+//NSLog(@"endDateToday: %@",endDateToday); 
+//NSLog(@"endDateThisWeek: %@",endDateThisWeek);
+//NSLog(@"endDateThisMonth: %@",endDateThisMonth);
     
     
     NSMutableArray* todayTasks = [NSMutableArray new];
@@ -115,16 +125,16 @@
             if (closestIsAlertFirst == YES) {
                 ratio = [task.alertDate_first timeIntervalSinceNow] / [task.alertDate_first timeIntervalSinceDate:task.created];
                 [todayTasksColors addObject:[UIColor colorWithRed:1-ratio green:ratio blue:0.0 alpha:1.0]];
-//                NSLog(@"ratio: %f",ratio);
-//                NSLog(@"added color: %@", [todayTasksColors lastObject]);
+//NSLog(@"ratio: %f",ratio);
+//NSLog(@"added color: %@", [todayTasksColors lastObject]);
                 
                 NSString* formattedDate = [NSString stringWithFormat:@"Первое: %@",[formatter stringFromDate:task.alertDate_first]];
                 [todayFormattedTaskDates addObject:formattedDate];
             } else {
                 ratio = [task.alertDate_second timeIntervalSinceNow] / [task.alertDate_second timeIntervalSinceDate:task.created];
                 [todayTasksColors addObject:[UIColor colorWithRed:1-ratio green:0 blue:ratio alpha:1.0]];
-//                NSLog(@"ratio: %f",ratio);
-//                NSLog(@"added color: %@", [todayTasksColors lastObject]);
+//NSLog(@"ratio: %f",ratio);
+//NSLog(@"added color: %@", [todayTasksColors lastObject]);
                 
                 NSString* formattedDate = [NSString stringWithFormat:@"Второе: %@",[formatter stringFromDate:task.alertDate_second]];
                 [todayFormattedTaskDates addObject:formattedDate];
@@ -139,16 +149,16 @@
 
                 ratio = [task.alertDate_first timeIntervalSinceNow] / [task.alertDate_first timeIntervalSinceDate:task.created];
                 [weekTasksColors addObject:[UIColor colorWithRed:1-ratio green:ratio blue:0.0 alpha:1.0]];
-//                NSLog(@"ratio: %f",ratio);
-//                NSLog(@"added color: %@", [weekTasksColors lastObject]);
+//NSLog(@"ratio: %f",ratio);
+//NSLog(@"added color: %@", [weekTasksColors lastObject]);
                 
                 NSString* formattedDate = [NSString stringWithFormat:@"Первое: %@",[formatter stringFromDate:task.alertDate_first]];
                 [weekFormattedTaskDates addObject:formattedDate];
             } else {
                 ratio = [task.alertDate_second timeIntervalSinceNow] / [task.alertDate_second timeIntervalSinceDate:task.created];
                 [weekTasksColors addObject:[UIColor colorWithRed:1-ratio green:0 blue:ratio alpha:1.0]];
-//                NSLog(@"ratio: %f",ratio);
-//                NSLog(@"added color: %@", [weekTasksColors lastObject]);
+//NSLog(@"ratio: %f",ratio);
+//NSLog(@"added color: %@", [weekTasksColors lastObject]);
                 
                 NSString* formattedDate = [NSString stringWithFormat:@"Второе: %@",[formatter stringFromDate:task.alertDate_second]];
                 [weekFormattedTaskDates addObject:formattedDate];
@@ -162,22 +172,25 @@
             if (closestIsAlertFirst == YES) {
                 ratio = [task.alertDate_first timeIntervalSinceNow] / [task.alertDate_first timeIntervalSinceDate:task.created];
                 [monthTasksColors addObject:[UIColor colorWithRed:1-ratio green:ratio blue:0.0 alpha:1.0]];
-//                NSLog(@"ratio: %f",ratio);
-//                NSLog(@"added color: %@", [monthTasksColors lastObject]);
+//NSLog(@"ratio: %f",ratio);
+//NSLog(@"added color: %@", [monthTasksColors lastObject]);
                 
                 NSString* formattedDate = [NSString stringWithFormat:@"Первое: %@",[formatter stringFromDate:task.alertDate_first]];
                 [monthFormattedTaskDates addObject:formattedDate];
             } else {
                 ratio = [task.alertDate_second timeIntervalSinceNow] / [task.alertDate_second timeIntervalSinceDate:task.created];
                 [monthTasksColors addObject:[UIColor colorWithRed:1-ratio green:0 blue:ratio alpha:1.0]];
-//                NSLog(@"ratio: %f",ratio);
-//                NSLog(@"added color: %@", [monthTasksColors lastObject]);
+//NSLog(@"ratio: %f",ratio);
+//NSLog(@"added color: %@", [monthTasksColors lastObject]);
                 NSString* formattedDate = [NSString stringWithFormat:@"Второе: %@",[formatter stringFromDate:task.alertDate_second]];
                 [monthFormattedTaskDates addObject:formattedDate];
             }
         } else 
         if ( [task.alertDate_first compare:startDate] == NSOrderedAscending && 
              [task.alertDate_second compare:startDate] == NSOrderedAscending ) {
+//NSLog(@"task alert 1: %@",task.alertDate_first);
+//NSLog(@"task alert 2: %@",task.alertDate_second);
+//NSLog(@"start date  : %@",startDate);            
             [overdueTasks addObject:task]; //просроченные
             [overdueTasksColors addObject:[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:1.0]];
             NSString* formattedDate = [NSString stringWithFormat:@"Просроченное: %@",[formatter stringFromDate:task.alertDate_second]];
@@ -203,6 +216,7 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -385,63 +399,95 @@
 
 #pragma mark - Table view delegate
 
+-(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    NMTGTask* selectedTask = [[[_tableDataSource objectForKey:[_titles objectAtIndex: indexPath.section]] objectAtIndex:0] objectAtIndex:indexPath.row];
+    NMTGProject* project = selectedTask.parentProject;
+    [[NMTaskGraphManager sharedManager].pathComponents insertObject:selectedTask.title atIndex:0];
+    [[NMTaskGraphManager sharedManager].pathComponents insertObject:project.title atIndex:0];
+    for(;;){
+        if (project.parentProject != nil) {
+            project = project.parentProject;
+            [[NMTaskGraphManager sharedManager].pathComponents insertObject:project.title atIndex:0];
+        } else {
+            break;
+        }
+    }
+    NSLog(@"Path components: ");
+    for (NSString* str in [NMTaskGraphManager sharedManager].pathComponents) {
+        NSLog(@"%@",str);
+    }
+    
+    
+    ProjectsViewController* projectsVC = [[ProjectsViewController alloc]initWithStyle: UITableViewStylePlain];
+
+    UINavigationController* navVC = [[UINavigationController alloc]initWithRootViewController:projectsVC];
+    [self presentModalViewController:navVC animated:YES];
+    
+    
+    
+//    тест как работает компаратор
+//    NMTGAbstract* obj1 = [[[_tableDataSource objectForKey:[_titles objectAtIndex: 1]] objectAtIndex:0] objectAtIndex:0];
+//    NMTGAbstract* obj2 = [[[_tableDataSource objectForKey:[_titles objectAtIndex: 1]] objectAtIndex:0] objectAtIndex:1];
+//    NMTGAbstract* obj3 = [[[_tableDataSource objectForKey:[_titles objectAtIndex: 1]] objectAtIndex:0] objectAtIndex:2];
+//    NSLog(@"1x2 :%i",[obj1 compare:obj2]);
+//    NSLog(@"1x3 :%i",[obj1 compare:obj3]);
+//    NSLog(@"2x3 :%i",[obj2 compare:obj3]);   
+//    NSLog(@"1x1 :%i",[obj1 compare:obj1]);   
+//    NSLog(@"2x2 :%i",[obj2 compare:obj2]);   
+//    NSLog(@"3x3 :%i",[obj3 compare:obj3]);   
+    
+    //    //строка полного пути 
+    //    NSMutableString* taskFullPath = [NSMutableString stringWithFormat:@"%@",selectedTask.title];
+    //    NMTGProject* parent = selectedTask.parentProject;
+    //    for(;;) {
+    //        NSString* str = [NSString stringWithFormat:@"%@/",parent.title];
+    //        [taskFullPath insertString:str atIndex:0];
+    //        [[NMTaskGraphManager sharedManager].pathComponents insertObject:str atIndex:0];
+    //        if (parent.parentProject == nil) {
+    //            [taskFullPath insertString:@"/" atIndex:0];
+    //            [[NMTaskGraphManager sharedManager].pathComponents insertObject:str atIndex:0];
+    ////            NSLog(@"%@", project.parentProject);
+    //             break;
+    //           } else {
+    //           parent = parent.parentProject;
+    //        }
+    //    }
+    //    [NMTaskGraphManager sharedManager].path = taskFullPath;
+    //    NSLog(@"path: %@",[NMTaskGraphManager sharedManager].path);
+    //    NSLog(@"%@",taskFullPath);
+    
+    
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-//    NMTGTask* selectedTask = [[_tableDataSource objectForKey:[_titles objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]; 
-//    NMTGProject* project = selectedTask.parentProject;
-//    for(;;){
-//        if (project.parentProject != nil) {
-//            project = project.parentProject;
-//        } else {
-//            break;
-//        }
-//    }
-//    NSLog(@"project: %@",project);
-//    ProjectsViewController* projectsVC = [[ProjectsViewController alloc]initWithStyle:UITableViewStylePlain];
-//    
-//    //    NSLog(@"projectsVC.selectedProject DO    :%@",projectsVC.selectedProject);    
-//    projectsVC.selectedProject = project;
-//    //    NSLog(@"projectsVC.selectedProject posle :%@",projectsVC.selectedProject);
-//    
-//    projectsVC.shouldPushEmidiately = YES;
-//    [self.navigationController pushViewController:projectsVC animated:YES];
-    
-    
-    NMTGAbstract* selectedObject = [[[_tableDataSource objectForKey:[_titles objectAtIndex:indexPath.section]] objectAtIndex:0] objectAtIndex:indexPath.row];
-    
-//    if([selectedObject isKindOfClass:[NMTGProject class]]){
-//        TaskViewController* vc = [[TaskViewController alloc]initWithStyle:UITableViewStylePlain];
-//        vc.parentProject = [_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
-//        [self.navigationController pushViewController:vc animated:YES];
-//    }
-    
-    if([selectedObject isKindOfClass:[NMTGTask class]]){
-        if ([selectedObject.done isEqualToNumber:[NSNumber numberWithBool:YES]]) {
-            selectedObject.done = [NSNumber numberWithBool:NO];
-        } else {
-            selectedObject.done = [NSNumber numberWithBool:YES];
-        }
-        
-        NSError* error = nil;
-        NSManagedObjectContext* _context = [[NMTaskGraphManager sharedManager]managedContext];
-        if(!([_context save:&error])){
-            NSLog(@"FAILED TO SAVE CONTEXT IN FocusedAndContextedVC IN 'didSelectRowAtIndexPath'");
-            NSLog(@"%@",error);
-        }
-        
-        //блок проверки заверешен ли проект
-        NMTGProject* parent_project = [(NMTGTask*)selectedObject parentProject];
-        parent_project.done = [NSNumber numberWithBool: [self checkProjectIsDone:parent_project]];
-        
-        error = nil;
-        if(!([_context save:&error])){
-            NSLog(@"FAILED TO SAVE CONTEXT IN FocusedAndContextedVC IN 'didSelectRowAtIndexPath'");
-            NSLog(@"%@",error);
-        }
-        [self reloadData];
+    NMTGTask* selectedTask = [[ [_tableDataSource objectForKey:[_titles objectAtIndex:indexPath.section]]  objectAtIndex:0] objectAtIndex:indexPath.row];    
+    if ([selectedTask.done isEqualToNumber:[NSNumber numberWithBool:YES]]) {
+        selectedTask.done = [NSNumber numberWithBool:NO];
+    } else {
+        selectedTask.done = [NSNumber numberWithBool:YES];
     }
+    NSError* error = nil;
+    NSManagedObjectContext* _context = [[NMTaskGraphManager sharedManager]managedContext];
+    if(!([_context save:&error])){
+        NSLog(@"FAILED TO SAVE CONTEXT IN FocusedAndContextedVC IN 'didSelectRowAtIndexPath'");
+        NSLog(@"%@",error);
+    }
+    
+    //блок проверки заверешен ли проект
+    NMTGProject* parent_project = [selectedTask parentProject];
+    parent_project.done = [NSNumber numberWithBool: [self checkProjectIsDone:parent_project]];
+    
+    error = nil;
+    if(!([_context save:&error])){
+        NSLog(@"FAILED TO SAVE CONTEXT IN FocusedAndContextedVC IN 'didSelectRowAtIndexPath'");
+        NSLog(@"%@",error);
+    }
+    [self reloadData];
 }
+
 
 -(BOOL) checkProjectIsDone:(NMTGProject *)aProject
 {
