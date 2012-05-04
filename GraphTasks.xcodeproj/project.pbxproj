@@ -28,6 +28,9 @@
 		179886101550A6AB00AA3CC1 /* NMTGAbstract.m in Sources */ = {isa = PBXBuildFile; fileRef = 1798860F1550A6AB00AA3CC1 /* NMTGAbstract.m */; };
 		17BBB66D152512DF00184F8B /* NMTeamProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BBB66C152512DF00184F8B /* NMTeamProfile.m */; };
 		17C3E110154B238700B51CF2 /* NMTGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 17C3E10F154B238700B51CF2 /* NMTGContext.m */; };
+		17CA62081553186B00707D26 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17CA62071553186B00707D26 /* AddressBook.framework */; };
+		17CA620B1553187000707D26 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17CA620A1553187000707D26 /* AddressBookUI.framework */; };
+		17CA620E1553196100707D26 /* AddSpecialTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17CA620D1553196100707D26 /* AddSpecialTaskViewController.m */; };
 		17E308F2152A3DAD007414A5 /* AddWhateverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E308F1152A3DAD007414A5 /* AddWhateverViewController.m */; };
 		17E308F5152AC453007414A5 /* ListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E308F4152AC453007414A5 /* ListsViewController.m */; };
 		17E3092F152AD066007414A5 /* TextViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17E3092E152AD066007414A5 /* TextViewViewController.m */; };
@@ -128,6 +131,10 @@
 		17BBB66C152512DF00184F8B /* NMTeamProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTeamProfile.m; sourceTree = "<group>"; };
 		17C3E10E154B238700B51CF2 /* NMTGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGContext.h; sourceTree = "<group>"; };
 		17C3E10F154B238700B51CF2 /* NMTGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGContext.m; sourceTree = "<group>"; };
+		17CA62071553186B00707D26 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		17CA620A1553187000707D26 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		17CA620C1553196100707D26 /* AddSpecialTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddSpecialTaskViewController.h; sourceTree = "<group>"; };
+		17CA620D1553196100707D26 /* AddSpecialTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddSpecialTaskViewController.m; sourceTree = "<group>"; };
 		17E308F0152A3DAD007414A5 /* AddWhateverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddWhateverViewController.h; sourceTree = "<group>"; };
 		17E308F1152A3DAD007414A5 /* AddWhateverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddWhateverViewController.m; sourceTree = "<group>"; };
 		17E308F3152AC453007414A5 /* ListsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ListsViewController.h; path = ../ListsViewController.h; sourceTree = "<group>"; };
@@ -232,6 +239,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17CA620B1553187000707D26 /* AddressBookUI.framework in Frameworks */,
+				17CA62081553186B00707D26 /* AddressBook.framework in Frameworks */,
 				179885E315507D5E00AA3CC1 /* CoreFoundation.framework in Frameworks */,
 				17E30AAD152C7210007414A5 /* QuartzCore.framework in Frameworks */,
 				632BDE3814F4157F00A10E0B /* UIKit.framework in Frameworks */,
@@ -272,6 +281,8 @@
 				17E30934152AEEF8007414A5 /* AlertDateViewController.m */,
 				17E30AA9152C217F007414A5 /* ContextsViewController.h */,
 				17E30AAA152C2180007414A5 /* ContextsViewController.m */,
+				17CA620C1553196100707D26 /* AddSpecialTaskViewController.h */,
+				17CA620D1553196100707D26 /* AddSpecialTaskViewController.m */,
 			);
 			name = AddControllers;
 			sourceTree = "<group>";
@@ -279,6 +290,8 @@
 		632BDE2814F4157F00A10E0B = {
 			isa = PBXGroup;
 			children = (
+				17CA620A1553187000707D26 /* AddressBookUI.framework */,
+				17CA62071553186B00707D26 /* AddressBook.framework */,
 				179885E215507D5E00AA3CC1 /* CoreFoundation.framework */,
 				17E30AAC152C7210007414A5 /* QuartzCore.framework */,
 				632BDE6D14F41A8800A10E0B /* Default-Portrait~ipad.png */,
@@ -695,6 +708,7 @@
 				1798860A1550A6AB00AA3CC1 /* NMTGTaskPhone.m in Sources */,
 				1798860D1550A6AB00AA3CC1 /* NMTGTaskSMS.m in Sources */,
 				179886101550A6AB00AA3CC1 /* NMTGAbstract.m in Sources */,
+				17CA620E1553196100707D26 /* AddSpecialTaskViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

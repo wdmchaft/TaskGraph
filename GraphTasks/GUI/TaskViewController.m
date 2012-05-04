@@ -56,6 +56,13 @@
     NSPredicate* pred = [NSPredicate predicateWithFormat:@"parentProject == %@",self.parentProject];
     [request setPredicate:pred];
     
+    for(NMTGAbstract* obj in _fetchedProjectsOrTasks) {
+        if (obj.class == [NMTGProject class]) {
+            NMTGProject* proj = (NMTGProject*)obj;
+            [self setProjectAlertDates:proj];
+        }
+    }
+    
     NSError* error = nil;
     _fetchedProjectsOrTasks = [NSMutableArray arrayWithArray:[_context executeFetchRequest:request error:&error]];
     
@@ -116,42 +123,47 @@
 }
 
 
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    [self.navigationItem setTitle:self.parentProject.title];
-//    UIBarButtonItem* hide = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"focused_30x30.png"] style:UIBarButtonSystemItemAction target:self action:@selector(hide)];
-    UIBarButtonItem* hide = [[UIBarButtonItem alloc]initWithTitle:@"123" style:UIBarButtonSystemItemFastForward target:self action:@selector(hide)];    
-    if ([NMTaskGraphManager sharedManager].pathComponents.count == 0) {
-        [self reloadData];
-        return;
-    } else if ([NMTaskGraphManager sharedManager].pathComponents.count == 1) {
-        //выделение ячейки
-        // ...
-        //
-        [[NMTaskGraphManager sharedManager].pathComponents removeObjectAtIndex:0];
-        self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:self.navigationItem.backBarButtonItem, hide, nil];
-        [self reloadData];
-    } else {
-        NSUInteger row = 0;
-        for (NMTGProject* proj in _fetchedProjectsOrTasks) {
-            if ([proj.title isEqualToString:[[NMTaskGraphManager sharedManager].pathComponents objectAtIndex:0]] ) {
-                break;
-            } else {
-                row++;
-            }
-        }
-        [[NMTaskGraphManager sharedManager].pathComponents removeObjectAtIndex:0];
-        self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:self.navigationItem.backBarButtonItem, hide, nil];
-        [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
-        [self reloadData];
-    }
-}
+
 
 
 -(void) hide
 {
     [[NSNotificationCenter defaultCenter]postNotificationName:@"HideModalControllerINFocusedVC" object:nil];
 }
+
+-(void)setProjectAlertDates:(NMTGProject *)proj{
+    NSArray* subTasks = [proj.subTasks allObjects];
+    NSArray* subProjs = [proj.subProject allObjects];
+    NSDate* mindateTasks = [NSDate date];
+    NSDate* maxdateTasks = [NSDate date];
+    for (NMTGTask* task in subTasks) {
+        if ([mindateTasks timeIntervalSince1970] > [task.alertDate_first timeIntervalSince1970] ) {
+            mindateTasks = task.alertDate_first;
+        }
+        if ([maxdateTasks timeIntervalSince1970] < [task.alertDate_second timeIntervalSince1970] ) {
+            maxdateTasks = task.alertDate_second;
+        }
+    }
+    
+    NSDate* mindateProjs = [NSDate date];
+    NSDate* maxdateProjs = [NSDate date];
+    for (NMTGProject* proj in subProjs) {
+        if ([mindateProjs timeIntervalSince1970] > [proj.alertDate_first timeIntervalSince1970] ) {
+            mindateProjs = proj.alertDate_first;
+        }
+        if ([maxdateProjs timeIntervalSince1970] < [proj.alertDate_second timeIntervalSince1970] ) {
+            maxdateProjs = proj.alertDate_second;
+        }
+    }
+    NSDate* mindate = ([mindateTasks timeIntervalSince1970] < [mindateProjs timeIntervalSince1970]) ? (mindateTasks) : (mindateProjs) ;
+    NSDate* maxdate = ([maxdateTasks timeIntervalSince1970] > [maxdateProjs timeIntervalSince1970]) ? (maxdateTasks) : (maxdateProjs);
+    
+    
+    proj.alertDate_first = mindate;
+    proj.alertDate_second = maxdate;
+}
+
+
 
 #pragma mark - Table view data source
 
@@ -325,6 +337,45 @@
 
 
 #pragma mark - Rubbish
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.navigationItem setTitle:self.parentProject.title];
+    UIBarButtonItem* hide = [[UIBarButtonItem alloc]initWithTitle:@"Скрыть" style:UIBarButtonSystemItemFastForward target:self action:@selector(hide)];    
+    
+//NSLog(@"pathComponents.count: %i",[NMTaskGraphManager sharedManager].pathComponents.count);
+    if ([NMTaskGraphManager sharedManager].pathComponents.count == 0) {
+        [self reloadData];
+        return;
+    } else if ([NMTaskGraphManager sharedManager].pathComponents.count == 1) {
+//self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:self.navigationItem.backBarButtonItem, hide, nil];
+        
+        NSUInteger row = 0;
+        for (NMTGTask* task in _fetchedProjectsOrTasks) {
+            if ([task.title isEqualToString:[[NMTaskGraphManager sharedManager].pathComponents objectAtIndex:0]] ) {
+                break;
+            } else {
+                row++;
+            }
+        }
+        [[NMTaskGraphManager sharedManager].pathComponents removeObjectAtIndex:0];
+        [self reloadData];
+        [[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]] setHighlighted:YES animated:YES];
+    } else {
+        NSUInteger row = 0;
+        for (NMTGProject* proj in _fetchedProjectsOrTasks) {
+            if ([proj.title isEqualToString:[[NMTaskGraphManager sharedManager].pathComponents objectAtIndex:0]] ) {
+                break;
+            } else {
+                row++;
+            }
+        }
+        [[NMTaskGraphManager sharedManager].pathComponents removeObjectAtIndex:0];
+//        self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:self.navigationItem.backBarButtonItem, hide, nil];
+        [self reloadData];
+        [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

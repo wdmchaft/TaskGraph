@@ -121,7 +121,8 @@
     NMTGProject* _newProject = [[NMTGProject alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGProject" inManagedObjectContext:_context] insertIntoManagedObjectContext:_context];
     [_context insertObject:_newProject];
     _newProject.title =  _textViewNameOrCommentOrContextText.text;
-    _newProject.alertDate_first = [NSDate dateWithTimeIntervalSinceNow:7*86400];
+    _newProject.alertDate_first = [NSDate dateWithTimeIntervalSinceNow:5*86400];
+    _newProject.alertDate_second = [NSDate dateWithTimeIntervalSinceNow:7*86400];
     _newProject.done = [NSNumber numberWithBool:NO];
     _newProject.created = [NSDate date];
     

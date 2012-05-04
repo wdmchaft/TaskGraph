@@ -17,6 +17,7 @@
     BOOL _shouldShowOnlyUnDone;
 }
 @property(nonatomic,retain) NSString* contextToFilterTasks;
+@property(nonatomic       ) BOOL shouldShowOnlyUnDone;
 
 -(void) reloadData;
 -(void) showAllOrShowUnDoneOnlyClicked;

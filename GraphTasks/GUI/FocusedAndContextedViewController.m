@@ -25,7 +25,8 @@
 
 @implementation FocusedAndContextedViewController
 
-@synthesize contextToFilterTasks = _contextToFilterTasks;
+@synthesize contextToFilterTasks = _contextToFilterTasks,
+            shouldShowOnlyUnDone = _shouldShowOnlyUnDone;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -234,8 +235,10 @@
         [allContexts addObjectsFromArray:contextsUserMade];
         if ([allContexts containsObject:self.contextToFilterTasks]) {
             self.navigationItem.title = ([self.contextToFilterTasks isEqualToString:@""]) 
-                            ? (@"(Без контекста)") 
+                            ? (@"Без контекста") 
                             : (self.contextToFilterTasks);
+        } else {
+            NSLog(@"..........");
         }
     } else {
           self.navigationItem.title = @"Текущие";     
@@ -247,6 +250,7 @@
 -(void) showAllOrShowUnDoneOnlyClicked
 {
     _shouldShowOnlyUnDone = !_shouldShowOnlyUnDone;
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"ShouldRetitleBarButtonItem" object:nil];
     [self reloadData];
 }
 

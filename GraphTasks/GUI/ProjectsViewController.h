@@ -22,4 +22,6 @@
 -(void)reloadData;
 -(void)ProjectAddViewControllerDidAddProject;
 -(void)hide;
+-(void)setProjectAlertDates:(NMTGProject *)proj;
+
 @end

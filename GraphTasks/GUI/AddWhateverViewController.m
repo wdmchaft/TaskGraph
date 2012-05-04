@@ -8,6 +8,7 @@
 
 #import "TextViewViewController.h"
 #import "AddWhateverViewController.h"
+#import "AddSpecialTaskViewController.h"
 
 
 #define TITLE_NORMAL @"Обычные задачи"
@@ -17,10 +18,6 @@
 //Данный контроллер предлагает пользователю выбор того, что он хочет добавить: проект, обычное задание, или задание специального типа
 //
 */
-@interface AddWhateverViewController(internal)
-    -(void)save;
-    -(void)cancel;
-@end
 
 
 
@@ -210,15 +207,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    _indexPathOfSelectedCell = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
     if(indexPath.section==0){
         TextViewViewController* nameVC = [[TextViewViewController alloc]init]; 
         nameVC.parentProject = self.parentProject;
         nameVC.isAddingProjectName = (indexPath.row == 0);
         (indexPath.row == 0) ? (nameVC.isAddingProjectName = YES) : (nameVC.isAddingTaskName = YES);
         [self.navigationController pushViewController:nameVC animated:YES];
+    } else {
+        AddSpecialTaskViewController* addSpecialVC = [[AddSpecialTaskViewController alloc]initWithStyle:UITableViewStyleGrouped];
+        [self.navigationController pushViewController:addSpecialVC animated:YES];
     }
-    _indexPathOfSelectedCell = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
-    NSLog(@"%@",_indexPathOfSelectedCell);
+    
 }
 
 

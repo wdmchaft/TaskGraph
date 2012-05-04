@@ -10,7 +10,10 @@
 
 @interface ListsViewController : UITableViewController{
     NSDictionary* _tableDataSource;
+    NSMutableDictionary* _numbersForCellsDataSource;
+    NSMutableArray* _allContexts;
+    BOOL _shouldSetBarButtonItemTitleALLorUNDONE;
 }
 -(void)reloadData;
-
+-(void)setBarButtonItemTitleALLorUNDONE;
 @end

@@ -31,5 +31,7 @@
 -(void) changeParentProjectsSettings;
 -(void)hide;
 
+-(void)setProjectAlertDates:(NMTGProject *)proj;
+
 @end
 

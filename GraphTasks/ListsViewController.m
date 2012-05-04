@@ -11,6 +11,7 @@
 #import "FocusedAndContextedViewController.h"
 #import "NMTGTask.h"
 #import "NMTGProject.h"
+#import "NMTGContext.h"
 
 
 #define TITLE_REGULAR @"Обычные"
@@ -30,6 +31,10 @@
 {
     self = [super initWithStyle:style];
     if (self) {
+        _numbersForCellsDataSource = [NSMutableDictionary new];
+        [_numbersForCellsDataSource setObject:[NSMutableArray new] forKey:TITLE_REGULAR];
+        [_numbersForCellsDataSource setObject:[NSMutableArray new] forKey:TITLE_CONTEXTED];
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(setBarButtonItemTitleALLorUNDONE) name:@"ShouldRetitleBarButtonItem" object:nil];
         [self reloadData];
     }
     return self;
@@ -50,26 +55,88 @@
 	return YES;
 }
 
+-(void)setBarButtonItemTitleALLorUNDONE
+{
+    _shouldSetBarButtonItemTitleALLorUNDONE = !_shouldSetBarButtonItemTitleALLorUNDONE;
+}
+
 -(void) reloadData
 {
     NSArray* regularTasks = [NSArray arrayWithObjects:@"Все", @"В фокусе", nil];
-    
-    NSManagedObjectContext* context = [[NMTaskGraphManager sharedManager]managedContext];
-    NSEntityDescription* entity = [NSEntityDescription entityForName:@"NMTGContext" inManagedObjectContext:context];
+     
+    NSManagedObjectContext* context;
     NSFetchRequest* request = [NSFetchRequest new];
+    NSEntityDescription* entity;
+    context = [[NMTaskGraphManager sharedManager]managedContext];
+    NSArray* resultsOfFetchExec;
+    
+    [[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] removeAllObjects];
+    
+    //подсчет общего числа заданий и числа сделанных из них
+    entity = [NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:context];
+    [request setEntity:entity];
+    resultsOfFetchExec = [context executeFetchRequest:request error:nil];
+    
+    NSUInteger done = 0;
+    for (NMTGTask* task in resultsOfFetchExec) {
+        if ([task.done isEqualToNumber:[NSNumber numberWithBool:YES]]) {done++;}
+    }
+    [_numbersForCellsDataSource setObject:[NSArray arrayWithObjects:[NSString stringWithFormat:@"сделано: %i (%i)",done, resultsOfFetchExec.count], [NSString stringWithFormat:@"сделано: %i (%i)",done, resultsOfFetchExec.count], nil] forKey:TITLE_REGULAR];
+
+    
+    //поиск всех контекстов
+    entity = [NSEntityDescription entityForName:@"NMTGContext" inManagedObjectContext:context];
     [request setEntity:entity];
     NSArray* contextsUserMade = [context executeFetchRequest:request error:nil];
     
-    NSMutableArray* allContexts = [NSMutableArray arrayWithObjects:@"Дом", @"Работа", @"Семья", @"", nil]; //пустая строка - для пустого контекста. В tableViewCell будет написано (без контекста)
-    [allContexts addObjectsFromArray:contextsUserMade];
+    _allContexts = [NSMutableArray arrayWithObjects:@"Дом", @"Работа", @"Семья", @"", nil]; //пустая строка - для пустого контекста. В tableViewCell будет написано (без контекста)
+
+    [_allContexts addObjectsFromArray:contextsUserMade];
     
-    _tableDataSource = [NSDictionary dictionaryWithObjectsAndKeys:regularTasks,TITLE_REGULAR, allContexts, TITLE_CONTEXTED , nil];
+    _tableDataSource = [NSDictionary dictionaryWithObjectsAndKeys:regularTasks,TITLE_REGULAR, _allContexts, TITLE_CONTEXTED , nil];
+    
+    
+    //подсчет общего числа заданий с заданным контекстом и числа сделанных из них
+    int index = 0;
+    for (NSString* contextName in _allContexts) {
+//NSLog(@"contextName: %%%@",contextName);
+        entity = [NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:context];
+        [request setEntity:entity];
+        
+        NMTGContext* contextObject;
+        if ([[_allContexts objectAtIndex:index] isKindOfClass:[NMTGContext class]]) { 
+            (contextObject = [_allContexts objectAtIndex:index]);
+        }
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"context == %@",
+                                  (contextObject != nil) ? (contextObject.name) : (contextName)];
+        [request setPredicate:predicate];
+        
+        resultsOfFetchExec = [context executeFetchRequest:request error:nil];
+        NSUInteger done = 0;
+        for (NMTGAbstract* obj in resultsOfFetchExec) {
+            if ([obj.done isEqualToNumber:[NSNumber numberWithBool:YES]]) {done++;}
+        }
+        [[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] addObject:[NSString stringWithFormat:@"сделано: %i (%i)",done, resultsOfFetchExec.count]];
+         index++;
+    }
+//NSLog(@"_numbers if viewWillAppear: %@", [_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED]);
+    
     [self.tableView reloadData];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    NSMutableArray* arra1 = [_numbersForCellsDataSource objectForKey:TITLE_REGULAR];
+    NSMutableArray* arra2 = [_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED];
+    for (id obj in arra1) {
+//        NSLog(@"------%@",arra1);
+    }
+    for (id obj in arra2) {
+//        NSLog(@"------%@",arra2);
+    }
+    
     [self reloadData];
 }
 
@@ -91,7 +158,7 @@
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     
     NSArray* allKeys = [_tableDataSource allKeys];
     NSString* particularKey = [allKeys objectAtIndex:indexPath.section];
@@ -100,6 +167,7 @@
         case 0: //иконки и лэйблы для ВСЕ и В ФОКУСЕ
         {
             cell.textLabel.text = [array objectAtIndex:indexPath.row];
+            cell.detailTextLabel.text = [[_numbersForCellsDataSource objectForKey:TITLE_REGULAR] objectAtIndex:indexPath.row];
             switch (indexPath.row) {
                 case 0:
                     cell.imageView.image = [UIImage imageNamed:@"all_tasks_30x30.png"];
@@ -116,6 +184,12 @@
         {
             if (indexPath.row >=4) cell.textLabel.text = [[array objectAtIndex:indexPath.row] name];
             else cell.textLabel.text = [array objectAtIndex:indexPath.row];
+
+//NSLog(@"[[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] objectAtIndex:indexPath.row] : %@",[[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] objectAtIndex:indexPath.row]);
+            cell.detailTextLabel.text = [[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] objectAtIndex:indexPath.row];
+            
+            
+//NSLog(@"_numbers in cellForRow: %@", [_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED]);
             switch (indexPath.row) {
                 case 0:
                     cell.imageView.image = [UIImage imageNamed:@"home_30x30.png"];
@@ -224,6 +298,7 @@
             } else {
                 /*taskContextVC*/focusedVC.contextToFilterTasks = [allContexts objectAtIndex:indexPath.row];
             }
+            focusedVC.shouldShowOnlyUnDone = _shouldSetBarButtonItemTitleALLorUNDONE;
             [self.navigationController pushViewController:/*taskContextVC*/focusedVC animated:YES];
             break;
         }

@@ -9,6 +9,7 @@
 #import "ProjectsViewController.h"
 #import "NMTGProject.h"
 #import "NMTGAbstract.h"
+#import "NMTGTask.h"
 #import "TaskViewController.h"
 #import "AddWhateverViewController.h"
 #import "TextViewViewController.h"
@@ -26,6 +27,7 @@
         _context = [[NMTaskGraphManager sharedManager] managedContext];
         
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(ProjectAddViewControllerDidAddProject) name:@"DismissModalController" object:nil];
+        
         self.tableView.allowsSelectionDuringEditing = YES;
     }
     return self;
@@ -63,12 +65,47 @@
     NSPredicate* pred = [NSPredicate predicateWithFormat:@"parentProject==nil"];
     [request setPredicate:pred];
     
+    
+    
     NSError* error = nil;
     _tableDataSource = [_context executeFetchRequest:request error:&error];
+    for (NMTGProject* proj in _tableDataSource) {
+        [self setProjectAlertDates:proj];
+    }
     [self.tableView reloadData];
 }
 
-
+-(void)setProjectAlertDates:(NMTGProject *)proj{
+    NSArray* subTasks = [proj.subTasks allObjects];
+    NSArray* subProjs = [proj.subProject allObjects];
+    NSDate* mindateTasks = [NSDate dateWithTimeIntervalSinceNow:10000*86400];
+    NSDate* maxdateTasks = [NSDate dateWithTimeIntervalSince1970:0];
+    for (NMTGTask* task in subTasks) {
+        if ([mindateTasks timeIntervalSince1970] > [task.alertDate_first timeIntervalSince1970] ) {
+            mindateTasks = task.alertDate_first;
+        }
+        if ([maxdateTasks timeIntervalSince1970] < [task.alertDate_second timeIntervalSince1970] ) {
+            maxdateTasks = task.alertDate_second;
+        }
+    }
+    
+    NSDate* mindateProjs = [NSDate dateWithTimeIntervalSinceNow:10000*86400];
+    NSDate* maxdateProjs = [NSDate dateWithTimeIntervalSince1970:0];
+    for (NMTGProject* proj in subProjs) {
+        if ([mindateProjs timeIntervalSince1970] > [proj.alertDate_first timeIntervalSince1970] ) {
+            mindateProjs = proj.alertDate_first;
+        }
+        if ([maxdateProjs timeIntervalSince1970] < [proj.alertDate_second timeIntervalSince1970] ) {
+            maxdateProjs = proj.alertDate_second;
+        }
+    }
+    NSDate* mindate = ([mindateTasks timeIntervalSince1970] < [mindateProjs timeIntervalSince1970]) ? (mindateTasks) : (mindateProjs) ;
+    NSDate* maxdate = ([maxdateTasks timeIntervalSince1970] > [maxdateProjs timeIntervalSince1970]) ? (maxdateTasks) : (maxdateProjs);
+    
+    
+    proj.alertDate_first = mindate;
+    proj.alertDate_second = maxdate;
+}
 
 
 
@@ -101,6 +138,14 @@
     cell.imageView.image = ([project.done isEqualToNumber:[NSNumber numberWithBool:NO]]) 
                                          ? ([UIImage imageNamed:@"case_30x30.png"])
                                          : ([UIImage imageNamed:@"case_30x30_checked.png"]);
+    
+    NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
+    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:3*86400]];
+    
+    [formatter setDateStyle:NSDateFormatterLongStyle];
+    [formatter setTimeStyle:NSDateFormatterNoStyle];
+    
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ =-= %@",[formatter stringFromDate:project.alertDate_first],[formatter stringFromDate:project.alertDate_second]];
     return cell;
 }
 

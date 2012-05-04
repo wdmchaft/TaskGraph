@@ -14,5 +14,6 @@
     NSIndexPath* _indexPathOfSelectedCell;
 }
 @property(nonatomic,retain) NMTGProject* parentProject;
-
+-(void)save;
+-(void)cancel;
 @end
