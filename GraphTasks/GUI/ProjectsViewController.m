@@ -75,6 +75,46 @@
     [self.tableView reloadData];
 }
 
+
+-(NSArray*)checkCompeletencyState:(NMTGProject *)proj
+{
+    NSFetchRequest* request = [NSFetchRequest new];
+    NSManagedObjectContext* context =  [[NMTaskGraphManager sharedManager]managedContext];
+    NSEntityDescription* entity = [NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:context];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"parentProject == %@",proj];
+    NSArray* resultsOfFetchExec;
+
+    [request setEntity:entity];
+    [request setPredicate:predicate];
+    resultsOfFetchExec = [context executeFetchRequest:request error:nil];
+    NSMutableArray* res = [[NSMutableArray alloc]initWithCapacity:2];
+    [res addObject: [NSNumber numberWithInt:0]];
+    [res addObject: [NSNumber numberWithInt:0]];      
+    
+NSLog(@"proj,subp.count: %i",proj.subProject.count);
+    if (proj.subProject.count != 0 ) {
+        for (NMTGProject* _subproj in proj.subProject ) {
+            NSArray* resReturnedBySubProjs = [self checkCompeletencyState:_subproj];
+NSLog(@"resBySubs: %@",resReturnedBySubProjs);
+            [res replaceObjectAtIndex:0 withObject: [NSNumber numberWithInt: [[res objectAtIndex:0] intValue] + [[resReturnedBySubProjs objectAtIndex:0] intValue]]];
+            [res replaceObjectAtIndex:1 withObject: [NSNumber numberWithInt: [[res objectAtIndex:1] intValue] + [[resReturnedBySubProjs objectAtIndex:1] intValue]]];
+        }
+    } 
+NSLog(@"res: %@",res);
+
+    NSUInteger done = 0;
+    for (NMTGTask* task in resultsOfFetchExec) {
+        if ([task.done isEqualToNumber:[NSNumber numberWithBool:YES]]) {done++;}
+    }
+    
+    [res replaceObjectAtIndex:0 withObject: [NSNumber numberWithInt: [[res objectAtIndex:0] intValue] + done]];
+    [res replaceObjectAtIndex:1 withObject: [NSNumber numberWithInt: [[res objectAtIndex:1] intValue] + resultsOfFetchExec.count]];
+    
+    return res;
+}
+
+
+
 -(void)setProjectAlertDates:(NMTGProject *)proj{
     NSArray* subTasks = [proj.subTasks allObjects];
     NSArray* subProjs = [proj.subProject allObjects];
@@ -125,7 +165,7 @@
 {
     static NSString *CellIdentifier = @"ProjectsCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     NMTGProject* project = [_tableDataSource objectAtIndex:indexPath.row]; 
         
@@ -139,13 +179,15 @@
                                          ? ([UIImage imageNamed:@"case_30x30.png"])
                                          : ([UIImage imageNamed:@"case_30x30_checked.png"]);
     
-    NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
-    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:3*86400]];
-    
-    [formatter setDateStyle:NSDateFormatterLongStyle];
-    [formatter setTimeStyle:NSDateFormatterNoStyle];
-    
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ =-= %@",[formatter stringFromDate:project.alertDate_first],[formatter stringFromDate:project.alertDate_second]];
+//    NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
+//    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:3*86400]];
+//    
+//    [formatter setDateStyle:NSDateFormatterLongStyle];
+//    [formatter setTimeStyle:NSDateFormatterNoStyle];
+//    
+//    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ =-= %@",[formatter stringFromDate:project.alertDate_first],[formatter stringFromDate:project.alertDate_second]];
+    NSArray* arrayForCellDetailTextLabel = [self checkCompeletencyState:project];
+    cell.detailTextLabel.text = [NSString stringWithFormat: @"сделано %@(%@)", [arrayForCellDetailTextLabel objectAtIndex:0], [arrayForCellDetailTextLabel objectAtIndex:1]] ;
     return cell;
 }
 

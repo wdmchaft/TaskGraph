@@ -30,7 +30,7 @@
 -(BOOL) checkProjectIsDone:(NMTGProject*) aProject;
 -(void) changeParentProjectsSettings;
 -(void)hide;
-
+-(NSArray *)checkCompeletencyState:(NMTGProject *)project;
 -(void)setProjectAlertDates:(NMTGProject *)proj;
 
 @end

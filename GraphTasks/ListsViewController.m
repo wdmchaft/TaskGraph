@@ -81,7 +81,7 @@
     for (NMTGTask* task in resultsOfFetchExec) {
         if ([task.done isEqualToNumber:[NSNumber numberWithBool:YES]]) {done++;}
     }
-    [_numbersForCellsDataSource setObject:[NSArray arrayWithObjects:[NSString stringWithFormat:@"сделано: %i (%i)",done, resultsOfFetchExec.count], [NSString stringWithFormat:@"сделано: %i (%i)",done, resultsOfFetchExec.count], nil] forKey:TITLE_REGULAR];
+    [_numbersForCellsDataSource setObject:[NSArray arrayWithObjects:[NSString stringWithFormat:@"сделано: %i (%i)",done, resultsOfFetchExec.count], [NSString stringWithFormat:@"сделано %i (%i)",done, resultsOfFetchExec.count], nil] forKey:TITLE_REGULAR];
 
     
     //поиск всех контекстов

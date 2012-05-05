@@ -192,32 +192,38 @@
 {    
     static NSString *CellIdentifier = @"ProjectsCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    
     NMTGAbstract* object = (NMTGAbstract*)[_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
     if([object isKindOfClass:[NMTGProject class]]) {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         cell.imageView.image = ([object.done isEqualToNumber:[NSNumber numberWithBool:NO]]) 
         ? ([UIImage imageNamed:@"case_30x30.png"])
         : ([UIImage imageNamed:@"case_30x30_checked.png"]);
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        NSArray* arrayForCellDetailTextLabel = [self checkCompeletencyState:[_fetchedProjectsOrTasks objectAtIndex:indexPath.row]];
+        cell.detailTextLabel.text = [NSString stringWithFormat: @"сделано %@(%@)", [arrayForCellDetailTextLabel objectAtIndex:0], [arrayForCellDetailTextLabel objectAtIndex:1]] ;
+        
     }
     if([object isKindOfClass:[NMTGTask class]]) {
-//        NSLog(@"OBJECT DONE : %@", object.done);
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         if ([object.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
             cell.imageView.image = [UIImage imageNamed:@"task_30x30.png"];
         } else {
             cell.imageView.image = [UIImage imageNamed:@"task_30x30_checked.png"];
         }
         cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+        
+        NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
+        [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:3*86400]];
+        
+        [formatter setDateStyle:NSDateFormatterLongStyle];
+        [formatter setTimeStyle:NSDateFormatterNoStyle];
+        
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ =-= %@",[formatter stringFromDate:object.alertDate_first],[formatter stringFromDate:object.alertDate_second]];
     }
     [[cell textLabel] setText:object.title];  
     
-    NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
-    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:3*86400]];
-    
-    [formatter setDateStyle:NSDateFormatterLongStyle];
-    [formatter setTimeStyle:NSDateFormatterNoStyle];
-    
-     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ =-= %@",[formatter stringFromDate:object.alertDate_first],[formatter stringFromDate:object.alertDate_second]];
     return cell;
 }
 
@@ -331,6 +337,43 @@
     }
 }
   
+
+-(NSArray*)checkCompeletencyState:(NMTGProject *)proj
+{
+    NSFetchRequest* request = [NSFetchRequest new];
+    NSManagedObjectContext* context =  [[NMTaskGraphManager sharedManager]managedContext];
+    NSEntityDescription* entity = [NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:context];
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"parentProject == %@",proj];
+    NSArray* resultsOfFetchExec;
+    
+    [request setEntity:entity];
+    [request setPredicate:predicate];
+    resultsOfFetchExec = [context executeFetchRequest:request error:nil];
+    NSMutableArray* res = [[NSMutableArray alloc]initWithCapacity:2];
+    [res addObject: [NSNumber numberWithInt:0]];
+    [res addObject: [NSNumber numberWithInt:0]];      
+    
+    NSLog(@"proj,subp.count: %i",proj.subProject.count);
+    if (proj.subProject.count != 0 ) {
+        for (NMTGProject* _subproj in proj.subProject ) {
+            NSArray* resReturnedBySubProjs = [self checkCompeletencyState:_subproj];
+            NSLog(@"resBySubs: %@",resReturnedBySubProjs);
+            [res replaceObjectAtIndex:0 withObject: [NSNumber numberWithInt: [[res objectAtIndex:0] intValue] + [[resReturnedBySubProjs objectAtIndex:0] intValue]]];
+            [res replaceObjectAtIndex:1 withObject: [NSNumber numberWithInt: [[res objectAtIndex:1] intValue] + [[resReturnedBySubProjs objectAtIndex:1] intValue]]];
+        }
+    } 
+    NSLog(@"res: %@",res);
+    
+    NSUInteger done = 0;
+    for (NMTGTask* task in resultsOfFetchExec) {
+        if ([task.done isEqualToNumber:[NSNumber numberWithBool:YES]]) {done++;}
+    }
+    
+    [res replaceObjectAtIndex:0 withObject: [NSNumber numberWithInt: [[res objectAtIndex:0] intValue] + done]];
+    [res replaceObjectAtIndex:1 withObject: [NSNumber numberWithInt: [[res objectAtIndex:1] intValue] + resultsOfFetchExec.count]];
+    
+    return res;
+}
 
 
 

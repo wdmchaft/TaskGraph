@@ -23,5 +23,5 @@
 -(void)ProjectAddViewControllerDidAddProject;
 -(void)hide;
 -(void)setProjectAlertDates:(NMTGProject *)proj;
-
+-(NSArray *)checkCompeletencyState:(NMTGProject *)project;
 @end
