@@ -62,7 +62,7 @@
 
 -(void) reloadData
 {
-    NSArray* regularTasks = [NSArray arrayWithObjects:@"Все", @"В фокусе", nil];
+    NSArray* regularTasks = [NSArray arrayWithObjects:@"Все", @"В фокусе", @"43 папки", nil];
      
     NSManagedObjectContext* context;
     NSFetchRequest* request = [NSFetchRequest new];
@@ -81,7 +81,7 @@
     for (NMTGTask* task in resultsOfFetchExec) {
         if ([task.done isEqualToNumber:[NSNumber numberWithBool:YES]]) {done++;}
     }
-    [_numbersForCellsDataSource setObject:[NSArray arrayWithObjects:[NSString stringWithFormat:@"сделано: %i (%i)",done, resultsOfFetchExec.count], [NSString stringWithFormat:@"сделано %i (%i)",done, resultsOfFetchExec.count], nil] forKey:TITLE_REGULAR];
+    [_numbersForCellsDataSource setObject:[NSArray arrayWithObjects:[NSString stringWithFormat:@"сделано %i (%i)",done, resultsOfFetchExec.count], [NSString stringWithFormat:@"сделано %i (%i)",done, resultsOfFetchExec.count], nil] forKey:TITLE_REGULAR];
 
     
     //поиск всех контекстов
@@ -99,7 +99,6 @@
     //подсчет общего числа заданий с заданным контекстом и числа сделанных из них
     int index = 0;
     for (NSString* contextName in _allContexts) {
-//NSLog(@"contextName: %%%@",contextName);
         entity = [NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:context];
         [request setEntity:entity];
         
@@ -116,10 +115,9 @@
         for (NMTGAbstract* obj in resultsOfFetchExec) {
             if ([obj.done isEqualToNumber:[NSNumber numberWithBool:YES]]) {done++;}
         }
-        [[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] addObject:[NSString stringWithFormat:@"сделано: %i (%i)",done, resultsOfFetchExec.count]];
+        [[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] addObject:[NSString stringWithFormat:@"сделано %i (%i)",done, resultsOfFetchExec.count]];
          index++;
     }
-//NSLog(@"_numbers if viewWillAppear: %@", [_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED]);
     
     [self.tableView reloadData];
 }
@@ -163,11 +161,12 @@
     NSArray* allKeys = [_tableDataSource allKeys];
     NSString* particularKey = [allKeys objectAtIndex:indexPath.section];
     NSArray* array = [_tableDataSource objectForKey:particularKey];
+    
     switch (indexPath.section) {
         case 0: //иконки и лэйблы для ВСЕ и В ФОКУСЕ
         {
             cell.textLabel.text = [array objectAtIndex:indexPath.row];
-            cell.detailTextLabel.text = [[_numbersForCellsDataSource objectForKey:TITLE_REGULAR] objectAtIndex:indexPath.row];
+            if (indexPath.row!=2) cell.detailTextLabel.text = [[_numbersForCellsDataSource objectForKey:TITLE_REGULAR] objectAtIndex:indexPath.row];
             switch (indexPath.row) {
                 case 0:
                     cell.imageView.image = [UIImage imageNamed:@"all_tasks_30x30.png"];
