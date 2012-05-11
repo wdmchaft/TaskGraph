@@ -1,0 +1,13 @@
+//
+//  _43FoldersTableViewController.h
+//  GraphTasks
+//
+//  Created by Тимур Юсипов on 05.05.12.
+//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface _43FoldersTableViewController : UITableViewController
+
+@end
