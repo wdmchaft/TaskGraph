@@ -25,6 +25,22 @@
     [nvc.navigationBar  setBarStyle:UIBarStyleBlack];
     [self.window    setRootViewController:nvc];
     
+    
+    [[UIApplication sharedApplication]
+     registerForRemoteNotificationTypes:
+     UIRemoteNotificationTypeBadge |
+     UIRemoteNotificationTypeAlert |
+     UIRemoteNotificationTypeSound];
+
+    UILocalNotification* notification = [UILocalNotification new];
+    notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:7];
+    notification.timeZone = [NSTimeZone systemTimeZone];
+    notification.alertBody = @"IT WORKED!";
+    
+    [UIApplication sharedApplication]. applicationIconBadgeNumber = 10;
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    
+        
     return YES;
 }
 

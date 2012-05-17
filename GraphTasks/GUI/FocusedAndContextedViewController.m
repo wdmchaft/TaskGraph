@@ -8,6 +8,7 @@
 
 #import "FocusedAndContextedViewController.h"
 #import "NMTGTask.h"
+#import "NMTGContext.h"
 #import "ProjectsViewController.h"
 
 /*
@@ -21,19 +22,24 @@
 #define TITLE_TODAY @"Сегодня"
 #define TITLE_THIS_WEEK @"На этой неделе"
 #define TITLE_THIS_MONTH @"В этом месяце"
+#define TITLE_DEFERRED @"Отложенное"
 
 
 @implementation FocusedAndContextedViewController
 
 @synthesize contextToFilterTasks = _contextToFilterTasks,
-            shouldShowOnlyUnDone = _shouldShowOnlyUnDone;
+            shouldShowOnlyUnDone = _shouldShowOnlyUnDone,
+
+            alert_date_1 = ALERT_DATE_1, 
+            alert_date_2 = ALERT_DATE_2
+;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
         _tableDataSource = [NSMutableDictionary new];
-        _titles = [NSArray arrayWithObjects:TITLE_TODAY, TITLE_THIS_WEEK, TITLE_THIS_MONTH, TITLE_OVERDUE, nil];
+        _titles = [NSArray arrayWithObjects:TITLE_TODAY, TITLE_THIS_WEEK, TITLE_THIS_MONTH, TITLE_OVERDUE, TITLE_DEFERRED, nil];
         _contextToFilterTasks = nil;
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(hideModalController) name:@"HideModalControllerINFocusedVC" object:nil];
     }
@@ -87,10 +93,12 @@
     NSDate* endDateToday = [[NSDate alloc]initWithTimeInterval:1*86400 sinceDate:startDate];
     NSDate* endDateThisWeek = [[NSDate alloc]initWithTimeInterval:7*86400 sinceDate:startDate];
     NSDate* endDateThisMonth = [[NSDate alloc]initWithTimeInterval:30*86400 sinceDate:startDate];
-//NSLog(@"startDate: %@",startDate);
-//NSLog(@"endDateToday: %@",endDateToday); 
-//NSLog(@"endDateThisWeek: %@",endDateThisWeek);
-//NSLog(@"endDateThisMonth: %@",endDateThisMonth);
+
+    
+if (self.alert_date_1 != nil && self.alert_date_2 != nil) {  
+    startDate = self.alert_date_1;
+    endDateToday = self.alert_date_2;
+}
     
     
     NSMutableArray* todayTasks = [NSMutableArray new];
@@ -108,6 +116,8 @@
     NSMutableArray* monthFormattedTaskDates = [NSMutableArray new];
     NSMutableArray* overdueFormattedTaskDates = [NSMutableArray new]; 
     
+    NSMutableArray* deferredTasks = [NSMutableArray new];
+    
     for (NMTGTask* task in allTasks) {
         bool closestIsAlertFirst = NO;
         bool closestIsAlertSecond = NO;
@@ -116,6 +126,10 @@
         [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:3*86400]];
         [formatter setDateStyle:NSDateFormatterLongStyle];
         [formatter setTimeStyle:NSDateFormatterNoStyle];
+        
+        if ([task.deferred isEqualToNumber:[NSNumber numberWithBool:YES]]) {
+            [deferredTasks addObject: task];
+        } else
         
         if ((closestIsAlertFirst  = ([task.alertDate_first compare:startDate] == NSOrderedDescending && 
                                      [task.alertDate_first compare:endDateToday] == NSOrderedAscending )) || 
@@ -205,6 +219,7 @@
     [_tableDataSource setObject:[NSArray arrayWithObjects:weekTasks, weekTasksColors, weekFormattedTaskDates, nil] forKey:TITLE_THIS_WEEK ];
     [_tableDataSource setObject:[NSArray arrayWithObjects:monthTasks, monthTasksColors, monthFormattedTaskDates, nil] forKey:TITLE_THIS_MONTH];
     [_tableDataSource setObject:[NSArray arrayWithObjects:overdueTasks, overdueTasksColors, overdueFormattedTaskDates, nil] forKey:TITLE_OVERDUE];
+    [_tableDataSource setObject:deferredTasks forKey:TITLE_DEFERRED];
     [self.tableView reloadData];
     
     NSString* title = (_shouldShowOnlyUnDone == YES) ? @"Все" : @"Без готовых";
@@ -232,7 +247,10 @@
         NSArray* contextsUserMade = [context executeFetchRequest:request error:nil];
         
         NSMutableArray* allContexts = [NSMutableArray arrayWithObjects:@"Дом", @"Работа", @"Семья", @"", nil]; //пустая строка - для пустого контекста. В tableViewCell будет написано (без контекста)
-        [allContexts addObjectsFromArray:contextsUserMade];
+        for (NMTGContext* aContext in contextsUserMade) {
+            [allContexts addObject:aContext.name];
+        }
+//        [allContexts addObjectsFromArray:contextsUserMade];
         if ([allContexts containsObject:self.contextToFilterTasks]) {
             self.navigationItem.title = ([self.contextToFilterTasks isEqualToString:@""]) 
                             ? (@"Без контекста") 
@@ -241,7 +259,11 @@
             NSLog(@"..........");
         }
     } else {
-          self.navigationItem.title = @"Текущие";     
+        if (self.alert_date_1 == nil) {
+            self.navigationItem.title = @"Текущие";
+        } else {
+            self.navigationItem.title = @"";
+        }
     }
     
     [self reloadData];
@@ -263,7 +285,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -281,7 +303,10 @@
             break;
         case 3:
             return [[[_tableDataSource objectForKey:TITLE_OVERDUE] objectAtIndex:0] count];
-            break;            
+            break; 
+        case 4:
+            return [[_tableDataSource objectForKey:TITLE_DEFERRED] count];
+            break;
         default:
             break;
     }
@@ -323,7 +348,11 @@
             cell.textLabel.text = [aTask title];
             aColor = [[[_tableDataSource objectForKey:TITLE_OVERDUE] objectAtIndex:1] objectAtIndex:indexPath.row];  
             formatedDate = [[[_tableDataSource objectForKey:TITLE_OVERDUE] objectAtIndex:2] objectAtIndex:indexPath.row];
-            break;            
+            break;      
+        case 4:
+            aTask = [[_tableDataSource objectForKey:TITLE_DEFERRED] objectAtIndex:indexPath.row];
+            cell.textLabel.text = aTask.title;
+            [cell setOpaque: NO];
         default:
             break;
     }
@@ -405,7 +434,14 @@
 
 -(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    NMTGTask* selectedTask = [[[_tableDataSource objectForKey:[_titles objectAtIndex: indexPath.section]] objectAtIndex:0] objectAtIndex:indexPath.row];
+    NMTGTask* selectedTask;
+    
+    if (indexPath.section == self.tableView.numberOfSections - 1) {//для просроченных
+        selectedTask = [[_tableDataSource objectForKey:[_titles objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];    
+        
+    } else {
+        selectedTask = [[ [_tableDataSource objectForKey:[_titles objectAtIndex:indexPath.section]]  objectAtIndex:0] objectAtIndex:indexPath.row];    
+    }
     NMTGProject* project = selectedTask.parentProject;
     [[NMTaskGraphManager sharedManager].pathComponents insertObject:selectedTask.title atIndex:0];
     [[NMTaskGraphManager sharedManager].pathComponents insertObject:project.title atIndex:0];
@@ -466,8 +502,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NMTGTask* selectedTask;
     
-    NMTGTask* selectedTask = [[ [_tableDataSource objectForKey:[_titles objectAtIndex:indexPath.section]]  objectAtIndex:0] objectAtIndex:indexPath.row];    
+    if (indexPath.section == self.tableView.numberOfSections - 1) {//для просроченных
+        selectedTask = [[_tableDataSource objectForKey:[_titles objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];    
+
+    } else {
+        selectedTask = [[ [_tableDataSource objectForKey:[_titles objectAtIndex:indexPath.section]]  objectAtIndex:0] objectAtIndex:indexPath.row];    
+    }
     if ([selectedTask.done isEqualToNumber:[NSNumber numberWithBool:YES]]) {
         selectedTask.done = [NSNumber numberWithBool:NO];
     } else {
@@ -539,6 +581,12 @@
                 return [NSString stringWithFormat:@"%@ (%@)", TITLE_OVERDUE, additionalComment];
             } else return @"";
             break;
+        case 4:
+            if ([[_tableDataSource objectForKey:TITLE_DEFERRED] count] > 0) {            
+                return [NSString stringWithFormat:@"%@ (%@)", TITLE_DEFERRED, additionalComment];
+            } else return @"";
+            break;
+            
         default:
             return @"";
             break;

@@ -383,7 +383,7 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self.navigationItem setTitle:self.parentProject.title];
-    UIBarButtonItem* hide = [[UIBarButtonItem alloc]initWithTitle:@"Скрыть" style:UIBarButtonSystemItemFastForward target:self action:@selector(hide)];    
+//    UIBarButtonItem* hide = [[UIBarButtonItem alloc]initWithTitle:@"Скрыть" style:UIBarButtonSystemItemFastForward target:self action:@selector(hide)];    
     
 //NSLog(@"pathComponents.count: %i",[NMTaskGraphManager sharedManager].pathComponents.count);
     if ([NMTaskGraphManager sharedManager].pathComponents.count == 0) {

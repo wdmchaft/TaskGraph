@@ -15,9 +15,15 @@
     NSString* _contextToFilterTasks;
     UIBarButtonItem* _showAllOrShowUnDoneOnly;
     BOOL _shouldShowOnlyUnDone;
+    
+    NSDate* ALERT_DATE_1;
+    NSDate* ALERT_DATE_2;
 }
 @property(nonatomic,retain) NSString* contextToFilterTasks;
-@property(nonatomic       ) BOOL shouldShowOnlyUnDone;
+@property(nonatomic,      ) BOOL shouldShowOnlyUnDone;
+
+@property(nonatomic,retain) NSDate* alert_date_1;
+@property(nonatomic,retain) NSDate* alert_date_2;
 
 -(void) reloadData;
 -(void) showAllOrShowUnDoneOnlyClicked;

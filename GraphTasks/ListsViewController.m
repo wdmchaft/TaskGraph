@@ -9,6 +9,8 @@
 #import "ListsViewController.h"
 #import "ProjectsViewController.h"
 #import "FocusedAndContextedViewController.h"
+#import "_43FoldersTableViewController.h"
+
 #import "NMTGTask.h"
 #import "NMTGProject.h"
 #import "NMTGContext.h"
@@ -62,7 +64,7 @@
 
 -(void) reloadData
 {
-    NSArray* regularTasks = [NSArray arrayWithObjects:@"Все", @"В фокусе", @"43 папки", nil];
+    NSArray* regularTasks = [NSArray arrayWithObjects:@"Все", @"В фокусе", @"43 папки GTD", nil];
      
     NSManagedObjectContext* context;
     NSFetchRequest* request = [NSFetchRequest new];
@@ -125,16 +127,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    NSMutableArray* arra1 = [_numbersForCellsDataSource objectForKey:TITLE_REGULAR];
-    NSMutableArray* arra2 = [_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED];
-    for (id obj in arra1) {
-//        NSLog(@"------%@",arra1);
-    }
-    for (id obj in arra2) {
-//        NSLog(@"------%@",arra2);
-    }
-    
+    self.navigationItem.title = @"Группы";
     [self reloadData];
 }
 
@@ -166,13 +159,16 @@
         case 0: //иконки и лэйблы для ВСЕ и В ФОКУСЕ
         {
             cell.textLabel.text = [array objectAtIndex:indexPath.row];
-            if (indexPath.row!=2) cell.detailTextLabel.text = [[_numbersForCellsDataSource objectForKey:TITLE_REGULAR] objectAtIndex:indexPath.row];
+            if (indexPath.row!=3) cell.detailTextLabel.text = [[_numbersForCellsDataSource objectForKey:TITLE_REGULAR] objectAtIndex:0/*indexPath.row*/];
             switch (indexPath.row) {
                 case 0:
                     cell.imageView.image = [UIImage imageNamed:@"all_tasks_30x30.png"];
                     break;
                 case 1:
                     cell.imageView.image = [UIImage imageNamed:@"focused_30x30.png"];
+                    break;
+                case 2:
+                    cell.imageView.image = [UIImage imageNamed:@"43.png"];
                     break;
                 default:
                     break;
@@ -268,17 +264,23 @@
                     ProjectsViewController* pvc = [[ProjectsViewController alloc]init];
                     [pvc setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"Projects" image:nil tag:0]];
                     
-                    UIViewController* VASILENKO_VIEW_CONTROLLER = [UIViewController new];
-                    [VASILENKO_VIEW_CONTROLLER setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"VASILENKO" image:nil tag:0]];
+//                    UIViewController* VASILENKO_VIEW_CONTROLLER = [UIViewController new];
+//                    [VASILENKO_VIEW_CONTROLLER setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"VASILENKO" image:nil tag:0]];
                     
-                    UITabBarController* tvc = [[UITabBarController alloc]init];
-                    [tvc setViewControllers:[NSArray arrayWithObjects:pvc, VASILENKO_VIEW_CONTROLLER, nil]];
-                    [self.navigationController pushViewController:tvc animated:YES];
+//                    UITabBarController* tvc = [[UITabBarController alloc]init];
+//                    [tvc setViewControllers:[NSArray arrayWithObjects:pvc, VASILENKO_VIEW_CONTROLLER, nil]];
+                    [self.navigationController pushViewController:pvc animated:YES];
                     break;
                 }
                 case 1: //В ФОКУСЕ
                 {
                     FocusedAndContextedViewController* vc = [[FocusedAndContextedViewController alloc]initWithStyle:UITableViewStylePlain];
+                    [self.navigationController pushViewController:vc animated:YES];
+                    break;
+                }
+                case 2: //43 папки GTD
+                {
+                    _43FoldersTableViewController* vc = [[_43FoldersTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
                     [self.navigationController pushViewController:vc animated:YES];
                     break;
                 }
@@ -293,10 +295,11 @@
 //            TasksWithContextViewController* taskContextVC = [[TasksWithContextViewController alloc]initWithStyle:UITableViewStylePlain];
             FocusedAndContextedViewController* focusedVC = [[FocusedAndContextedViewController alloc]initWithStyle:UITableViewStylePlain];
             if (indexPath.row >= 4) {
-                /*taskContextVC*/focusedVC.contextToFilterTasks = [[allContexts objectAtIndex:indexPath.row]name];
+                focusedVC.contextToFilterTasks = [[allContexts objectAtIndex:indexPath.row]name];
             } else {
-                /*taskContextVC*/focusedVC.contextToFilterTasks = [allContexts objectAtIndex:indexPath.row];
+                focusedVC.contextToFilterTasks = [allContexts objectAtIndex:indexPath.row];
             }
+            NSLog(@"focusedVC.contextToFilterTasks : %@",focusedVC.contextToFilterTasks);
             focusedVC.shouldShowOnlyUnDone = _shouldSetBarButtonItemTitleALLorUNDONE;
             [self.navigationController pushViewController:/*taskContextVC*/focusedVC animated:YES];
             break;

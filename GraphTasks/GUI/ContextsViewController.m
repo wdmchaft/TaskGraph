@@ -56,6 +56,7 @@
     [super viewDidAppear:animated];
     UIBarButtonItem* addContextButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addContext)];
     self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects: self.editButtonItem, addContextButton, nil];
+    self.navigationItem.title = @"Контексты";
     [self reloadData];
 }
 

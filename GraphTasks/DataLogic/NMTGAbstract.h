@@ -2,7 +2,7 @@
 //  NMTGAbstract.h
 //  GraphTasks
 //
-//  Created by Тимур Юсипов on 02.05.12.
+//  Created by Тимур Юсипов on 07.05.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
@@ -17,10 +17,11 @@
 @property (nonatomic, retain) NSDate * alertDate_second;
 @property (nonatomic, retain) NSString * comment;
 @property (nonatomic, retain) NSString * context;
+@property (nonatomic, retain) NSDate * created;
 @property (nonatomic, retain) NSNumber * done;
 @property (nonatomic, retain) NSDate * finishDate;
 @property (nonatomic, retain) NSString * title;
-@property (nonatomic, retain) NSDate * created;
+@property (nonatomic, retain) NSNumber * deferred;
 @property (nonatomic, retain) NSSet *employers;
 @end
 
@@ -30,5 +31,5 @@
 - (void)removeEmployersObject:(NMTeamProfile *)value;
 - (void)addEmployers:(NSSet *)values;
 - (void)removeEmployers:(NSSet *)values;
-- (BOOL)compare:(NMTGAbstract*)objectToCompareWith;
+
 @end

@@ -27,7 +27,7 @@
     NMTGProject* _parentProject;
     NSMutableDictionary* _namesDataSource;
     id<ContextAddDelegate> _delegateContextAdd;
-    id<SetTasksProperties> _delegateTaskProperties;
+    id<SetTasksProperties> _delegateTaskProperties; 
     id<SetProjectsProperties> _delegateProjectProperties;
     
     UIBarButtonItem* _buttonItem;

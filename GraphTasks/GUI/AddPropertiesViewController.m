@@ -34,7 +34,7 @@
     if (self) {
         _context = [[NMTaskGraphManager sharedManager]managedContext];
         
-        NSArray* arrayCommentAndContext = [NSArray arrayWithObjects:@"Комментарий",@"Контекст", nil];
+        NSArray* arrayCommentAndContext = [NSArray arrayWithObjects:@"Комментарий",@"Контекст", @"Отложенное", nil];
         NSArray* arrayAlertDates = [NSArray arrayWithObjects:@"Первое",@"Второе", nil];
         NSArray* arrayName = [NSArray arrayWithObjects:@"Имя", nil];
         
@@ -54,6 +54,7 @@
         _taskAlertDateSecond = [NSDate dateWithTimeIntervalSinceNow:3*86400];
         _taskComment = @"";
         _taskContext = @"";
+        _taskDeferred = [NSNumber numberWithBool:NO];
     } 
     if(self.taskToEdit != nil && self->_beganEditting == NO){
         _taskAlertDateFirst = self.taskToEdit.alertDate_first;
@@ -63,13 +64,10 @@
         _taskName = self.taskToEdit.title;
     }
     self->_beganEditting = YES;
-
-//                NSDateFormatter* df = ...; [df setDateStyle:]
-//                    NSDateFormatterNoStyle   ==   
-//                    NSDateFormatterShortStyle  ==  4/3/12
-//                    NSDateFormatterMediumStyle  ==  Apr 3, 2012
-//                    NSDateFormatterLongStyle  ==  April 3, 2012
-//                    NSDateFormatterFullStyle  ==  Tuesday, April 3, 2012
+    
+    _switch = [[UISwitch alloc]initWithFrame:CGRectMake(200, 10, 40, 30)];
+    [_switch setOn:[_taskDeferred boolValue]];
+    [_switch addTarget:self action:@selector(switchChanged) forControlEvents:UIControlEventTouchUpInside];
 }
 
 
@@ -100,6 +98,7 @@
         _newTask.context = _taskContext;
         _newTask.done = [NSNumber numberWithBool:NO];
         _newTask.created = [NSDate date];
+        _newTask.deferred = _taskDeferred;
 
         if(_parentProject == nil){NSLog(@"NILL PARENT PROJ IN ADDPROPERTIES vc");}
         [_parentProject addSubTasksObject:_newTask];
@@ -111,6 +110,7 @@
         _taskToEdit.alertDate_second = _taskAlertDateSecond;
         _taskToEdit.comment = _taskComment;
         _taskToEdit.context = _taskContext;
+        _taskToEdit.deferred = _taskDeferred;
     }
     
     NSError* error = nil;
@@ -190,6 +190,10 @@
                                                                    :*/ (_taskComment)
                             : ([_taskContext isEqualToString:@""]) ? ( @"(Без контекста)")
                                                                    : (_taskContext);
+            if (indexPath.row == 2) {
+                [cell.contentView addSubview:_switch];
+                cell.detailTextLabel.text = @"";
+            }
             break;
         }
         default:
@@ -322,6 +326,11 @@
     }
 }
 
+-(void)switchChanged
+{
+    _taskDeferred = [NSNumber numberWithBool:_switch.on];
+}
+
 
 #pragma mark - SetNewTasksProperties protocol implementation
 -(void) setTasksName: (NSString*)name
@@ -367,5 +376,8 @@
     [self.tableView reloadData];
 }
 
-
+-(void)setTasksDeferred:(NSNumber *)isDeferred
+{
+    _taskDeferred = isDeferred;
+}
 @end

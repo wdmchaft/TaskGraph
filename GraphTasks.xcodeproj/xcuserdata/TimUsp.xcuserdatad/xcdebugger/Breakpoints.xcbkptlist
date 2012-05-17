@@ -20,19 +20,6 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "GraphTasks/GUI/AddPropertiesViewController.m"
-         timestampString = "357810331.946498"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "335"
-         endingLineNumber = "335"
-         landmarkName = "-setTasksAlertDateFirst:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "GraphTasks/GUI/FocusedViewController.m"
          timestampString = "357602572.804688"
          startingColumnNumber = "9223372036854775807"
@@ -99,63 +86,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "GraphTasks/GUI/FocusedAndContextedViewController.m"
-         timestampString = "357827199.448274"
+         timestampString = "358184464.949796"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "188"
-         endingLineNumber = "188"
-         landmarkName = "-reloadData"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "GraphTasks/GUI/FocusedAndContextedViewController.m"
-         timestampString = "357827199.448274"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "166"
-         endingLineNumber = "166"
-         landmarkName = "-reloadData"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "GraphTasks/GUI/FocusedAndContextedViewController.m"
-         timestampString = "357827199.448274"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "142"
-         endingLineNumber = "142"
-         landmarkName = "-reloadData"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "GraphTasks/GUI/AddPropertiesViewController.m"
-         timestampString = "357810331.946498"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "272"
-         endingLineNumber = "272"
-         landmarkName = "-tableView:didSelectRowAtIndexPath:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "GraphTasks/GUI/FocusedAndContextedViewController.m"
-         timestampString = "357827199.448274"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "338"
-         endingLineNumber = "338"
+         startingLineNumber = "367"
+         endingLineNumber = "367"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -164,11 +99,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "GraphTasks/GUI/FocusedAndContextedViewController.m"
-         timestampString = "357827199.448274"
+         timestampString = "358184464.949796"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "330"
-         endingLineNumber = "330"
+         startingLineNumber = "359"
+         endingLineNumber = "359"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -177,37 +112,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "GraphTasks/GUI/FocusedAndContextedViewController.m"
-         timestampString = "357827199.448274"
+         timestampString = "358184464.949796"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "254"
-         endingLineNumber = "254"
-         landmarkName = "-showAllOrShowUnDoneOnlyClicked"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "GraphTasks/GUI/FocusedAndContextedViewController.m"
-         timestampString = "357827199.448274"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "195"
-         endingLineNumber = "195"
-         landmarkName = "-reloadData"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "GraphTasks/GUI/FocusedAndContextedViewController.m"
-         timestampString = "357827199.448274"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "464"
-         endingLineNumber = "464"
+         startingLineNumber = "500"
+         endingLineNumber = "500"
          landmarkName = "-tableView:accessoryButtonTappedForRowWithIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -216,11 +125,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "GraphTasks/GUI/ProjectsViewController.m"
-         timestampString = "357898928.422519"
+         timestampString = "358165487.360686"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "263"
-         endingLineNumber = "263"
+         startingLineNumber = "265"
+         endingLineNumber = "265"
          landmarkName = "-viewWillAppear:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -320,11 +229,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "GraphTasks/ListsViewController.m"
-         timestampString = "357899364.449226"
+         timestampString = "358163718.489055"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "162"
-         endingLineNumber = "162"
+         startingLineNumber = "155"
+         endingLineNumber = "155"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -333,11 +242,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "GraphTasks/ListsViewController.m"
-         timestampString = "357899282.567021"
+         timestampString = "358163718.489055"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "188"
-         endingLineNumber = "188"
+         startingLineNumber = "184"
+         endingLineNumber = "184"
          landmarkName = "-tableView:cellForRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -345,25 +254,64 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "GraphTasks/GUI/FocusedAndContextedViewController.m"
-         timestampString = "357827199.448274"
+         filePath = "GraphTasks/ListsViewController.m"
+         timestampString = "357910172.83097"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "242"
-         endingLineNumber = "242"
-         landmarkName = "-viewWillAppear:"
+         startingLineNumber = "88"
+         endingLineNumber = "88"
+         landmarkName = "-reloadData"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "GraphTasks/ListsViewController.m"
-         timestampString = "357827037.680068"
+         filePath = "GraphTasks/GUI/ProjectsViewController.m"
+         timestampString = "357921930.40488"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "86"
-         endingLineNumber = "86"
+         startingLineNumber = "94"
+         endingLineNumber = "94"
+         landmarkName = "-checkCompeletencyState:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "_43FoldersTableViewController.m"
+         timestampString = "358107554.445245"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "302"
+         endingLineNumber = "302"
+         landmarkName = "-reloadData"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "_43FoldersTableViewController.m"
+         timestampString = "358107554.445245"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "384"
+         endingLineNumber = "384"
+         landmarkName = "-countNumberOfDoneAndAllTasksBetweenDate:AndDate:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "_43FoldersTableViewController.m"
+         timestampString = "358107524.283022"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "261"
+         endingLineNumber = "261"
          landmarkName = "-reloadData"
          landmarkType = "5">
       </FileBreakpoint>
@@ -372,25 +320,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "GraphTasks/ListsViewController.m"
-         timestampString = "357899282.567021"
+         timestampString = "358183980.77637"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "137"
-         endingLineNumber = "137"
-         landmarkName = "-viewWillAppear:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "GraphTasks/GUI/ProjectsViewController.m"
-         timestampString = "357898928.422519"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "93"
-         endingLineNumber = "93"
-         landmarkName = "-checkCompeletencyState:"
+         startingLineNumber = "303"
+         endingLineNumber = "303"
+         landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

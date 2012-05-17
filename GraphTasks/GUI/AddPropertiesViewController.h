@@ -14,6 +14,7 @@
 -(void) setTasksAlertDateSecond: (NSDate*)date;
 -(void) setTasksComment: (NSString*)comment;
 -(void) setTasksContext: (NSString*)context;
+-(void) setTasksDeferred: (NSNumber*)isDeferred;
 @end
 
 
@@ -32,7 +33,12 @@
     NSString*   _taskComment;
     NSString*   _taskContext;
     NSDate*     _creationOrRenamingDate;
+    NSNumber*   _taskDeferred;
+    
+    UISwitch* _switch;
 }
 @property(nonatomic,retain) NMTGProject* parentProject;
 @property(nonatomic,retain) NMTGTask* taskToEdit;
+
+-(void)switchChanged;
 @end

@@ -89,7 +89,8 @@
     resultsOfFetchExec = [context executeFetchRequest:request error:nil];
     NSMutableArray* res = [[NSMutableArray alloc]initWithCapacity:2];
     [res addObject: [NSNumber numberWithInt:0]];
-    [res addObject: [NSNumber numberWithInt:0]];      
+    [res addObject: [NSNumber numberWithInt:0]];    
+  
     
 NSLog(@"proj,subp.count: %i",proj.subProject.count);
     if (proj.subProject.count != 0 ) {
@@ -188,6 +189,7 @@ NSLog(@"res: %@",res);
 //    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ =-= %@",[formatter stringFromDate:project.alertDate_first],[formatter stringFromDate:project.alertDate_second]];
     NSArray* arrayForCellDetailTextLabel = [self checkCompeletencyState:project];
     cell.detailTextLabel.text = [NSString stringWithFormat: @"сделано %@(%@)", [arrayForCellDetailTextLabel objectAtIndex:0], [arrayForCellDetailTextLabel objectAtIndex:1]] ;
+    
     return cell;
 }
 
@@ -279,12 +281,12 @@ NSLog(@"res: %@",res);
         [[NMTaskGraphManager sharedManager].pathComponents removeObjectAtIndex:0];
         [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
     }
-    [self.tabBarController.navigationItem   setTitle:@"Проекты"];
-    [self.navigationItem setTitle:@"Projects"];
+//    [self.tabBarController.navigationItem   setTitle:@"Проекты"];
+    [self.navigationItem setTitle:@"Проекты"];
     
     UIBarButtonItem* addbutton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewProject)];
     
-    self.tabBarController.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:self.editButtonItem,addbutton, nil];
+    self./*tabBarController.*/navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:self.editButtonItem,addbutton, nil];
 }
 
 -(void) hide

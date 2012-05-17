@@ -117,17 +117,21 @@ CGRect  kNMGSettingsRect;
 
 -   (void)  tasksButtonClicked{
     
-//    ProjectsViewController* pvc = [[ProjectsViewController alloc]init];
     ListsViewController* LstVC = [[ListsViewController alloc]initWithStyle:UITableViewStylePlain];
-    [LstVC setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"Проекты" image:nil tag:0]];
+//    [LstVC setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"Проекты" image:nil tag:0]];
     
-    UIViewController* VASILENKO_VIEW_CONTROLLER = [UIViewController new];
-    [VASILENKO_VIEW_CONTROLLER setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"Графы" image:nil tag:0]];
+//    UIViewController* VASILENKO_VIEW_CONTROLLER = [UIViewController new];
+//    [VASILENKO_VIEW_CONTROLLER setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"Графы" image:nil tag:0]];
     
-    UITabBarController* tvc = [[UITabBarController alloc]init];
-    [tvc setViewControllers:[NSArray arrayWithObjects:LstVC, VASILENKO_VIEW_CONTROLLER, nil]];
-    [self.navigationController pushViewController:tvc animated:YES];
-//    [self.navigationController pushViewController:pvc animated:YES];    
+//    UITabBarController* tvc = [[UITabBarController alloc]init];
+//    [tvc setViewControllers:[NSArray arrayWithObjects:LstVC, VASILENKO_VIEW_CONTROLLER, nil]];
+
+    
+//    [self.navigationController pushViewController:LstVC animated:YES];
+    UINavigationController *nvc = [[UINavigationController alloc]initWithRootViewController:LstVC];
+    [nvc.navigationBar  setBarStyle:UIBarStyleBlack];
+    [self presentModalViewController:nvc animated:YES];
+    
 }
 
 -   (void)  teamButtonClicked{
