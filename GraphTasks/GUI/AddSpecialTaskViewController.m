@@ -131,10 +131,19 @@
 {
 	ABPeoplePickerNavigationController *picker = [[ABPeoplePickerNavigationController alloc] init];
     picker.peoplePickerDelegate = self;
-	// Display only a person's phone, email, and birthdate
-	NSArray *displayedItems = [NSArray arrayWithObjects:[NSNumber numberWithInt:kABPersonPhoneProperty], 
-                               [NSNumber numberWithInt:kABPersonEmailProperty],
-                               [NSNumber numberWithInt:kABPersonBirthdayProperty], nil];
+	
+//новый вариант    
+    NSMutableArray *displayedItems = [NSMutableArray new];
+    if (self.taskPhone || self.taskSMS) {
+        [displayedItems addObject:[NSNumber numberWithInt:kABPersonPhoneProperty]];
+    } else {
+        [displayedItems addObject:[NSNumber numberWithInt:kABPersonEmailProperty]];
+    }
+    
+//старый вариант
+//	NSArray *displayedItems = [NSArray arrayWithObjects:[NSNumber numberWithInt:kABPersonPhoneProperty], 
+//                               [NSNumber numberWithInt:kABPersonEmailProperty],
+//                               [NSNumber numberWithInt:kABPersonBirthdayProperty], nil];
 	
 	
 	picker.displayedProperties = displayedItems;
