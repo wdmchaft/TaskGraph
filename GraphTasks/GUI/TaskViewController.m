@@ -319,6 +319,7 @@
         NSError* error = nil;
         if(!([_context save:&error])){
             NSLog(@"Failed to save context in TaskViewController in 'commit editting style' ");
+            NSLog(@"%@",error);
         }
         else{
             [self reloadData];
@@ -351,8 +352,8 @@
     CGSize labelSize = [cellText sizeWithFont:cellTextFont constrainedToSize:cellConstraintSize lineBreakMode:UILineBreakModeWordWrap];
     CGSize labelDetailSize = [cellDetailText sizeWithFont:cellDetailTextFont constrainedToSize:cellConstraintSize lineBreakMode:UILineBreakModeWordWrap];
     
-    NSLog(@"%f", labelSize.height);
-    NSLog(@"%f", labelDetailSize.height);
+//NSLog(@"%f", labelSize.height);
+//NSLog(@"%f", labelDetailSize.height);
     
     if (labelSize.height + labelDetailSize.height < 45) { return 45.0;
     }

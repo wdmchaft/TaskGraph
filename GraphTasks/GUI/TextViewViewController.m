@@ -90,12 +90,12 @@
 {
     [self modifyTextViewsText];
     
-    for (NSString* taskName in [_namesDataSource objectForKey:TITLE_SUBTASK_NAMES]){
-        if ([_textViewNameOrCommentOrContextText.text isEqualToString:taskName]) {
-            [self alertShow];
-            return;
-        }
-    }
+//    for (NSString* taskName in [_namesDataSource objectForKey:TITLE_SUBTASK_NAMES]){
+//        if ([_textViewNameOrCommentOrContextText.text isEqualToString:taskName]) {
+//            [self alertShow];
+//            return;
+//        }
+//    }
     
     AddPropertiesViewController* addPropertiesVC = [[AddPropertiesViewController alloc]initWithStyle:UITableViewStyleGrouped];
     [addPropertiesVC setTasksName:_textViewNameOrCommentOrContextText.text];
@@ -192,12 +192,12 @@
 {
     [self modifyTextViewsText];
     
-    for (NSString* taskName in [_namesDataSource objectForKey:TITLE_SUBTASK_NAMES]){
-        if ([_textViewNameOrCommentOrContextText.text isEqualToString:taskName]) {
-            [self alertShow];
-            return;
-        }
-    }
+//    for (NSString* taskName in [_namesDataSource objectForKey:TITLE_SUBTASK_NAMES]){
+//        if ([_textViewNameOrCommentOrContextText.text isEqualToString:taskName]) {
+//            [self alertShow];
+//            return;
+//        }
+//    }
     
     [self.delegateTaskProperties setTasksName:_textViewNameOrCommentOrContextText.text];
     [self.navigationController popViewControllerAnimated:YES];
@@ -267,15 +267,30 @@
     self.navigationItem.rightBarButtonItem.enabled = (self.isRenamingTask || self.isRenamingProject) ? YES : NO; //сначала нужно будет ввести имя
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     
-    NSMutableArray* projectNames = [NSMutableArray new];
-    for (NMTGProject* proj in _parentProject.subProject) {
-        [projectNames addObject:proj.title];
+    NSMutableArray *projectNames = [NSMutableArray new];
+//    NSMutableArray *taskNames = [NSMutableArray new];
+    if (_parentProject != nil) {
+        for (NMTGProject* proj in _parentProject.subProject) {
+            [projectNames addObject:proj.title];
+        }
+
+//        for (NMTGTask* task in _parentProject.subTasks) {
+//            [taskNames addObject:task.title];
+//        }
+    } else {
+        NSManagedObjectContext* context = [[NMTaskGraphManager sharedManager] managedContext];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"NMTGProject" inManagedObjectContext:context];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"parentProject == %@", nil];
+        
+        NSFetchRequest* request = [NSFetchRequest new];
+        [request setEntity:entity];
+        [request setPredicate:predicate];
+        
+        for (NMTGProject* object in [context executeFetchRequest:request error:nil] ) {
+            [projectNames addObject:object.title];
+        }
     }
-    NSMutableArray* taskNames = [NSMutableArray new];
-    for (NMTGTask* task in _parentProject.subTasks) {
-        [taskNames addObject:task.title];
-    }
-    [_namesDataSource setObject:taskNames forKey:TITLE_SUBTASK_NAMES];
+//    [_namesDataSource setObject:taskNames forKey:TITLE_SUBTASK_NAMES];
     [_namesDataSource setObject:projectNames forKey:TITLE_SUBPROJECT_NAMES];
 }
 

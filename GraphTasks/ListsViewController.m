@@ -197,8 +197,6 @@
             cell.badgeString3 = [[[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] objectAtIndex:indexPath.row] objectForKey:KEY_DONE];
             cell.badgeString1 = [[[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] objectAtIndex:indexPath.row] objectForKey:KEY_UNDONE];
             
-            NSLog(@"%@, %@",[[[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] objectAtIndex:indexPath.row] objectForKey:KEY_DONE], [[[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] objectAtIndex:indexPath.row] objectForKey:KEY_UNDONE]);
-            
 //            cell.badgeColor1 = [UIColor colorWithRed:0.712 green:0.712 blue:0.712 alpha:1.000];
 //            cell.badgeColor3 = [UIColor colorWithRed:0.192 green:0.812 blue:0.100 alpha:1.000];
             
@@ -309,7 +307,6 @@
             NSArray* allContexts = [_tableDataSource objectForKey:TITLE_CONTEXTED];
             FocusedAndContextedViewController* focusedVC = [[FocusedAndContextedViewController alloc]initWithStyle:UITableViewStylePlain];
             focusedVC.contextToFilterTasks = [[allContexts objectAtIndex:indexPath.row] name];
-            NSLog(@"focusedVC.contextToFilterTasks : %@",focusedVC.contextToFilterTasks);
             focusedVC.shouldShowOnlyUnDone = _shouldSetBarButtonItemTitleALLorUNDONE;
             [self.navigationController pushViewController:/*taskContextVC*/focusedVC animated:YES];
             break;
