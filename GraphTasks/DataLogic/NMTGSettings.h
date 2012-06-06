@@ -1,18 +1,16 @@
 //
-//  NMTGContext.m
+//  NMTGSettings.h
 //  GraphTasks
 //
 //  Created by Тимур Юсипов on 06.06.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "NMTGContext.h"
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
 
-@implementation NMTGContext
+@interface NMTGSettings : NSManagedObject
 
-@dynamic name;
-@dynamic iconName;
-@dynamic isDefaultContext;
 
 @end

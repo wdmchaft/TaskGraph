@@ -29,4 +29,5 @@ extern  const   NSString*   NMTaskGraphFileName;
 
 +   (NMTaskGraphManager*)   sharedManager;
 -   (void) saveContext;
+-   (void) resetSettingsToDefaults;
 @end

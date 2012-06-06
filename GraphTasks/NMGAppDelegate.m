@@ -40,7 +40,6 @@
     [UIApplication sharedApplication]. applicationIconBadgeNumber = 3;
     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
     
-        
     return YES;
 }
 
@@ -79,6 +78,7 @@
     // Saves changes in the application's managed object context before the application terminates.
     [[NMTaskGraphManager sharedManager]saveContext];
 }
+
 
 
 

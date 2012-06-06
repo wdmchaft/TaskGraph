@@ -22,7 +22,8 @@
 		174FD197157F3AA300A33714 /* NMTGTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 174FD196157F3AA300A33714 /* NMTGTask.m */; };
 		174FD19A157F3AA300A33714 /* NMTGTaskLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 174FD199157F3AA300A33714 /* NMTGTaskLocation.m */; };
 		174FD19D157F3AA300A33714 /* NMTGTaskSMS.m in Sources */ = {isa = PBXBuildFile; fileRef = 174FD19C157F3AA300A33714 /* NMTGTaskSMS.m */; };
-		174FD1A0157F3AA300A33714 /* NMTGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 174FD19F157F3AA300A33714 /* NMTGContext.m */; };
+		178359B6157F50F6008C573A /* NMTGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 178359B5157F50F6008C573A /* NMTGContext.m */; };
+		178359B9157F515A008C573A /* NMTGSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 178359B8157F515A008C573A /* NMTGSettings.m */; };
 		178D46EA151DC554004F0734 /* ProjectsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 178D46E9151DC554004F0734 /* ProjectsViewController.m */; };
 		178D47DD151F2F05004F0734 /* TaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 178D47DC151F2F04004F0734 /* TaskViewController.m */; };
 		179885CB154E6EAA00AA3CC1 /* context_nil_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885C5154E6EAA00AA3CC1 /* context_nil_30x30.png */; };
@@ -130,8 +131,10 @@
 		174FD199157F3AA300A33714 /* NMTGTaskLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskLocation.m; sourceTree = "<group>"; };
 		174FD19B157F3AA300A33714 /* NMTGTaskSMS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskSMS.h; sourceTree = "<group>"; };
 		174FD19C157F3AA300A33714 /* NMTGTaskSMS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskSMS.m; sourceTree = "<group>"; };
-		174FD19E157F3AA300A33714 /* NMTGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGContext.h; sourceTree = "<group>"; };
-		174FD19F157F3AA300A33714 /* NMTGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGContext.m; sourceTree = "<group>"; };
+		178359B4157F50F6008C573A /* NMTGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGContext.h; sourceTree = "<group>"; };
+		178359B5157F50F6008C573A /* NMTGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGContext.m; sourceTree = "<group>"; };
+		178359B7157F5159008C573A /* NMTGSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGSettings.h; sourceTree = "<group>"; };
+		178359B8157F515A008C573A /* NMTGSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGSettings.m; sourceTree = "<group>"; };
 		178D46E8151DC554004F0734 /* ProjectsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectsViewController.h; sourceTree = "<group>"; };
 		178D46E9151DC554004F0734 /* ProjectsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectsViewController.m; sourceTree = "<group>"; };
 		178D47DB151F2F04004F0734 /* TaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskViewController.h; sourceTree = "<group>"; };
@@ -413,10 +416,12 @@
 			isa = PBXGroup;
 			children = (
 				632BDE8414F41B7300A10E0B /* GraphTasks.xcdatamodeld */,
-				174FD19E157F3AA300A33714 /* NMTGContext.h */,
-				174FD19F157F3AA300A33714 /* NMTGContext.m */,
+				178359B7157F5159008C573A /* NMTGSettings.h */,
+				178359B8157F515A008C573A /* NMTGSettings.m */,
 				174FD19B157F3AA300A33714 /* NMTGTaskSMS.h */,
 				174FD19C157F3AA300A33714 /* NMTGTaskSMS.m */,
+				178359B4157F50F6008C573A /* NMTGContext.h */,
+				178359B5157F50F6008C573A /* NMTGContext.m */,
 				174FD198157F3AA300A33714 /* NMTGTaskLocation.h */,
 				174FD199157F3AA300A33714 /* NMTGTaskLocation.m */,
 				174FD195157F3AA300A33714 /* NMTGTask.h */,
@@ -740,7 +745,8 @@
 				174FD197157F3AA300A33714 /* NMTGTask.m in Sources */,
 				174FD19A157F3AA300A33714 /* NMTGTaskLocation.m in Sources */,
 				174FD19D157F3AA300A33714 /* NMTGTaskSMS.m in Sources */,
-				174FD1A0157F3AA300A33714 /* NMTGContext.m in Sources */,
+				178359B6157F50F6008C573A /* NMTGContext.m in Sources */,
+				178359B9157F515A008C573A /* NMTGSettings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

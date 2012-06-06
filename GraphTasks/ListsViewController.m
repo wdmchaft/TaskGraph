@@ -48,11 +48,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationItem.title = @"Группы";
+    [self reloadData];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -129,12 +137,6 @@
     [self.tableView reloadData];
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.navigationItem.title = @"Группы";
-    [self reloadData];
-}
 
 #pragma mark - Table view data source
 
@@ -280,15 +282,10 @@
             switch (indexPath.row) {
                 case 0: //ВСЕ
                 {
-                    ProjectsViewController* pvc = [[ProjectsViewController alloc]init];
-                    [pvc setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"Projects" image:nil tag:0]];
-                    
-//                    UIViewController* VASILENKO_VIEW_CONTROLLER = [UIViewController new];
-//                    [VASILENKO_VIEW_CONTROLLER setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"VASILENKO" image:nil tag:0]];
-                    
-//                    UITabBarController* tvc = [[UITabBarController alloc]init];
-//                    [tvc setViewControllers:[NSArray arrayWithObjects:pvc, VASILENKO_VIEW_CONTROLLER, nil]];
-                    [self.navigationController pushViewController:pvc animated:YES];
+//                    ProjectsViewController* pvc = [[ProjectsViewController alloc]init];
+//                    [pvc setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"Projects" image:nil tag:0]];
+                    TaskViewController* vc = [[TaskViewController alloc] initWithStyle:UITableViewStylePlain];
+                    [self.navigationController pushViewController:vc animated:YES];
                     break;
                 }
                 case 1: //БЛИЖАЙШИЕ
@@ -299,8 +296,8 @@
                 }
                 case 2: //43 папки GTD
                 {
-                    TaskViewController* vc = [[TaskViewController alloc] initWithStyle:UITableViewStylePlain];
-                    [self.navigationController pushViewController:vc animated:YES];
+//                    TaskViewController* vc = [[TaskViewController alloc] initWithStyle:UITableViewStylePlain];
+//                    [self.navigationController pushViewController:vc animated:YES];
                     break;
                 }
                 default:

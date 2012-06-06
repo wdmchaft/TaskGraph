@@ -1,18 +1,15 @@
 //
-//  NMTGContext.m
+//  NMTGSettings.m
 //  GraphTasks
 //
 //  Created by Тимур Юсипов on 06.06.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "NMTGContext.h"
+#import "NMTGSettings.h"
 
 
-@implementation NMTGContext
+@implementation NMTGSettings
 
-@dynamic name;
-@dynamic iconName;
-@dynamic isDefaultContext;
 
 @end

@@ -96,6 +96,8 @@ CGRect  kNMGSettingsRect;
         [self.view      addSubview:setButton];
         
         [self.navigationController.navigationBar  setBarStyle:UIBarStyleBlack];
+        
+        [[NMTaskGraphManager sharedManager] resetSettingsToDefaults]; 
     }
     
     return self;
@@ -119,7 +121,7 @@ CGRect  kNMGSettingsRect;
 
 -   (void)  tasksButtonClicked{
     
-    ListsViewController* LstVC = [[ListsViewController alloc]initWithStyle:UITableViewStylePlain];
+    ListsViewController* LstVC = [[ListsViewController alloc]initWithStyle:UITableViewStyleGrouped];
 //    [LstVC setTabBarItem:[[UITabBarItem alloc]initWithTitle:@"Проекты" image:nil tag:0]];
     
 //    UIViewController* VASILENKO_VIEW_CONTROLLER = [UIViewController new];
@@ -129,7 +131,6 @@ CGRect  kNMGSettingsRect;
 //    [tvc setViewControllers:[NSArray arrayWithObjects:LstVC, VASILENKO_VIEW_CONTROLLER, nil]];
 
     
-//    [self.navigationController pushViewController:LstVC animated:YES];
     [self.navigationController pushViewController:LstVC animated:YES];
     
 }

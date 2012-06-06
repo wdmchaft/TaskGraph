@@ -13,6 +13,8 @@
         <relationship name="employers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NMTGProfile" inverseName="tasksAndProjects" inverseEntity="NMTGProfile" syncable="YES"/>
     </entity>
     <entity name="NMTGContext" representedClassName="NMTGContext" syncable="YES">
+        <attribute name="iconName" attributeType="String" syncable="YES"/>
+        <attribute name="isDefaultContext" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="NMTGProfile" representedClassName="NMTeamProfile" syncable="YES">
@@ -29,6 +31,7 @@
         <relationship name="subProject" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="NMTGProject" syncable="YES"/>
         <relationship name="subTasks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="NMTGTask" inverseName="parentProject" inverseEntity="NMTGTask" syncable="YES"/>
     </entity>
+    <entity name="NMTGSettings" representedClassName="NMTGSettings" syncable="YES"/>
     <entity name="NMTGTask" representedClassName="NMTGTask" parentEntity="NMTGAbstract" syncable="YES">
         <relationship name="parentProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NMTGProject" inverseName="subTasks" inverseEntity="NMTGProject" syncable="YES"/>
     </entity>
@@ -41,6 +44,7 @@
         <element name="NMTGContext" positionX="-2916" positionY="-1800" width="128" height="60"/>
         <element name="NMTGProfile" positionX="-3168" positionY="-1827" width="128" height="150"/>
         <element name="NMTGProject" positionX="-3177" positionY="-2115" width="128" height="90"/>
+        <element name="NMTGSettings" positionX="160" positionY="192" width="128" height="45"/>
         <element name="NMTGTask" positionX="-2871" positionY="-1989" width="128" height="60"/>
         <element name="NMTGTaskLocation" positionX="-2801" positionY="-2070" width="128" height="45"/>
         <element name="NMTGTaskMail" positionX="-2594" positionY="-1908" width="128" height="45"/>

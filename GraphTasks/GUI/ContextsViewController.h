@@ -11,12 +11,10 @@
 
 @protocol ContextAddDelegate <NSObject>
 -(void)setContextName:(NSString*)name;
--(NSArray*) getData;
 @end
 
 @interface ContextsViewController : UITableViewController <ContextAddDelegate>{
     NSMutableDictionary* _tableDataSource;
-    NSInteger _numberOfAddedContexts;
     NSString* _defaultContextName;
     id<SetTasksProperties> _delegate;
 }

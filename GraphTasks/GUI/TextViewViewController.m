@@ -152,7 +152,16 @@
 -(void) addingContextName
 {
     [self modifyTextViewsText];
-    NSArray* contextNamesThatAlreadyExist = [self.delegateContextAdd getData];
+    
+    NSManagedObjectContext* context = [[NMTaskGraphManager sharedManager] managedContext];
+    NSEntityDescription* entity = [NSEntityDescription entityForName:@"NMTGContext" inManagedObjectContext:context];
+    
+    NSFetchRequest* request = [NSFetchRequest new];
+    [request setEntity:entity];
+    
+    NSArray* contextNamesThatAlreadyExist = [context executeFetchRequest:request error:nil];
+    
+
     if ([contextNamesThatAlreadyExist containsObject:_textViewNameOrCommentOrContextText.text]) {
         UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Такой контекст уже существует" message:@"Введите другое имя контекста" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
