@@ -9,6 +9,9 @@
 #import "FocusedAndContextedViewController.h"
 #import "NMTGTask.h"
 #import "NMTGContext.h"
+#import "NMTGTaskMail.h"
+#import "NMTGTaskPhone.h"
+#import "NMTGTaskSMS.h"
 #import "ProjectsViewController.h"
 
 /*
@@ -328,18 +331,37 @@
         NSLog(@"exception: %@", exception);
     }
     @finally {
-        //
+        if([aTask isKindOfClass:[NMTGTaskMail class]]) {
+            if ([aTask.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
+                cell.imageView.image = [UIImage imageNamed:@"mail_undone_30x30.png"];
+            } else {
+                cell.imageView.image = [UIImage imageNamed:@"mail_30x30.png"];
+            }
+        } else if([aTask isKindOfClass:[NMTGTaskSMS class]]) {
+            if ([aTask.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
+                cell.imageView.image = [UIImage imageNamed:@"sms_undone_30x30.png"];
+            } else {
+                cell.imageView.image = [UIImage imageNamed:@"sms_30x30.png"];
+            }
+        } else if([aTask isKindOfClass:[NMTGTaskPhone class]]) {
+            if ([aTask.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
+                cell.imageView.image = [UIImage imageNamed:@"call_undone_30x30.png"];
+            } else {
+                cell.imageView.image = [UIImage imageNamed:@"call_30x30.png"];
+            }
+        } else if([aTask isKindOfClass:[NMTGTask class]]) {
+            if ([aTask.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
+                cell.imageView.image = [UIImage imageNamed:@"task_30x30.png"];
+            } else {
+                cell.imageView.image = [UIImage imageNamed:@"task_30x30_checked.png"];
+            }
+        } 
     }
 
     cell.detailTextLabel.textColor = aColor;/* ( (indexPath.section + indexPath.row) % 2 ) ? ([UIColor blueColor])
                                                                           : ([UIColor whiteColor])*/
     cell.detailTextLabel.text = formatedDate;
 
-    if ([[aTask done] isEqualToNumber:[NSNumber numberWithBool:NO]]){
-        cell.imageView.image = [UIImage imageNamed:@"task_30x30.png"];
-    } else {
-        cell.imageView.image = [UIImage imageNamed:@"task_30x30_checked.png"];
-    }
     return cell;
 }
 
@@ -528,11 +550,11 @@
 {
     NMTGTask* selectedTask;
     
-    if (indexPath.section == self.tableView.numberOfSections - 1) {//для просроченных
-        selectedTask = [[_tableDataSource objectForKey:[_titles objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];    
+    if (indexPath.section == self.tableView.numberOfSections) {//для просроченных
+        selectedTask = [[_tableDataSource objectForKey:[_titles objectAtIndex:indexPath.section - 1]] objectAtIndex:indexPath.row];    
 
     } else {
-        selectedTask = [[ [_tableDataSource objectForKey:[_titles objectAtIndex:indexPath.section]]  objectAtIndex:0] objectAtIndex:indexPath.row];    
+        selectedTask = [[ [_tableDataSource objectForKey:[_titles objectAtIndex:indexPath.section - 1]]  objectAtIndex:0] objectAtIndex:indexPath.row];    
     }
     if ([selectedTask.done isEqualToNumber:[NSNumber numberWithBool:YES]]) {
         selectedTask.done = [NSNumber numberWithBool:NO];
