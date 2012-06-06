@@ -296,6 +296,7 @@
                 {
 //                    TaskViewController* vc = [[TaskViewController alloc] initWithStyle:UITableViewStylePlain];
 //                    [self.navigationController pushViewController:vc animated:YES];
+                    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
                     break;
                 }
                 default:
