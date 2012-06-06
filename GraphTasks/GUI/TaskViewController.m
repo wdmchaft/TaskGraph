@@ -285,7 +285,7 @@
             }
         } 
         cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-        cell.editingAccessoryType = UITableViewCellAccessoryNone;
+//        cell.editingAccessoryType = UITableViewCellAccessoryNone;
         
         NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
         [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:3*86400]];
@@ -298,7 +298,7 @@
     [[cell textLabel] setText:object.title];
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
     cell.textLabel.numberOfLines = 0;
-
+    cell.editingAccessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     
     return cell;
 }
