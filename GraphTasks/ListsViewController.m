@@ -17,8 +17,8 @@
 
 #import "BadgedCell.h"
 
-#define TITLE_REGULAR @"Обычные"
-#define TITLE_CONTEXTED @"С контекстом"
+#define TITLE_REGULAR @"Меню"
+#define TITLE_CONTEXTED @"Существующие котексты"
 
 #define KEY_DONE @ "done"
 #define KEY_UNDONE @"undone"
@@ -38,7 +38,6 @@
     self = [super initWithStyle:style];
     if (self) {
         _numbersForCellsDataSource = [NSMutableDictionary new];
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(setBarButtonItemTitleALLorUNDONE) name:@"ShouldRetitleBarButtonItem" object:nil];
         [_numbersForCellsDataSource setObject:[NSMutableArray new] forKey:TITLE_CONTEXTED];
         [self reloadData];
     }
@@ -48,7 +47,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewDidUnload
@@ -100,27 +98,28 @@
     //поиск всех контекстов
     entity = [NSEntityDescription entityForName:@"NMTGContext" inManagedObjectContext:context];
     [request setEntity:entity];
-    NSArray* contextsUserMade = [context executeFetchRequest:request error:nil];
     
-    _allContexts = [NSMutableArray arrayWithObjects:@"Дом", @"Работа", @"Семья", @"", nil]; //пустая строка - для пустого контекста. В tableViewCell будет написано (без контекста)
-
-    [_allContexts addObjectsFromArray:contextsUserMade];
+    NSSortDescriptor* sortdescriptor = [[NSSortDescriptor alloc] initWithKey:@"isDefaultContext" ascending:NO];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortdescriptor];
+    [request setSortDescriptors:sortDescriptors];
+    
+    NSFetchedResultsController *controller = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
+    
+    [controller performFetch:nil];
+    _allContexts = controller.fetchedObjects;
+    [request setSortDescriptors:nil];
+    
     
     _tableDataSource = [NSDictionary dictionaryWithObjectsAndKeys:regularTasks,TITLE_REGULAR, _allContexts, TITLE_CONTEXTED , nil];
     
     
     //подсчет общего числа заданий с заданным контекстом и числа сделанных из них
     int index = 0;
-    for (NSString* contextName in _allContexts) {
+    for (NMTGContext* nmtgcontext in _allContexts) {
         entity = [NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:context];
         [request setEntity:entity];
         
-        NMTGContext* contextObject;
-        if ([[_allContexts objectAtIndex:index] isKindOfClass:[NMTGContext class]]) { 
-            (contextObject = [_allContexts objectAtIndex:index]);
-        }
-        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"context == %@",
-                                  (contextObject != nil) ? (contextObject.name) : (contextName)];
+        NSPredicate* predicate = [NSPredicate predicateWithFormat:@"context == %@", (nmtgcontext.name)];
         [request setPredicate:predicate];
         
         resultsOfFetchExec = [context executeFetchRequest:request error:nil];
@@ -142,14 +141,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[_tableDataSource allKeys]count];
+    return [[_tableDataSource allKeys] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSArray* allKeys = [_tableDataSource allKeys];
     NSString* particularKey = [allKeys objectAtIndex:section];
-    return [[_tableDataSource objectForKey:particularKey]count];
+    return [[_tableDataSource objectForKey:particularKey] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -159,12 +158,12 @@
     
     NSArray* allKeys = [_tableDataSource allKeys];
     NSString* particularKey = [allKeys objectAtIndex:indexPath.section];
-    NSArray* array = [_tableDataSource objectForKey:particularKey];
+    NSArray* objectsForParticularKey = [_tableDataSource objectForKey:particularKey];
     
     switch (indexPath.section) {
         case 0: //иконки и лэйблы для ВСЕ и БЛИЖАЙШИЕ
         {
-            cell.textLabel.text = [array objectAtIndex:indexPath.row];
+            cell.textLabel.text = [objectsForParticularKey objectAtIndex:indexPath.row];
             
             cell.badgeString3 = [[_numbersForCellsDataSource objectForKey:TITLE_REGULAR] objectAtIndex:0];
             cell.badgeString1 = [[_numbersForCellsDataSource objectForKey:TITLE_REGULAR] objectAtIndex:1];
@@ -192,8 +191,8 @@
         }
         case 1: //иконки и лэйблы для списков с контекстом
         {
-            if (indexPath.row >=4) cell.textLabel.text = [[array objectAtIndex:indexPath.row] name];
-            else cell.textLabel.text = [array objectAtIndex:indexPath.row];
+            NSString *celltitle = [[objectsForParticularKey objectAtIndex:indexPath.row] name];
+            cell.textLabel.text = ([celltitle isEqualToString:@""]) ? (@"Без контекста") : (celltitle);
 
             cell.badgeString3 = [[[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] objectAtIndex:indexPath.row] objectForKey:KEY_DONE];
             cell.badgeString1 = [[[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] objectAtIndex:indexPath.row] objectForKey:KEY_UNDONE];
@@ -206,24 +205,7 @@
             cell.badgeColor1 = [UIColor colorWithRed:0.812 green:0.192 blue:0.100 alpha:1.000];
             cell.badgeColor3 = [UIColor colorWithRed:0.192 green:0.812 blue:0.100 alpha:1.000];
 
-            switch (indexPath.row) {
-                case 0:
-                    cell.imageView.image = [UIImage imageNamed:@"home_30x30.png"];
-                    break;
-                case 1:
-                    cell.imageView.image = [UIImage imageNamed:@"job_30x30.png"];  
-                    break;
-                case 2:
-                    cell.imageView.image = [UIImage imageNamed:@"family_30x30.png"];      
-                    break;
-                case 3:
-                    cell.imageView.image = [UIImage imageNamed:@"context_nil_30x30.png"];
-                    cell.textLabel.text = @"(Без контекста)";
-                    break;
-                default:
-                    cell.imageView.image = [UIImage imageNamed:@"context_30x30.png"];                    
-                    break;
-            }
+            cell.imageView.image = [UIImage imageNamed:[[objectsForParticularKey objectAtIndex:indexPath.row] iconName]];
             break;
         }
         default:
@@ -272,6 +254,22 @@
 }
 */
 
+-(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    switch (section) {
+        case 0:
+            return TITLE_REGULAR;
+            break;
+        case 1:
+            return TITLE_CONTEXTED;
+            break;
+        default:
+            return @"";
+            break;
+    }
+}
+
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -308,13 +306,8 @@
         case 1: //тут список контекстов
         {
             NSArray* allContexts = [_tableDataSource objectForKey:TITLE_CONTEXTED];
-//            TasksWithContextViewController* taskContextVC = [[TasksWithContextViewController alloc]initWithStyle:UITableViewStylePlain];
             FocusedAndContextedViewController* focusedVC = [[FocusedAndContextedViewController alloc]initWithStyle:UITableViewStylePlain];
-            if (indexPath.row >= 4) {
-                focusedVC.contextToFilterTasks = [[allContexts objectAtIndex:indexPath.row]name];
-            } else {
-                focusedVC.contextToFilterTasks = [allContexts objectAtIndex:indexPath.row];
-            }
+            focusedVC.contextToFilterTasks = [[allContexts objectAtIndex:indexPath.row] name];
             NSLog(@"focusedVC.contextToFilterTasks : %@",focusedVC.contextToFilterTasks);
             focusedVC.shouldShowOnlyUnDone = _shouldSetBarButtonItemTitleALLorUNDONE;
             [self.navigationController pushViewController:/*taskContextVC*/focusedVC animated:YES];
@@ -327,19 +320,5 @@
 
 }
 
--(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    switch (section) {
-        case 0:
-            return TITLE_REGULAR;
-            break;
-        case 1:
-            return TITLE_CONTEXTED;
-            break;
-        default:
-            return @"";
-            break;
-    }
-}
 
 @end

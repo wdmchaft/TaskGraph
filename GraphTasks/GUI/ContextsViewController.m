@@ -26,8 +26,7 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        _tableDataSource = [NSMutableDictionary new];
-        [self reloadData];
+        //
     }
     return self;
 }
@@ -80,7 +79,11 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [_tableDataSource allKeys].count;
+    int result = 0;
+    for (NSString *key in [_tableDataSource allKeys]) {
+        if ( [[_tableDataSource objectForKey:key] count] != 0 ) { result ++; }
+    }
+    return result;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -113,7 +116,7 @@
     cell.imageView.image = [UIImage imageNamed:nmtgcontext.iconName];
     cell.textLabel.text = ([nmtgcontext.name isEqualToString: @""]) ? (@"Без контекста") : (nmtgcontext.name);
 
-    if ([cell.textLabel.text isEqualToString:self.defaultContextName]) {
+    if ([nmtgcontext.name isEqualToString:self.defaultContextName]) { //ставим галочку на установленном в прошлый раз контексте
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } 
     return cell;
@@ -155,6 +158,8 @@
 
 -(void)reloadData
 {
+    _tableDataSource = [NSMutableDictionary new];
+    
     NSManagedObjectContext* context = [[NMTaskGraphManager sharedManager] managedContext];
     NSEntityDescription* entity = [NSEntityDescription entityForName:@"NMTGContext" inManagedObjectContext:context];
 

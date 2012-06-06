@@ -486,8 +486,6 @@
          }
      } else {
          FocusedAndContextedViewController* vc = [[FocusedAndContextedViewController alloc]initWithStyle:UITableViewStylePlain];
-         vc.alert_date_1 = [newDates objectAtIndex:indexPath.row];
-         vc.alert_date_2 = [newDates objectAtIndex:indexPath.row + 1];
          [self.navigationController pushViewController:vc animated:YES];
      }
      [self reloadData];

@@ -9,6 +9,7 @@
 #import "TextViewViewController.h"
 #import "AddPropertiesViewController.h"
 #import "NMTGTask.h"
+#import "NMTGContext.h"
 #import <QuartzCore/QuartzCore.h>
 
 /*
@@ -159,14 +160,15 @@
     NSFetchRequest* request = [NSFetchRequest new];
     [request setEntity:entity];
     
-    NSArray* contextNamesThatAlreadyExist = [context executeFetchRequest:request error:nil];
+    NSArray* contextsThatAlreadyExist = [context executeFetchRequest:request error:nil];
+    for (NMTGContext *nmtgcontext in contextsThatAlreadyExist) {
+        if ([nmtgcontext.name isEqualToString:_textViewNameOrCommentOrContextText.text]) {
+            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Такой контекст уже существует" message:@"Введите другое имя контекста" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+            [alert show];
+            return;
+        }
+    }
     
-
-    if ([contextNamesThatAlreadyExist containsObject:_textViewNameOrCommentOrContextText.text]) {
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"Такой контекст уже существует" message:@"Введите другое имя контекста" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-        [alert show];
-        return;
-    } 
     [self.delegateContextAdd setContextName:_textViewNameOrCommentOrContextText.text];
     [self.navigationController popViewControllerAnimated:YES];
 }

@@ -47,14 +47,9 @@
 
 
 -(void)reloadData{
+    _fetchedProjectsOrTasks = [NSMutableArray new];
+    
     NSEntityDescription* entity1 = [NSEntityDescription entityForName:@"NMTGProject" inManagedObjectContext:_context]; 
-    
-//    NSEntityDescription* entity2 = [NSEntityDescription entityForName:@"NMTGTaskPhone" inManagedObjectContext:_context];
-//    
-//    NSEntityDescription* entity3 = [NSEntityDescription entityForName:@"NMTGTaskSMS" inManagedObjectContext:_context];
-//    
-//    NSEntityDescription* entity4 = [NSEntityDescription entityForName:@"NMTGTaskMail" inManagedObjectContext:_context];
-    
     NSEntityDescription* entity6 = [NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:_context];
     
     NSFetchRequest* request = [[NSFetchRequest alloc]init];
@@ -63,41 +58,44 @@
     NSPredicate* pred = [NSPredicate predicateWithFormat:@"parentProject == %@",self.parentProject];
     [request setPredicate:pred];
     
+    NSSortDescriptor *sortdescriptor = [NSSortDescriptor sortDescriptorWithKey:@"created" ascending:YES];
+    NSArray *sortdescriptors = [NSArray arrayWithObject:sortdescriptor];
+    [request setSortDescriptors:sortdescriptors];
+    
+    NSFetchedResultsController *controller = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:_context sectionNameKeyPath:nil cacheName:nil];
+    
+    //поиск проектов
+    NSError* error = nil;
+    if (! [controller performFetch: &error] ) {
+        NSLog(@"Failed to perform fetch request in reloadData in TaskVC");
+        NSLog(@"%@", error);
+    }
+    [_fetchedProjectsOrTasks addObjectsFromArray:controller.fetchedObjects];
+    
+    //поиск задач
+    [request setEntity:entity6];
+    error=nil;
+    if (! [controller performFetch: &error] ) {
+        NSLog(@"Failed to perform fetch request in reloadData in TaskVC");
+        NSLog(@"%@", error);
+    }
+    [_fetchedProjectsOrTasks addObjectsFromArray: controller.fetchedObjects];
+    
+    
+    self.parentProject.done = [NSNumber numberWithBool: [self checkProjectIsDone:self.parentProject]];
+     error = nil;
+    
+    if (! [[[NMTaskGraphManager sharedManager] managedContext] save:&error ]) {
+        NSLog(@"Failed to save context in 'reloadData' in TasksVC");
+        NSLog(@"%@",error);
+    }
+    
     for(NMTGAbstract* obj in _fetchedProjectsOrTasks) {
         if (obj.class == [NMTGProject class]) {
             NMTGProject* proj = (NMTGProject*)obj;
             [self setProjectAlertDates:proj];
         }
     }
-    
-    NSError* error = nil;
-    _fetchedProjectsOrTasks = [NSMutableArray arrayWithArray:[_context executeFetchRequest:request error:&error]];
-    
-//    [request setEntity:entity2];
-//    error=nil;
-//    [_fetchedProjectsOrTasks addObjectsFromArray:[_context executeFetchRequest:request error:&error]];
-//    
-//    [request setEntity:entity3];
-//    error=nil;
-//    [_fetchedProjectsOrTasks addObjectsFromArray:[_context executeFetchRequest:request error:&error]];
-//    
-//    [request setEntity:entity4];
-//    error=nil;
-//    [_fetchedProjectsOrTasks addObjectsFromArray:[_context executeFetchRequest:request error:&error]];
-    
-    
-    [request setEntity:entity6];
-    error=nil;
-    [_fetchedProjectsOrTasks addObjectsFromArray:[_context executeFetchRequest:request error:&error]];
-    
-    
-    self.parentProject.done = [NSNumber numberWithBool: [self checkProjectIsDone:self.parentProject]];
-     error = nil;
-    if (! [[[NMTaskGraphManager sharedManager] managedContext] save:&error ]) {
-        NSLog(@"Failed to save context in 'reloadData'");
-        NSLog(@"%@",error);
-    }
-    
     [self.tableView reloadData];
 
 }
@@ -263,19 +261,19 @@
         cell = [[BadgedCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         if([object isKindOfClass:[NMTGTaskMail class]]) {
             if ([object.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
-                cell.imageView.image = [UIImage imageNamed:@"mail_30x30.png"];
+                cell.imageView.image = [UIImage imageNamed:@"mail_undone_30x30.png"];
             } else {
                 cell.imageView.image = [UIImage imageNamed:@"mail_30x30.png"];
             }
         } else if([object isKindOfClass:[NMTGTaskSMS class]]) {
             if ([object.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
-                cell.imageView.image = [UIImage imageNamed:@"sms_30x30.png"];
+                cell.imageView.image = [UIImage imageNamed:@"sms_undone_30x30.png"];
             } else {
                 cell.imageView.image = [UIImage imageNamed:@"sms_30x30.png"];
             }
         } else if([object isKindOfClass:[NMTGTaskPhone class]]) {
             if ([object.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
-                cell.imageView.image = [UIImage imageNamed:@"call_30x30.png"];
+                cell.imageView.image = [UIImage imageNamed:@"call_undone_30x30.png"];
             } else {
                 cell.imageView.image = [UIImage imageNamed:@"call_30x30.png"];
             }
