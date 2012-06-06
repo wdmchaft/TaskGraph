@@ -139,17 +139,9 @@
     } else {
         [displayedItems addObject:[NSNumber numberWithInt:kABPersonEmailProperty]];
     }
-    
-//старый вариант
-//	NSArray *displayedItems = [NSArray arrayWithObjects:[NSNumber numberWithInt:kABPersonPhoneProperty], 
-//                               [NSNumber numberWithInt:kABPersonEmailProperty],
-//                               [NSNumber numberWithInt:kABPersonBirthdayProperty], nil];
-	
 	
 	picker.displayedProperties = displayedItems;
-	// Show the picker 
 	[self presentModalViewController:picker animated:YES];
-//    [self.navigationController pushViewController:picker animated:YES];
 }
 
 -(void)showNewPersonViewController
@@ -180,16 +172,26 @@
                                                                  kABPersonFirstNameProperty);
     NSString *lastName = (__bridge NSString *)ABRecordCopyValue(person, 
                                                                 kABPersonLastNameProperty);
-    ABMultiValueRef phones = ABRecordCopyValue(person, kABPersonPhoneProperty);
-    NSArray *phonenumbers = (__bridge NSArray* )ABMultiValueCopyArrayOfAllValues(phones);
-
     
     //формирование словаря доп информации
     NSString *key;
+    NSString *value;
+    
+    
     if (self.taskSMS) key = @"Отправить SMS";
     else if (self.taskPhone) key = @"Позвонить";
-    else if (self.taskEmail) key = @"Отправить e-Mail";
-    NSString *value = [NSString stringWithFormat:@"%@",[phonenumbers objectAtIndex:identifier]];
+    else if (self.taskEmail) key = @"e-Mail";
+    
+    if (self.taskSMS || self.taskPhone) {
+        ABMultiValueRef phones = ABRecordCopyValue(person, kABPersonPhoneProperty);
+        NSArray *phonenumbers = (__bridge NSArray* )ABMultiValueCopyArrayOfAllValues(phones);
+        value = [NSString stringWithFormat:@"%@",[phonenumbers objectAtIndex:identifier]];
+    } else {
+        ABMultiValueRef mails = ABRecordCopyValue(person, kABPersonEmailProperty);
+        NSArray *emails = (__bridge NSArray* )ABMultiValueCopyArrayOfAllValues(mails);
+        value = [NSString stringWithFormat:@"%@",[emails objectAtIndex:identifier]];
+    }
+    
     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:value, key, nil];
     
     AddPropertiesViewController* addPropertiesVC = [[AddPropertiesViewController alloc] initWithStyle:UITableViewStyleGrouped additionalInfo: info];
@@ -199,13 +201,7 @@
     [addPropertiesVC setTaskSMS: self.taskSMS];
     [addPropertiesVC setTaskMail: self.taskEmail];
     [addPropertiesVC setTaskPhone:self.taskPhone];
-    NSLog(@"person: %@", person);
-    NSLog(@"property: %i", property);
-    NSLog(@"identifier: %i", identifier);
-    
-    
 
-    
     [self dismissModalViewControllerAnimated:NO];
     [self.navigationController pushViewController:addPropertiesVC animated:YES];
 	return NO;
