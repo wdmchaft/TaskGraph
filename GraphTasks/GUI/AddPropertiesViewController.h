@@ -35,10 +35,20 @@
     NSDate*     _creationOrRenamingDate;
     NSNumber*   _taskDeferred;
     
+    NSString* _additionalRowForSpecialTask;
+    
+    BOOL _taskSMS;
+    BOOL _taskPhone;
+    BOOL _taskMail;
+    
     UISwitch* _switch;
 }
 @property(nonatomic,retain) NMTGProject* parentProject;
 @property(nonatomic,retain) NMTGTask* taskToEdit;
-
--(void)switchChanged;
+@property(nonatomic, getter = isTaskSMS) BOOL taskSMS;
+@property(nonatomic, getter = isTaskMail) BOOL taskMail;
+@property(nonatomic, getter = isTaskPhone) BOOL taskPhone;
+@property(nonatomic, retain) NSString* additionalRowForSpecialTask;
+- (void) switchChanged;
+-  (id)  initWithStyle:(UITableViewStyle)style additionalInfo:(NSDictionary *) info;
 @end

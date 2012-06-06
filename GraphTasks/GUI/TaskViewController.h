@@ -10,7 +10,6 @@
 #import "NMTGProject.h"
 
 @protocol SetProjectsProperties <NSObject>
-
 -(void) setProjectsName: (NSString*)name;
 
 @end
@@ -20,6 +19,7 @@
     NSMutableArray* _fetchedProjectsOrTasks;
     NMTGProject* _parentProject;
     UIBarButtonItem* _plusOrSettingsButtonItem;
+    NMTGProject* _projectToRename;
 }
 
 @property(nonatomic,retain)NMTGProject* parentProject;
@@ -29,9 +29,9 @@
 -(void) projectOrTaskAddViewControllerDidAddProjectOrTask;
 -(BOOL) checkProjectIsDone:(NMTGProject*) aProject;
 -(void) changeParentProjectsSettings;
--(void)hide;
--(NSArray *)checkCompeletencyState:(NMTGProject *)project;
--(void)setProjectAlertDates:(NMTGProject *)proj;
+-(void) hide;
+-(NSArray *) checkCompeletencyState:(NMTGProject *)project;
+-(void) setProjectAlertDates:(NMTGProject *)proj;
 
 @end
 

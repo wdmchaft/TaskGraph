@@ -431,8 +431,9 @@
         cell.imageView.image = [newImages objectAtIndex:indexPath.row];
     } else {
         if (indexPath.row  <= _number_of_selected_row) {
-        cell.imageView.image = [newImages objectAtIndex:indexPath.row];            
+            cell.imageView.image = [newImages objectAtIndex:indexPath.row];            
         } else if (indexPath.row <= _number_of_selected_row + _additional_31_day) {
+            //
         } else {
             cell.imageView.image = [newImages objectAtIndex:indexPath.row - _additional_31_day];
         }
@@ -473,29 +474,7 @@
                            
 #pragma mark - Table view delegate
  -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-
-//     if (_number_of_selected_row == indexPath.row) {
-//         _additional_31_day = 0;
-//         _number_of_selected_row = - 1;
-//     }
-//     else {
-//         NSString* cellTitle = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]].textLabel.text;
-//         [self hide];
-//         NSArray* allIndexPaths = [self.tableView indexPathsForVisibleRows];
-//         for (NSIndexPath* index_path in allIndexPaths) {
-//             if ([[self.tableView cellForRowAtIndexPath:index_path].textLabel.text isEqualToString:cellTitle] ) {
-//                 _number_of_selected_row = index_path.row;
-//                 break;
-//             } else {
-//                 continue;
-//             }
-//         }
-//         _additional_31_day = [[newNumberOfDaysInMonth objectAtIndex:_number_of_selected_row] intValue];
-//         [
-//     }
-//     [self reloadData];
-          
-     if (_additional_31_day == 0) {
+    if (_additional_31_day == 0) {
          _number_of_selected_row = indexPath.row;
          _additional_31_day = [[newNumberOfDaysInMonth objectAtIndex:_number_of_selected_row] intValue];
      } else if (indexPath.row <= _number_of_selected_row || indexPath.row >=  _number_of_selected_row + _additional_31_day) {  
@@ -509,33 +488,11 @@
          FocusedAndContextedViewController* vc = [[FocusedAndContextedViewController alloc]initWithStyle:UITableViewStylePlain];
          vc.alert_date_1 = [newDates objectAtIndex:indexPath.row];
          vc.alert_date_2 = [newDates objectAtIndex:indexPath.row + 1];
-         NSLog(@"1: %@,   2: %@", vc.alert_date_1, vc.alert_date_2);
          [self.navigationController pushViewController:vc animated:YES];
      }
      [self reloadData];
 }
                    
-                   
-//-(BOOL) checkProjectIsDone:(NMTGProject *)aProject
-//{
-//    NSSet* subProjects = aProject.subProject;
-//    NSSet* subTasks = aProject.subTasks;
-//
-//    for(NMTGProject* proj in subProjects) {
-//        if ([self checkProjectIsDone:proj] == NO) {
-//            return NO;
-//        }    
-//    }
-//
-//    NSArray* subTasksIndexed = [subTasks allObjects];
-//    for(int i=0; i<subTasksIndexed.count; i++){
-//        NMTGTask* task = [subTasksIndexed objectAtIndex:i];
-//        if([task.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
-//            return NO;
-//        } 
-//    }
-//    return YES;
-//}
    
                            
 @end

@@ -15,14 +15,18 @@
 #import "NMTGProject.h"
 #import "NMTGContext.h"
 
+#import "BadgedCell.h"
 
 #define TITLE_REGULAR @"Обычные"
 #define TITLE_CONTEXTED @"С контекстом"
 
+#define KEY_DONE @ "done"
+#define KEY_UNDONE @"undone"
+
 /*
 //
 // Данный контроллер предлагает пользователю выбор типа списка проектов или заданий.
-// "Все", "В фокусе" и различные контекстные списки
+// "Все", "Ближайшие" и различные контекстные списки
 //
 */
 
@@ -34,9 +38,8 @@
     self = [super initWithStyle:style];
     if (self) {
         _numbersForCellsDataSource = [NSMutableDictionary new];
-        [_numbersForCellsDataSource setObject:[NSMutableArray new] forKey:TITLE_REGULAR];
-        [_numbersForCellsDataSource setObject:[NSMutableArray new] forKey:TITLE_CONTEXTED];
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(setBarButtonItemTitleALLorUNDONE) name:@"ShouldRetitleBarButtonItem" object:nil];
+        [_numbersForCellsDataSource setObject:[NSMutableArray new] forKey:TITLE_CONTEXTED];
         [self reloadData];
     }
     return self;
@@ -64,7 +67,7 @@
 
 -(void) reloadData
 {
-    NSArray* regularTasks = [NSArray arrayWithObjects:@"Все", @"В фокусе", @"43 папки GTD", nil];
+    NSArray* regularTasks = [NSArray arrayWithObjects:@"Все", @"Ближайшие", @"43 папки GTD", nil];
      
     NSManagedObjectContext* context;
     NSFetchRequest* request = [NSFetchRequest new];
@@ -83,7 +86,7 @@
     for (NMTGTask* task in resultsOfFetchExec) {
         if ([task.done isEqualToNumber:[NSNumber numberWithBool:YES]]) {done++;}
     }
-    [_numbersForCellsDataSource setObject:[NSArray arrayWithObjects:[NSString stringWithFormat:@"сделано %i (%i)",done, resultsOfFetchExec.count], [NSString stringWithFormat:@"сделано %i (%i)",done, resultsOfFetchExec.count], nil] forKey:TITLE_REGULAR];
+    [_numbersForCellsDataSource setObject: [NSArray arrayWithObjects: [NSString stringWithFormat:@"%i",done], [NSString stringWithFormat:@"%i", resultsOfFetchExec.count - done], nil] forKey:TITLE_REGULAR];
 
     
     //поиск всех контекстов
@@ -114,10 +117,12 @@
         
         resultsOfFetchExec = [context executeFetchRequest:request error:nil];
         NSUInteger done = 0;
+        NSUInteger undone = 0;
         for (NMTGAbstract* obj in resultsOfFetchExec) {
             if ([obj.done isEqualToNumber:[NSNumber numberWithBool:YES]]) {done++;}
+            else {undone++;}
         }
-        [[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] addObject:[NSString stringWithFormat:@"сделано %i (%i)",done, resultsOfFetchExec.count]];
+        [[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] addObject: [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%i", done], KEY_DONE, [NSString stringWithFormat:@"%i",undone], KEY_UNDONE, nil]];
          index++;
     }
     
@@ -147,19 +152,27 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+    static NSString *CellIdentifier = @"Cell";   
+    BadgedCell *cell = [[BadgedCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     
     NSArray* allKeys = [_tableDataSource allKeys];
     NSString* particularKey = [allKeys objectAtIndex:indexPath.section];
     NSArray* array = [_tableDataSource objectForKey:particularKey];
     
     switch (indexPath.section) {
-        case 0: //иконки и лэйблы для ВСЕ и В ФОКУСЕ
+        case 0: //иконки и лэйблы для ВСЕ и БЛИЖАЙШИЕ
         {
             cell.textLabel.text = [array objectAtIndex:indexPath.row];
-            if (indexPath.row!=3) cell.detailTextLabel.text = [[_numbersForCellsDataSource objectForKey:TITLE_REGULAR] objectAtIndex:0/*indexPath.row*/];
+            
+            cell.badgeString3 = [[_numbersForCellsDataSource objectForKey:TITLE_REGULAR] objectAtIndex:0];
+            cell.badgeString1 = [[_numbersForCellsDataSource objectForKey:TITLE_REGULAR] objectAtIndex:1];
+            
+//            cell.badgeColor1 = [UIColor colorWithRed:0.712 green:0.712 blue:0.712 alpha:1.000];
+//            cell.badgeColor3 = [UIColor colorWithRed:0.192 green:0.812 blue:0.100 alpha:1.000];
+
+            cell.badgeColor1 = [UIColor colorWithRed:0.812 green:0.192 blue:0.100 alpha:1.000];
+            cell.badgeColor3 = [UIColor colorWithRed:0.192 green:0.812 blue:0.100 alpha:1.000];
+
             switch (indexPath.row) {
                 case 0:
                     cell.imageView.image = [UIImage imageNamed:@"all_tasks_30x30.png"];
@@ -180,11 +193,17 @@
             if (indexPath.row >=4) cell.textLabel.text = [[array objectAtIndex:indexPath.row] name];
             else cell.textLabel.text = [array objectAtIndex:indexPath.row];
 
-//NSLog(@"[[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] objectAtIndex:indexPath.row] : %@",[[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] objectAtIndex:indexPath.row]);
-            cell.detailTextLabel.text = [[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] objectAtIndex:indexPath.row];
+            cell.badgeString3 = [[[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] objectAtIndex:indexPath.row] objectForKey:KEY_DONE];
+            cell.badgeString1 = [[[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] objectAtIndex:indexPath.row] objectForKey:KEY_UNDONE];
             
+            NSLog(@"%@, %@",[[[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] objectAtIndex:indexPath.row] objectForKey:KEY_DONE], [[[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] objectAtIndex:indexPath.row] objectForKey:KEY_UNDONE]);
             
-//NSLog(@"_numbers in cellForRow: %@", [_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED]);
+//            cell.badgeColor1 = [UIColor colorWithRed:0.712 green:0.712 blue:0.712 alpha:1.000];
+//            cell.badgeColor3 = [UIColor colorWithRed:0.192 green:0.812 blue:0.100 alpha:1.000];
+            
+            cell.badgeColor1 = [UIColor colorWithRed:0.812 green:0.192 blue:0.100 alpha:1.000];
+            cell.badgeColor3 = [UIColor colorWithRed:0.192 green:0.812 blue:0.100 alpha:1.000];
+
             switch (indexPath.row) {
                 case 0:
                     cell.imageView.image = [UIImage imageNamed:@"home_30x30.png"];
@@ -208,7 +227,7 @@
         default:
             break;
     }
-    
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
 
@@ -256,7 +275,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     switch (indexPath.section) {
-        case 0: //тут ВСЕ и В ФОКУСЕ
+        case 0: //тут ВСЕ и БЛИЖАЙШИЕ
         {
             switch (indexPath.row) {
                 case 0: //ВСЕ
@@ -272,7 +291,7 @@
                     [self.navigationController pushViewController:pvc animated:YES];
                     break;
                 }
-                case 1: //В ФОКУСЕ
+                case 1: //БЛИЖАЙШИЕ
                 {
                     FocusedAndContextedViewController* vc = [[FocusedAndContextedViewController alloc]initWithStyle:UITableViewStylePlain];
                     [self.navigationController pushViewController:vc animated:YES];
@@ -280,7 +299,7 @@
                 }
                 case 2: //43 папки GTD
                 {
-                    _43FoldersTableViewController* vc = [[_43FoldersTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+                    TaskViewController* vc = [[TaskViewController alloc] initWithStyle:UITableViewStylePlain];
                     [self.navigationController pushViewController:vc animated:YES];
                     break;
                 }

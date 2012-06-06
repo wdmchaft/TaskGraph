@@ -13,7 +13,7 @@
 {
     UIDatePicker* _datePickerAlert;
     UIButton* _buttonToday;
-    NSDate* _defaultDate;
+    NSDate* _defaultDatePickerDate;
     id<SetTasksProperties> _delegate;
     
     BOOL _isLaunchedForAlertDateFirst;
@@ -21,7 +21,7 @@
 
 @property(nonatomic,retain) id<SetTasksProperties> delegate;
 @property(nonatomic       ) BOOL isLaunchedForAlertDateFirst;
-@property(nonatomic,retain) NSDate* defaultDate;
+@property(nonatomic,retain) NSDate* defaultDatePickerDate;
 
 -(void)buttonTodayClicked;
 

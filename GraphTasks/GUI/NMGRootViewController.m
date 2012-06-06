@@ -94,6 +94,8 @@ CGRect  kNMGSettingsRect;
                            action:@selector(settingsButtonClicked)
                  forControlEvents:UIControlEventTouchUpInside];
         [self.view      addSubview:setButton];
+        
+        [self.navigationController.navigationBar  setBarStyle:UIBarStyleBlack];
     }
     
     return self;
@@ -128,9 +130,7 @@ CGRect  kNMGSettingsRect;
 
     
 //    [self.navigationController pushViewController:LstVC animated:YES];
-    UINavigationController *nvc = [[UINavigationController alloc]initWithRootViewController:LstVC];
-    [nvc.navigationBar  setBarStyle:UIBarStyleBlack];
-    [self presentModalViewController:nvc animated:YES];
+    [self.navigationController pushViewController:LstVC animated:YES];
     
 }
 

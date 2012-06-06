@@ -11,9 +11,12 @@
 #import "TextViewViewController.h"
 #import "ContextsViewController.h"
 
-#import "NMTaskGraphManager.h"
-#import "NMTGTask.h"
 #import "NMTGProject.h"
+#import "NMTGTask.h"
+#import "NMTGTaskLocation.h"
+#import "NMTGTaskMail.h"
+#import "NMTGTaskPhone.h"
+#import "NMTGTaskSMS.h"
 
 #define TITLE_COMMENT_AND_CONTEXT @"Пометки"
 #define TITLE_ALERT_DATES @"Напоминания"
@@ -26,17 +29,31 @@
 @implementation AddPropertiesViewController
 
 @synthesize parentProject = _parentProject,
-            taskToEdit = _taskToEdit;
+            taskToEdit = _taskToEdit, 
+            taskMail = _taskMail, 
+            taskSMS = _taskSMS, 
+            taskPhone = _taskPhone,
+            additionalRowForSpecialTask = _additionalRowForSpecialTask;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
+    self = [self initWithStyle:style additionalInfo:nil];
+    return self;
+}
+
+- (id)initWithStyle:(UITableViewStyle)style additionalInfo:(NSDictionary *) info
+{
     self = [super initWithStyle:style];
     if (self) {
-        _context = [[NMTaskGraphManager sharedManager]managedContext];
-        
-        NSArray* arrayCommentAndContext = [NSArray arrayWithObjects:@"Комментарий",@"Контекст", @"Отложенное", nil];
-        NSArray* arrayAlertDates = [NSArray arrayWithObjects:@"Первое",@"Второе", nil];
-        NSArray* arrayName = [NSArray arrayWithObjects:@"Имя", nil];
+        _context = [[NMTaskGraphManager sharedManager] managedContext];
+        NSMutableArray* arrayCommentAndContext = [NSMutableArray arrayWithObjects:@"Комментарий",@"Контекст", @"Отложенное", nil];
+        NSArray* arrayAlertDates = [NSArray arrayWithObjects:@"Первое", @"Второе", nil];
+        NSMutableArray* arrayName = [NSMutableArray arrayWithObjects:@"Имя", nil];
+        if (info) {
+            NSString *key = [[info allKeys] objectAtIndex:0];
+            [arrayName addObject:key];
+            self.additionalRowForSpecialTask = [info objectForKey:key];
+        }
         
         _tableDataSourse = [NSDictionary dictionaryWithObjectsAndKeys: arrayName, TITLE_NAME, arrayCommentAndContext,TITLE_COMMENT_AND_CONTEXT,arrayAlertDates,TITLE_ALERT_DATES,nil];
     }
@@ -88,9 +105,20 @@
 {    
     if (_taskToEdit==nil) {
         //значит создаем новое задание
-        NMTGTask* _newTask = [[NMTGTask alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:_context] insertIntoManagedObjectContext:_context];
-        [_context insertObject:_newTask];
-        
+        NMTGTask *_newTask;
+        if (self.isTaskMail) {
+            _newTask = [[NMTGTaskMail alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGTaskMail" inManagedObjectContext:_context] insertIntoManagedObjectContext:_context];
+            [_context insertObject:_newTask];
+        } else if (self.isTaskSMS) {
+            _newTask = [[NMTGTaskSMS alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGTaskSMS" inManagedObjectContext:_context] insertIntoManagedObjectContext:_context];
+            [_context insertObject:_newTask];
+        } else if (self.isTaskPhone) {
+            _newTask = [[NMTGTaskPhone alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGTaskPhone" inManagedObjectContext:_context] insertIntoManagedObjectContext:_context];
+            [_context insertObject:_newTask];
+        } else {
+            _newTask = [[NMTGTask alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:_context] insertIntoManagedObjectContext:_context];
+            [_context insertObject:_newTask];
+        }
         _newTask.title = _taskName;
         _newTask.alertDate_first = _taskAlertDateFirst;
         _newTask.alertDate_second = _taskAlertDateSecond;
@@ -119,13 +147,13 @@
         NSLog(@"Failed to save context in AddPropertiesVC in 'save'");
     }
     
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"DismissModalController" 
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"projectOrTaskAddVCDidFinishWorkingWithNewProjectOrTask" 
                                                        object:nil];
 }
 
 -(void) cancel
 {
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"DismissModalController" 
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"projectOrTaskAddVCDidFinishWorkingWithNewProjectOrTask" 
                                                         object:nil];
 }
 
@@ -170,7 +198,7 @@
     switch (indexPath.section) {
         case 0: //имя задания
         {
-            cell.detailTextLabel.text = _taskName;
+            cell.detailTextLabel.text = (indexPath.row == 0) ? _taskName : self.additionalRowForSpecialTask;
             cell.accessoryType = UITableViewCellAccessoryNone;
             break;
         }
@@ -284,14 +312,14 @@
             AlertDateViewController* alertDateVC = [[AlertDateViewController alloc]init];
             if (indexPath.row == 0) {
                 NSDate* now =  [NSDate dateWithTimeIntervalSinceNow:0];
-                (_taskAlertDateFirst == nil) ? (alertDateVC.defaultDate = now)
-                                             : (alertDateVC.defaultDate = _taskAlertDateFirst);
+                (_taskAlertDateFirst == nil) ? (alertDateVC.defaultDatePickerDate = now)
+                                             : (alertDateVC.defaultDatePickerDate = _taskAlertDateFirst);
 
                 alertDateVC.isLaunchedForAlertDateFirst = YES;
             } else if (indexPath.row == 1) {
                 NSDate* threeDaysAfterNow = [NSDate dateWithTimeIntervalSinceNow:3*86400];
-                (_taskAlertDateSecond == nil) ? (alertDateVC.defaultDate = threeDaysAfterNow) 
-                                              : (alertDateVC.defaultDate = _taskAlertDateSecond);
+                (_taskAlertDateSecond == nil) ? (alertDateVC.defaultDatePickerDate = threeDaysAfterNow) 
+                                              : (alertDateVC.defaultDatePickerDate = _taskAlertDateSecond);
                 alertDateVC.isLaunchedForAlertDateFirst = NO;
             }
             alertDateVC.delegate = self;

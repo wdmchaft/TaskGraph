@@ -106,7 +106,7 @@
 
 -(void)addingProjectName
 {
-    //надо просто сохранить проект и отправить уведомление о закрытии модального контроллера
+    //надо сохранить проект и отправить уведомление о закрытии модального контроллера
     
     [self modifyTextViewsText];
     
@@ -123,7 +123,7 @@
     _newProject.title =  _textViewNameOrCommentOrContextText.text;
     _newProject.alertDate_first = [NSDate dateWithTimeIntervalSinceNow:5*86400];
     _newProject.alertDate_second = [NSDate dateWithTimeIntervalSinceNow:7*86400];
-    _newProject.done = [NSNumber numberWithBool:NO];
+    _newProject.done = [NSNumber numberWithBool:YES];
     _newProject.created = [NSDate date];
     
     if(self.parentProject == nil) NSLog(@"ДОБАВЛЯЕМ ПРОЕКТ НА ВЕРХНИЙ УРОВЕНЬ");
@@ -137,7 +137,7 @@
         NSLog(@"Failed to save context in TextViewVC in 'save'");
         NSLog(@"error: %@",error);
     }
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"DismissModalController" 
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"projectOrTaskAddVCDidFinishWorkingWithNewProjectOrTask" 
                                                        object:nil];
 }
 
@@ -164,7 +164,7 @@
 
 -(void)renamingProject
 {
-    [self modifyTextViewsText];
+    [self modifyTextViewsText]; // удаление переводов строки
     
     for (NSString* projectName in [_namesDataSource objectForKey:TITLE_SUBPROJECT_NAMES]){
         if ([_textViewNameOrCommentOrContextText.text isEqualToString:projectName]) {
@@ -196,6 +196,8 @@
 {
     if (self.isAddingTaskName || self.isAddingProjectName) {
         [[NSNotificationCenter defaultCenter]postNotificationName:@"DismissModalController" 
+                                                           object:nil];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"projectOrTaskAddVCDidFinishWorkingWithNewProjectOrTask" 
                                                            object:nil];
     } else if (self.isAddingContextName || self.isAddingTaskComment || self.isRenamingProject || self.isRenamingTask) {
         [self.navigationController popViewControllerAnimated:YES];
@@ -246,7 +248,7 @@
     self.navigationItem.rightBarButtonItem = _buttonItem;
     
     UIBarButtonItem* cancel = [[UIBarButtonItem alloc]initWithTitle:@"Отмена" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
-    if (self.isAddingTaskName || (self.isAddingProjectName && self.parentProject != nil)) {    
+    if (self.isAddingTaskName || self.isAddingProjectName) {    
         self.navigationItem.leftBarButtonItem = nil;
     } else {
         self.navigationItem.leftBarButtonItem = cancel;

@@ -27,7 +27,7 @@
 @implementation AlertDateViewController
 
 @synthesize delegate = _delegate,
-            defaultDate = _defaultDate,
+            defaultDatePickerDate = _defaultDatePickerDate,
             isLaunchedForAlertDateFirst = _isLaunchedForAlertDateFirst;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -65,7 +65,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    _datePickerAlert.date = _defaultDate;
+    [_datePickerAlert setDate:_defaultDatePickerDate animated:YES];
     _buttonToday = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [_buttonToday setFrame:CGRectMake(5, 70, 310, 40)];
     [_buttonToday setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];

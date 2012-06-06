@@ -34,13 +34,7 @@
 }
 
 
--(void) addNewProject{
-//    AddWhateverViewController* vc = [[AddWhateverViewController alloc]initWithStyle:UITableViewStyleGrouped];
-//    vc.parentProject = nil; //из текущего контроллера мы создаем проекты для верхнего уровня иерархии
-//    
-//    UINavigationController* nvc = [[UINavigationController alloc]initWithRootViewController:vc];
-//    [self presentModalViewController:nvc animated:YES];
-    
+-(void) addNewProject{    
     TextViewViewController* nameVC = [[TextViewViewController alloc]init]; 
     nameVC.parentProject = nil;
     nameVC.isAddingProjectName = YES;
@@ -78,45 +72,34 @@
 
 -(NSArray*)checkCompeletencyState:(NMTGProject *)proj
 {
-    NSFetchRequest* request = [NSFetchRequest new];
-    NSManagedObjectContext* context =  [[NMTaskGraphManager sharedManager]managedContext];
-    NSEntityDescription* entity = [NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:context];
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"parentProject == %@",proj];
-    NSArray* resultsOfFetchExec;
-
-    [request setEntity:entity];
-    [request setPredicate:predicate];
-    resultsOfFetchExec = [context executeFetchRequest:request error:nil];
     NSMutableArray* res = [[NSMutableArray alloc]initWithCapacity:2];
     [res addObject: [NSNumber numberWithInt:0]];
     [res addObject: [NSNumber numberWithInt:0]];    
   
     
-NSLog(@"proj,subp.count: %i",proj.subProject.count);
     if (proj.subProject.count != 0 ) {
         for (NMTGProject* _subproj in proj.subProject ) {
             NSArray* resReturnedBySubProjs = [self checkCompeletencyState:_subproj];
-NSLog(@"resBySubs: %@",resReturnedBySubProjs);
             [res replaceObjectAtIndex:0 withObject: [NSNumber numberWithInt: [[res objectAtIndex:0] intValue] + [[resReturnedBySubProjs objectAtIndex:0] intValue]]];
             [res replaceObjectAtIndex:1 withObject: [NSNumber numberWithInt: [[res objectAtIndex:1] intValue] + [[resReturnedBySubProjs objectAtIndex:1] intValue]]];
         }
     } 
-NSLog(@"res: %@",res);
 
     NSUInteger done = 0;
-    for (NMTGTask* task in resultsOfFetchExec) {
+    NSUInteger undone = 0;
+    for (NMTGTask* task in proj.subTasks) {
         if ([task.done isEqualToNumber:[NSNumber numberWithBool:YES]]) {done++;}
+        else {undone++;}
     }
     
     [res replaceObjectAtIndex:0 withObject: [NSNumber numberWithInt: [[res objectAtIndex:0] intValue] + done]];
-    [res replaceObjectAtIndex:1 withObject: [NSNumber numberWithInt: [[res objectAtIndex:1] intValue] + resultsOfFetchExec.count]];
-    
+    [res replaceObjectAtIndex:1 withObject: [NSNumber numberWithInt: [[res objectAtIndex:1] intValue] + undone]];
     return res;
 }
 
 
 
--(void)setProjectAlertDates:(NMTGProject *)proj{
+-(void) setProjectAlertDates:(NMTGProject *)proj{
     NSArray* subTasks = [proj.subTasks allObjects];
     NSArray* subProjs = [proj.subProject allObjects];
     NSDate* mindateTasks = [NSDate dateWithTimeIntervalSinceNow:10000*86400];
@@ -165,31 +148,28 @@ NSLog(@"res: %@",res);
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"ProjectsCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+    BadgedCell* cell = [[BadgedCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.editingAccessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     NMTGProject* project = [_tableDataSource objectAtIndex:indexPath.row]; 
         
     [[cell textLabel] setText: project.title];
     
-    NSString *str = [project.alertDate_first description];
-    [[cell  detailTextLabel]    setText:[NSString stringWithFormat:@"1st Alert Date: %@",str]];
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
     cell.imageView.image = ([project.done isEqualToNumber:[NSNumber numberWithBool:NO]]) 
                                          ? ([UIImage imageNamed:@"case_30x30.png"])
                                          : ([UIImage imageNamed:@"case_30x30_checked.png"]);
     
-//    NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
-//    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:3*86400]];
-//    
-//    [formatter setDateStyle:NSDateFormatterLongStyle];
-//    [formatter setTimeStyle:NSDateFormatterNoStyle];
-//    
-//    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ =-= %@",[formatter stringFromDate:project.alertDate_first],[formatter stringFromDate:project.alertDate_second]];
     NSArray* arrayForCellDetailTextLabel = [self checkCompeletencyState:project];
-    cell.detailTextLabel.text = [NSString stringWithFormat: @"сделано %@(%@)", [arrayForCellDetailTextLabel objectAtIndex:0], [arrayForCellDetailTextLabel objectAtIndex:1]] ;
-    
+    cell.badgeString1 = [NSString stringWithFormat:@"%@", [arrayForCellDetailTextLabel objectAtIndex:1]];
+    cell.badgeString3 = [NSString stringWithFormat:@"%@", [arrayForCellDetailTextLabel objectAtIndex:0]];                         
+
+//    cell.badgeColor1 = [UIColor colorWithRed:0.712 green:0.712 blue:0.712 alpha:1.000];
+//    cell.badgeColor3 = [UIColor colorWithRed:0.192 green:0.812 blue:0.100 alpha:1.000];
+
+    cell.badgeColor1 = [UIColor colorWithRed:0.812 green:0.192 blue:0.100 alpha:1.000];
+    cell.badgeColor3 = [UIColor colorWithRed:0.192 green:0.812 blue:0.100 alpha:1.000];
+
     return cell;
 }
 
@@ -221,22 +201,6 @@ NSLog(@"res: %@",res);
  }
  
 
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -255,7 +219,15 @@ NSLog(@"res: %@",res);
 }
 
 
-
+-(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    _selectedProject = [_tableDataSource objectAtIndex:indexPath.row];
+    TextViewViewController* textvc = [TextViewViewController new];
+    textvc.isRenamingProject = YES;
+    textvc.delegateProjectProperties = self;
+    textvc.textViewNameOrComment.text = _selectedProject.title;
+    [self.navigationController pushViewController:textvc animated:YES];
+}
 
 
 

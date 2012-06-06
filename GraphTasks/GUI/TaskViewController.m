@@ -10,8 +10,13 @@
 #import "TextViewViewController.h"
 #import "NMTGAbstract.h"
 #import "NMTGTask.h"
+#import "NMTGTaskLocation.h"
+#import "NMTGTaskMail.h"
+#import "NMTGTaskPhone.h"
+#import "NMTGTaskSMS.h"
 #import "AddWhateverViewController.h"
 #import "AddPropertiesViewController.h"
+#import "BadgedCell.h"
 
 @implementation TaskViewController
 
@@ -44,14 +49,16 @@
 -(void)reloadData{
     NSEntityDescription* entity1 = [NSEntityDescription entityForName:@"NMTGProject" inManagedObjectContext:_context]; 
     
-    NSEntityDescription* entity2 = [NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:_context];
+//    NSEntityDescription* entity2 = [NSEntityDescription entityForName:@"NMTGTaskPhone" inManagedObjectContext:_context];
+//    
+//    NSEntityDescription* entity3 = [NSEntityDescription entityForName:@"NMTGTaskSMS" inManagedObjectContext:_context];
+//    
+//    NSEntityDescription* entity4 = [NSEntityDescription entityForName:@"NMTGTaskMail" inManagedObjectContext:_context];
+    
+    NSEntityDescription* entity6 = [NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:_context];
     
     NSFetchRequest* request = [[NSFetchRequest alloc]init];
     [request setEntity:entity1];
-    
-//    NMTaskGraphManager* dataManager = [NMTaskGraphManager sharedManager];
-//    
-//    NSPredicate* pred = [NSPredicate predicateWithFormat:@"parentProject == %@",dataManager.projectFantom];
     
     NSPredicate* pred = [NSPredicate predicateWithFormat:@"parentProject == %@",self.parentProject];
     [request setPredicate:pred];
@@ -66,9 +73,30 @@
     NSError* error = nil;
     _fetchedProjectsOrTasks = [NSMutableArray arrayWithArray:[_context executeFetchRequest:request error:&error]];
     
-    [request setEntity:entity2];
+//    [request setEntity:entity2];
+//    error=nil;
+//    [_fetchedProjectsOrTasks addObjectsFromArray:[_context executeFetchRequest:request error:&error]];
+//    
+//    [request setEntity:entity3];
+//    error=nil;
+//    [_fetchedProjectsOrTasks addObjectsFromArray:[_context executeFetchRequest:request error:&error]];
+//    
+//    [request setEntity:entity4];
+//    error=nil;
+//    [_fetchedProjectsOrTasks addObjectsFromArray:[_context executeFetchRequest:request error:&error]];
+    
+    
+    [request setEntity:entity6];
     error=nil;
     [_fetchedProjectsOrTasks addObjectsFromArray:[_context executeFetchRequest:request error:&error]];
+    
+    
+    self.parentProject.done = [NSNumber numberWithBool: [self checkProjectIsDone:self.parentProject]];
+     error = nil;
+    if (! [[[NMTaskGraphManager sharedManager] managedContext] save:&error ]) {
+        NSLog(@"Failed to save context in 'reloadData'");
+        NSLog(@"%@",error);
+    }
     
     [self.tableView reloadData];
 
@@ -80,9 +108,11 @@
     NSSet* subProjects = aProject.subProject;
     NSSet* subTasks = aProject.subTasks;
     
+    if (subProjects.count + subTasks.count == 0) {
+        return YES;
+    }
     for(NMTGProject* proj in subProjects) {
         if ([self checkProjectIsDone:proj] == NO) {
-            NSLog(@"'if1' returned NO");
             return NO;
         }    
     }
@@ -91,11 +121,9 @@
     for(int i=0; i<subTasksIndexed.count; i++){
         NMTGTask* task = [subTasksIndexed objectAtIndex:i];
         if([task.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
-            NSLog(@"'if2' returned NO");
             return NO;
         } 
     }
-    NSLog(@"returned YES");
     return YES;
 }
 
@@ -128,7 +156,7 @@
 
 -(void) hide
 {
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"HideModalControllerINFocusedVC" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"HideModalControllerINFocusedVC" object:nil];
 }
 
 -(void)setProjectAlertDates:(NMTGProject *)proj{
@@ -163,19 +191,38 @@
     proj.alertDate_second = maxdate;
 }
 
-
+-(NSArray*)checkCompeletencyState:(NMTGProject *)proj
+{
+    NSMutableArray* res = [[NSMutableArray alloc]initWithCapacity:2];
+    [res addObject: [NSNumber numberWithInt:0]];
+    [res addObject: [NSNumber numberWithInt:0]];    
+    
+    
+    if (proj.subProject.count != 0 ) {
+        for (NMTGProject* _subproj in proj.subProject ) {
+            NSArray* resReturnedBySubProjs = [self checkCompeletencyState:_subproj];
+            [res replaceObjectAtIndex:0 withObject: [NSNumber numberWithInt: [[res objectAtIndex:0] intValue] + [[resReturnedBySubProjs objectAtIndex:0] intValue]]];
+            [res replaceObjectAtIndex:1 withObject: [NSNumber numberWithInt: [[res objectAtIndex:1] intValue] + [[resReturnedBySubProjs objectAtIndex:1] intValue]]];
+        }
+    } 
+    
+    NSUInteger done = 0;
+    NSUInteger undone = 0;
+    for (NMTGTask* task in proj.subTasks) {
+        if ([task.done isEqualToNumber:[NSNumber numberWithBool:YES]]) {done++;}
+        else {undone++;}
+    }
+    
+    [res replaceObjectAtIndex:0 withObject: [NSNumber numberWithInt: [[res objectAtIndex:0] intValue] + done]];
+    [res replaceObjectAtIndex:1 withObject: [NSNumber numberWithInt: [[res objectAtIndex:1] intValue] + undone]];
+    return res;
+}
 
 #pragma mark - Table view data source
 
 -(void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
     [super setEditing:editing animated:animated];
-    if (editing == YES) {
-        _plusOrSettingsButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"settings_25x25.png"] style:UIBarStyleDefault target:self action:@selector(changeCurrentProjectsSettings)];
-    } else {
-        _plusOrSettingsButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewProjectOrTask)];
-    } 
-    self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:self.editButtonItem, _plusOrSettingsButtonItem, nil];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -191,28 +238,56 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {    
     static NSString *CellIdentifier = @"ProjectsCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    BadgedCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     NMTGAbstract* object = (NMTGAbstract*)[_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
     if([object isKindOfClass:[NMTGProject class]]) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        cell = [[BadgedCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        cell = (BadgedCell*) cell;
         cell.imageView.image = ([object.done isEqualToNumber:[NSNumber numberWithBool:NO]]) 
         ? ([UIImage imageNamed:@"case_30x30.png"])
         : ([UIImage imageNamed:@"case_30x30_checked.png"]);
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.editingAccessoryType = UITableViewCellAccessoryDetailDisclosureButton;
         
         NSArray* arrayForCellDetailTextLabel = [self checkCompeletencyState:[_fetchedProjectsOrTasks objectAtIndex:indexPath.row]];
-        cell.detailTextLabel.text = [NSString stringWithFormat: @"сделано %@(%@)", [arrayForCellDetailTextLabel objectAtIndex:0], [arrayForCellDetailTextLabel objectAtIndex:1]] ;
-        
-    }
-    if([object isKindOfClass:[NMTGTask class]]) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        if ([object.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
-            cell.imageView.image = [UIImage imageNamed:@"task_30x30.png"];
-        } else {
-            cell.imageView.image = [UIImage imageNamed:@"task_30x30_checked.png"];
-        }
+        cell.badgeString1 = [NSString stringWithFormat:@"%@", [arrayForCellDetailTextLabel objectAtIndex:1]];
+        cell.badgeString3 = [NSString stringWithFormat:@"%@", [arrayForCellDetailTextLabel objectAtIndex:0]];
+//        cell.badgeColor1 = [UIColor colorWithRed:0.712 green:0.712 blue:0.712 alpha:1.000];
+//        cell.badgeColor3 = [UIColor colorWithRed:0.192 green:0.812 blue:0.100 alpha:1.000];
+
+        cell.badgeColor1 = [UIColor colorWithRed:0.812 green:0.192 blue:0.100 alpha:1.000];
+        cell.badgeColor3 = [UIColor colorWithRed:0.192 green:0.812 blue:0.100 alpha:1.000];
+
+    } else {
+        cell = [[BadgedCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        if([object isKindOfClass:[NMTGTaskMail class]]) {
+            if ([object.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
+                cell.imageView.image = [UIImage imageNamed:@"mail_30x30.png"];
+            } else {
+                cell.imageView.image = [UIImage imageNamed:@"mail_30x30.png"];
+            }
+        } else if([object isKindOfClass:[NMTGTaskSMS class]]) {
+            if ([object.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
+                cell.imageView.image = [UIImage imageNamed:@"sms_30x30.png"];
+            } else {
+                cell.imageView.image = [UIImage imageNamed:@"sms_30x30.png"];
+            }
+        } else if([object isKindOfClass:[NMTGTaskPhone class]]) {
+            if ([object.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
+                cell.imageView.image = [UIImage imageNamed:@"call_30x30.png"];
+            } else {
+                cell.imageView.image = [UIImage imageNamed:@"call_30x30.png"];
+            }
+        } else if([object isKindOfClass:[NMTGTask class]]) {
+            if ([object.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
+                cell.imageView.image = [UIImage imageNamed:@"task_30x30.png"];
+            } else {
+                cell.imageView.image = [UIImage imageNamed:@"task_30x30_checked.png"];
+            }
+        } 
         cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+        cell.editingAccessoryType = UITableViewCellAccessoryNone;
         
         NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
         [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:3*86400]];
@@ -222,29 +297,13 @@
         
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ =-= %@",[formatter stringFromDate:object.alertDate_first],[formatter stringFromDate:object.alertDate_second]];
     }
-    [[cell textLabel] setText:object.title];  
+    [[cell textLabel] setText:object.title];
+    cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+    cell.textLabel.numberOfLines = 0;
+
     
     return cell;
 }
-
-//NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-//[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-//
-//NSDate *date = [NSDate dateWithTimeIntervalSinceReferenceDate:118800];
-//
-//NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
-//[dateFormatter setLocale:usLocale];
-//
-//NSLog(@"Date for locale %@: %@",
-//      [[dateFormatter locale] localeIdentifier], [dateFormatter stringFromDate:date]);
-//// Output:
-//// Date for locale en_US: Jan 2, 2001
-
-
-
-
-
 
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -269,6 +328,38 @@
     }   
 }
 
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath 
+{    
+    
+    NMTGAbstract* object = [_fetchedProjectsOrTasks objectAtIndex:indexPath.row]; 
+    
+    if ([object isKindOfClass:[NMTGProject class]]) {
+        return 45.0f;
+    }
+    
+    NSString *cellText = [object title];
+    UIFont *cellTextFont = [UIFont fontWithName:@"Helvetica-Bold" size:22.0f];
+    CGSize cellConstraintSize = CGSizeMake(320.0f, MAXFLOAT);
+    
+    NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
+    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:3*86400]];
+    [formatter setDateStyle:NSDateFormatterLongStyle];
+    [formatter setTimeStyle:NSDateFormatterNoStyle];
+    
+    NSString *cellDetailText = [NSString stringWithFormat:@"%@ =-= %@", [formatter stringFromDate:object.alertDate_first], [formatter stringFromDate:object.alertDate_second]]; 
+    UIFont *cellDetailTextFont = [UIFont fontWithName:@"Helvetica" size:15];
+    
+    CGSize labelSize = [cellText sizeWithFont:cellTextFont constrainedToSize:cellConstraintSize lineBreakMode:UILineBreakModeWordWrap];
+    CGSize labelDetailSize = [cellDetailText sizeWithFont:cellDetailTextFont constrainedToSize:cellConstraintSize lineBreakMode:UILineBreakModeWordWrap];
+    
+    NSLog(@"%f", labelSize.height);
+    NSLog(@"%f", labelDetailSize.height);
+    
+    if (labelSize.height + labelDetailSize.height < 45) { return 45.0;
+    }
+    return labelSize.height + labelDetailSize.height;
+}
 
 /*
 // Override to support rearranging the table view.
@@ -334,46 +425,18 @@
         vc.taskToEdit = [_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
         UINavigationController* nvc = [[UINavigationController alloc]initWithRootViewController:vc];
         [self presentModalViewController:nvc animated:YES];
+    } else {
+        _projectToRename = (NMTGProject*) selectedObject;
+        TextViewViewController* textvc = [TextViewViewController new];
+        textvc.isRenamingProject = YES;
+        textvc.delegateProjectProperties = self;
+        textvc.textViewNameOrComment.text = selectedObject.title;
+        [self.navigationController pushViewController:textvc animated:YES];
     }
 }
   
 
--(NSArray*)checkCompeletencyState:(NMTGProject *)proj
-{
-    NSFetchRequest* request = [NSFetchRequest new];
-    NSManagedObjectContext* context =  [[NMTaskGraphManager sharedManager]managedContext];
-    NSEntityDescription* entity = [NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:context];
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"parentProject == %@",proj];
-    NSArray* resultsOfFetchExec;
-    
-    [request setEntity:entity];
-    [request setPredicate:predicate];
-    resultsOfFetchExec = [context executeFetchRequest:request error:nil];
-    NSMutableArray* res = [[NSMutableArray alloc]initWithCapacity:2];
-    [res addObject: [NSNumber numberWithInt:0]];
-    [res addObject: [NSNumber numberWithInt:0]];      
-    
-    NSLog(@"proj,subp.count: %i",proj.subProject.count);
-    if (proj.subProject.count != 0 ) {
-        for (NMTGProject* _subproj in proj.subProject ) {
-            NSArray* resReturnedBySubProjs = [self checkCompeletencyState:_subproj];
-            NSLog(@"resBySubs: %@",resReturnedBySubProjs);
-            [res replaceObjectAtIndex:0 withObject: [NSNumber numberWithInt: [[res objectAtIndex:0] intValue] + [[resReturnedBySubProjs objectAtIndex:0] intValue]]];
-            [res replaceObjectAtIndex:1 withObject: [NSNumber numberWithInt: [[res objectAtIndex:1] intValue] + [[resReturnedBySubProjs objectAtIndex:1] intValue]]];
-        }
-    } 
-    NSLog(@"res: %@",res);
-    
-    NSUInteger done = 0;
-    for (NMTGTask* task in resultsOfFetchExec) {
-        if ([task.done isEqualToNumber:[NSNumber numberWithBool:YES]]) {done++;}
-    }
-    
-    [res replaceObjectAtIndex:0 withObject: [NSNumber numberWithInt: [[res objectAtIndex:0] intValue] + done]];
-    [res replaceObjectAtIndex:1 withObject: [NSNumber numberWithInt: [[res objectAtIndex:1] intValue] + resultsOfFetchExec.count]];
-    
-    return res;
-}
+
 
 
 
@@ -381,11 +444,11 @@
 
 #pragma mark - Rubbish
 -(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    [self.navigationItem setTitle:self.parentProject.title];
+    [super viewWillAppear:animated];    
+    
+    [self.navigationItem setTitle:(self.parentProject.title.length != 0) ? (self.parentProject.title) : (@"Корень")];
 //    UIBarButtonItem* hide = [[UIBarButtonItem alloc]initWithTitle:@"Скрыть" style:UIBarButtonSystemItemFastForward target:self action:@selector(hide)];    
     
-//NSLog(@"pathComponents.count: %i",[NMTaskGraphManager sharedManager].pathComponents.count);
     if ([NMTaskGraphManager sharedManager].pathComponents.count == 0) {
         [self reloadData];
         return;
@@ -417,6 +480,7 @@
         [self reloadData];
         [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
     }
+    
 }
 
 - (void)viewDidLoad
@@ -438,7 +502,7 @@
 #pragma mark - SetNewTasksProperties protocol implementation
 -(void)setProjectsName:(NSString *)name
 {
-    _parentProject.title = name;
+    _projectToRename.title = name;
     NSError* error = nil;
     if (![_context save:&error]) {
         NSLog(@"FAILED TO SAVE CONTEXT in TaskVC in setProjectsName:");

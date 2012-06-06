@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FocusedAndContextedViewController : UITableViewController {
+@interface FocusedAndContextedViewController : UITableViewController <UIActionSheetDelegate> {
     NSMutableDictionary* _tableDataSource;
     NSMutableDictionary* _tableColorDataSource;
     NSArray* _titles;
@@ -29,6 +29,6 @@
 -(void) showAllOrShowUnDoneOnlyClicked;
 -(BOOL) checkProjectIsDone:(NMTGProject*) aProject;
 -(void) hideModalController;
-
+-(void) contextsTapped;
 @end
 

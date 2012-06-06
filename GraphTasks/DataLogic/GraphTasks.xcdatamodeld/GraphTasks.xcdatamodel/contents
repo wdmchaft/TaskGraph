@@ -30,7 +30,7 @@
         <relationship name="subTasks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="NMTGTask" inverseName="parentProject" inverseEntity="NMTGTask" syncable="YES"/>
     </entity>
     <entity name="NMTGTask" representedClassName="NMTGTask" parentEntity="NMTGAbstract" syncable="YES">
-        <relationship name="parentProject" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="NMTGProject" inverseName="subTasks" inverseEntity="NMTGProject" syncable="YES"/>
+        <relationship name="parentProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NMTGProject" inverseName="subTasks" inverseEntity="NMTGProject" syncable="YES"/>
     </entity>
     <entity name="NMTGTaskLocation" representedClassName="NMTGTaskLocation" parentEntity="NMTGTask" syncable="YES"/>
     <entity name="NMTGTaskMail" representedClassName="NMTGTaskMail" parentEntity="NMTGTask" syncable="YES"/>

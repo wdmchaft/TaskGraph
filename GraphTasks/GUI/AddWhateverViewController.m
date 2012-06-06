@@ -56,6 +56,7 @@
 -(void)cancel
 {
     [[NSNotificationCenter defaultCenter]postNotificationName:@"DismissModalController" object:nil];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"projectOrTaskAddVCDidFinishWorkingWithNewProjectOrTask" object:nil];
 }
 
 //###################################################################################################
@@ -145,9 +146,13 @@
         }
         default:
             break;
+            
+        cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+        cell.textLabel.numberOfLines = 0;
     }
     return cell;
 }
+
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
@@ -216,6 +221,22 @@
         [self.navigationController pushViewController:nameVC animated:YES];
     } else {
         AddSpecialTaskViewController* addSpecialVC = [[AddSpecialTaskViewController alloc]initWithStyle:UITableViewStyleGrouped];
+        addSpecialVC.parentProject = self.parentProject;
+        
+        switch (indexPath.row) {
+            case 0:
+                addSpecialVC.taskPhone = YES;
+                break;
+            case 1:
+                addSpecialVC.taskEmail = YES;
+                break;
+            case 2:
+                addSpecialVC.taskSMS = YES;
+                break;
+            default:
+                break;
+        }
+        
         [self.navigationController pushViewController:addSpecialVC animated:YES];
     }
     

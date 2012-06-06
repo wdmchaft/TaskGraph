@@ -2,7 +2,7 @@
 //  NMTGAbstract.m
 //  GraphTasks
 //
-//  Created by Тимур Юсипов on 07.05.12.
+//  Created by Тимур Юсипов on 06.06.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
@@ -17,10 +17,10 @@
 @dynamic comment;
 @dynamic context;
 @dynamic created;
+@dynamic deferred;
 @dynamic done;
 @dynamic finishDate;
 @dynamic title;
-@dynamic deferred;
 @dynamic employers;
 
 @end

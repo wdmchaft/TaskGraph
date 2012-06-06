@@ -225,9 +225,21 @@ if (self.alert_date_1 != nil && self.alert_date_2 != nil) {
     NSString* title = (_shouldShowOnlyUnDone == YES) ? @"Все" : @"Без готовых";
     _showAllOrShowUnDoneOnly = [[UIBarButtonItem alloc]initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(showAllOrShowUnDoneOnlyClicked)];
     self.navigationItem.rightBarButtonItem = _showAllOrShowUnDoneOnly;
+    
+    [self.navigationController setToolbarHidden:NO animated:YES];
+
+    UIBarButtonItem* contetxsButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(contextsTapped)];
+    [self setToolbarItems: [NSArray arrayWithObjects:contetxsButtonItem, nil]];
+    NSLog(@"%@",self.navigationController.toolbarItems);
+    [self.navigationController.toolbar setFrame:CGRectMake(0, 436, 320, 44)];
+    NSLog(@"%@",self.navigationController.toolbar);
 }
 
-
+-(void) contextsTapped
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Выберите контекст" delegate:self cancelButtonTitle:@"Отмена" destructiveButtonTitle:@"Без контекста" otherButtonTitles: nil];
+    [actionSheet showInView:self.view];
+}
 
 - (void)viewDidUnload
 {

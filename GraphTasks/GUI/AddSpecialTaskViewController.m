@@ -7,8 +7,14 @@
 //
 
 #import "AddSpecialTaskViewController.h"
+#import "AddPropertiesViewController.h"
 
 @implementation AddSpecialTaskViewController
+
+@synthesize parentProject = _parentProject ,
+            taskSMS = _taskSMS, 
+            taskEmail = _taskEmail,
+            taskPhone = _taskPhone;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -126,6 +132,7 @@
 	picker.displayedProperties = displayedItems;
 	// Show the picker 
 	[self presentModalViewController:picker animated:YES];
+//    [self.navigationController pushViewController:picker animated:YES];
 }
 
 -(void)showNewPersonViewController
@@ -151,7 +158,40 @@
 // Does not allow users to perform default actions such as dialing a phone number, when they select a person property.
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier
 {
-	return YES;
+    
+    NSString *firstName = (__bridge NSString *)ABRecordCopyValue(person, 
+                                                                 kABPersonFirstNameProperty);
+    NSString *lastName = (__bridge NSString *)ABRecordCopyValue(person, 
+                                                                kABPersonLastNameProperty);
+    ABMultiValueRef phones = ABRecordCopyValue(person, kABPersonPhoneProperty);
+    NSArray *phonenumbers = (__bridge NSArray* )ABMultiValueCopyArrayOfAllValues(phones);
+
+    
+    //формирование словаря доп информации
+    NSString *key;
+    if (self.taskSMS) key = @"Отправить SMS";
+    else if (self.taskPhone) key = @"Позвонить";
+    else if (self.taskEmail) key = @"Отправить e-Mail";
+    NSString *value = [NSString stringWithFormat:@"%@",[phonenumbers objectAtIndex:identifier]];
+    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:value, key, nil];
+    
+    AddPropertiesViewController* addPropertiesVC = [[AddPropertiesViewController alloc] initWithStyle:UITableViewStyleGrouped additionalInfo: info];
+
+    [addPropertiesVC setTasksName:[NSString stringWithFormat:@"%@ %@", firstName, lastName]];
+    [addPropertiesVC setParentProject: self.parentProject];
+    [addPropertiesVC setTaskSMS: self.taskSMS];
+    [addPropertiesVC setTaskMail: self.taskEmail];
+    [addPropertiesVC setTaskPhone:self.taskPhone];
+    NSLog(@"person: %@", person);
+    NSLog(@"property: %i", property);
+    NSLog(@"identifier: %i", identifier);
+    
+    
+
+    
+    [self dismissModalViewControllerAnimated:NO];
+    [self.navigationController pushViewController:addPropertiesVC animated:YES];
+	return NO;
 }
 
 

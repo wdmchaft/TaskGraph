@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TaskViewController.h"
+#import "BadgedCell.h"
 @class NMTGProject;
 
 @interface ProjectsViewController : UITableViewController<SetProjectsProperties>{

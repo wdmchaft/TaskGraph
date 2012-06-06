@@ -26,18 +26,18 @@
     [self.window    setRootViewController:nvc];
     
     
-    [[UIApplication sharedApplication]
-     registerForRemoteNotificationTypes:
-     UIRemoteNotificationTypeBadge |
-     UIRemoteNotificationTypeAlert |
-     UIRemoteNotificationTypeSound];
+//    [[UIApplication sharedApplication]
+//     registerForRemoteNotificationTypes:
+//     UIRemoteNotificationTypeBadge |
+//     UIRemoteNotificationTypeAlert |
+//     UIRemoteNotificationTypeSound];
 
     UILocalNotification* notification = [UILocalNotification new];
     notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:7];
     notification.timeZone = [NSTimeZone systemTimeZone];
-    notification.alertBody = @"IT WORKED!";
+    notification.alertBody = @"На сегодня запланировано 3 задачи";
     
-    [UIApplication sharedApplication]. applicationIconBadgeNumber = 10;
+    [UIApplication sharedApplication]. applicationIconBadgeNumber = 3;
     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
     
         
