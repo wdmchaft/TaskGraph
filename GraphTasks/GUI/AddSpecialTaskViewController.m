@@ -141,6 +141,7 @@
     }
 	
 	picker.displayedProperties = displayedItems;
+//    [self.navigationController pushViewController:picker animated:YES];
 	[self presentModalViewController:picker animated:YES];
 }
 
@@ -192,11 +193,12 @@
         value = [NSString stringWithFormat:@"%@",[emails objectAtIndex:identifier]];
     }
     
-    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:value, key, nil];
     
-    AddPropertiesViewController* addPropertiesVC = [[AddPropertiesViewController alloc] initWithStyle:UITableViewStyleGrouped additionalInfo: info];
+    AddPropertiesViewController* addPropertiesVC = [[AddPropertiesViewController alloc] initWithStyle:UITableViewStyleGrouped];
 
     [addPropertiesVC setTasksName:[NSString stringWithFormat:@"%@ %@", firstName, lastName]];
+    [addPropertiesVC setTasksKeyDescribingType:key AndItsValue:value];
+    
     [addPropertiesVC setParentProject: self.parentProject];
     [addPropertiesVC setTaskSMS: self.taskSMS];
     [addPropertiesVC setTaskMail: self.taskEmail];

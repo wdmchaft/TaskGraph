@@ -12,6 +12,8 @@
 
 @implementation NMTGTask
 
+@dynamic keyDescribingTaskType;
+@dynamic valueForKeyDescribingTaskType;
 @dynamic parentProject;
 
 @end

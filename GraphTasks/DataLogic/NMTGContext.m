@@ -11,8 +11,8 @@
 
 @implementation NMTGContext
 
-@dynamic name;
 @dynamic iconName;
 @dynamic isDefaultContext;
+@dynamic name;
 
 @end

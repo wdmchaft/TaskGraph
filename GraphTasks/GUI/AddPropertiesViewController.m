@@ -32,30 +32,13 @@
             taskToEdit = _taskToEdit, 
             taskMail = _taskMail, 
             taskSMS = _taskSMS, 
-            taskPhone = _taskPhone,
-            additionalRowForSpecialTask = _additionalRowForSpecialTask;
+            taskPhone = _taskPhone;
 
 - (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [self initWithStyle:style additionalInfo:nil];
-    return self;
-}
-
-- (id)initWithStyle:(UITableViewStyle)style additionalInfo:(NSDictionary *) info
 {
     self = [super initWithStyle:style];
     if (self) {
         _context = [[NMTaskGraphManager sharedManager] managedContext];
-        NSMutableArray* arrayCommentAndContext = [NSMutableArray arrayWithObjects:@"Комментарий",@"Контекст", @"Отложенное", nil];
-        NSArray* arrayAlertDates = [NSArray arrayWithObjects:@"Первое", @"Второе", nil];
-        NSMutableArray* arrayName = [NSMutableArray arrayWithObjects:@"Имя", nil];
-        if (info) {
-            NSString *key = [[info allKeys] objectAtIndex:0];
-            [arrayName addObject:key];
-            self.additionalRowForSpecialTask = [info objectForKey:key];
-        }
-        
-        _tableDataSourse = [NSDictionary dictionaryWithObjectsAndKeys: arrayName, TITLE_NAME, arrayCommentAndContext,TITLE_COMMENT_AND_CONTEXT,arrayAlertDates,TITLE_ALERT_DATES,nil];
     }
     return self;
 }
@@ -65,6 +48,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     
     if(self.taskToEdit == nil && self->_beganEditting == NO){
         _taskAlertDateFirst = [NSDate dateWithTimeIntervalSinceNow:0];
@@ -79,12 +63,25 @@
         _taskComment = self.taskToEdit.comment;
         _taskContext = self.taskToEdit.context;
         _taskName = self.taskToEdit.title;
+        _taskKeyDescribingType = self.taskToEdit.keyDescribingTaskType;
+        _taskValueForKeyDescribingType = self.taskToEdit.valueForKeyDescribingTaskType;
     }
-    self->_beganEditting = YES;
+    self->_beganEditting = YES; //в дальнейшем поля, только что проинициализированные, будут заполняться значенями, вводимыми пользователем
+    
+    
+    NSMutableArray* arrayCommentAndContext = [NSMutableArray arrayWithObjects:@"Комментарий",@"Контекст", @"Отложенное", nil];
+    NSArray* arrayAlertDates = [NSArray arrayWithObjects:@"Первое", @"Второе", nil];
+    NSMutableArray* arrayName = [NSMutableArray arrayWithObjects:@"Имя", nil];
+    if (_taskKeyDescribingType) {
+        [arrayName addObject:_taskKeyDescribingType];
+    }
+    _tableDataSourse = [NSDictionary dictionaryWithObjectsAndKeys: arrayName, TITLE_NAME, arrayCommentAndContext,TITLE_COMMENT_AND_CONTEXT,arrayAlertDates,TITLE_ALERT_DATES,nil];
+    
     
     _switch = [[UISwitch alloc]initWithFrame:CGRectMake(200, 10, 40, 30)];
     [_switch setOn:[_taskDeferred boolValue]];
     [_switch addTarget:self action:@selector(switchChanged) forControlEvents:UIControlEventTouchUpInside];
+    [self.tableView reloadData];
 }
 
 
@@ -127,6 +124,8 @@
         _newTask.done = [NSNumber numberWithBool:NO];
         _newTask.created = [NSDate date];
         _newTask.deferred = _taskDeferred;
+        _newTask.keyDescribingTaskType = _taskKeyDescribingType;
+        _newTask.valueForKeyDescribingTaskType = _taskValueForKeyDescribingType;
 
         if(_parentProject == nil){NSLog(@"NILL PARENT PROJ IN ADDPROPERTIES vc");}
         [_parentProject addSubTasksObject:_newTask];
@@ -198,7 +197,7 @@
     switch (indexPath.section) {
         case 0: //имя задания
         {
-            cell.detailTextLabel.text = (indexPath.row == 0) ? _taskName : self.additionalRowForSpecialTask;
+            cell.detailTextLabel.text = (indexPath.row == 0) ? _taskName : _taskValueForKeyDescribingType;
             cell.accessoryType = UITableViewCellAccessoryNone;
             break;
         }
@@ -297,14 +296,17 @@
 {
     self->_beganEditting = YES;
     switch (indexPath.section){
-        case 0: //появляется клавиатура для ввода имени задания
+        case 0: //редактирование имени задания
         {
-            TextViewViewController* textViewVC = [TextViewViewController new];
-            textViewVC.delegateTaskProperties = self;
-            textViewVC.isRenamingTask = YES;
-            textViewVC.textViewNameOrComment.text = _taskName;
-            [self.navigationController pushViewController:textViewVC animated:YES];
-            
+            if (indexPath.row == 0) {
+                TextViewViewController* textViewVC = [TextViewViewController new];
+                textViewVC.delegateTaskProperties = self;
+                textViewVC.isRenamingTask = YES;
+                textViewVC.textViewNameOrComment.text = _taskName;
+                [self.navigationController pushViewController:textViewVC animated:YES];
+            } else {
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }
             break;
         }
         case 1: //добавляется дата напоминания
@@ -407,5 +409,11 @@
 -(void)setTasksDeferred:(NSNumber *)isDeferred
 {
     _taskDeferred = isDeferred;
+}
+
+-(void) setTasksKeyDescribingType:(NSString *)key AndItsValue:(NSString *)value
+{
+    _taskKeyDescribingType = key;
+    _taskValueForKeyDescribingType = value;
 }
 @end

@@ -12,22 +12,22 @@
 		173951E9157F8A1F00B5C61A /* mail_undone_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 173951E5157F8A1F00B5C61A /* mail_undone_30x30.png */; };
 		173951EA157F8A1F00B5C61A /* map_undone_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 173951E6157F8A1F00B5C61A /* map_undone_30x30.png */; };
 		173951EB157F8A1F00B5C61A /* sms_undone_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 173951E7157F8A1F00B5C61A /* sms_undone_30x30.png */; };
+		1739520D157FDABC00B5C61A /* NMTeamProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 1739520C157FDABC00B5C61A /* NMTeamProfile.m */; };
+		17395210157FDABD00B5C61A /* NMTGAbstract.m in Sources */ = {isa = PBXBuildFile; fileRef = 1739520F157FDABD00B5C61A /* NMTGAbstract.m */; };
+		17395213157FDABD00B5C61A /* NMTGProject.m in Sources */ = {isa = PBXBuildFile; fileRef = 17395212157FDABD00B5C61A /* NMTGProject.m */; };
+		17395216157FDABD00B5C61A /* NMTGTaskPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 17395215157FDABD00B5C61A /* NMTGTaskPhone.m */; };
+		17395219157FDABD00B5C61A /* NMTGSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 17395218157FDABD00B5C61A /* NMTGSettings.m */; };
+		1739521C157FDABE00B5C61A /* NMTGTaskSMS.m in Sources */ = {isa = PBXBuildFile; fileRef = 1739521B157FDABE00B5C61A /* NMTGTaskSMS.m */; };
+		1739521F157FDABE00B5C61A /* NMTGTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1739521E157FDABE00B5C61A /* NMTGTask.m */; };
+		17395222157FDABE00B5C61A /* NMTGTaskLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 17395221157FDABE00B5C61A /* NMTGTaskLocation.m */; };
+		17395225157FDABE00B5C61A /* NMTGTaskMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 17395224157FDABE00B5C61A /* NMTGTaskMail.m */; };
+		17395228157FDABE00B5C61A /* NMTGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 17395227157FDABE00B5C61A /* NMTGContext.m */; };
 		174E386715565DE00091C441 /* 43.PNG in Resources */ = {isa = PBXBuildFile; fileRef = 174E386615565DE00091C441 /* 43.PNG */; };
 		174E386C155677A80091C441 /* winter_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 174E3868155677A80091C441 /* winter_30x30.png */; };
 		174E386D155677A80091C441 /* spring_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 174E3869155677A80091C441 /* spring_30x30.png */; };
 		174E386E155677A80091C441 /* sun_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 174E386A155677A80091C441 /* sun_30x30.png */; };
 		174E386F155677A80091C441 /* autumn_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 174E386B155677A80091C441 /* autumn_30x30.png */; };
 		174FD178157E3AF800A33714 /* BadgedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 174FD177157E3AF800A33714 /* BadgedCell.m */; };
-		174FD188157F3AA200A33714 /* NMTGAbstract.m in Sources */ = {isa = PBXBuildFile; fileRef = 174FD187157F3AA200A33714 /* NMTGAbstract.m */; };
-		174FD18B157F3AA200A33714 /* NMTGProject.m in Sources */ = {isa = PBXBuildFile; fileRef = 174FD18A157F3AA200A33714 /* NMTGProject.m */; };
-		174FD18E157F3AA200A33714 /* NMTeamProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 174FD18D157F3AA200A33714 /* NMTeamProfile.m */; };
-		174FD191157F3AA200A33714 /* NMTGTaskMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 174FD190157F3AA200A33714 /* NMTGTaskMail.m */; };
-		174FD194157F3AA300A33714 /* NMTGTaskPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 174FD193157F3AA200A33714 /* NMTGTaskPhone.m */; };
-		174FD197157F3AA300A33714 /* NMTGTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 174FD196157F3AA300A33714 /* NMTGTask.m */; };
-		174FD19A157F3AA300A33714 /* NMTGTaskLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 174FD199157F3AA300A33714 /* NMTGTaskLocation.m */; };
-		174FD19D157F3AA300A33714 /* NMTGTaskSMS.m in Sources */ = {isa = PBXBuildFile; fileRef = 174FD19C157F3AA300A33714 /* NMTGTaskSMS.m */; };
-		178359B6157F50F6008C573A /* NMTGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 178359B5157F50F6008C573A /* NMTGContext.m */; };
-		178359B9157F515A008C573A /* NMTGSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 178359B8157F515A008C573A /* NMTGSettings.m */; };
 		178D46EA151DC554004F0734 /* ProjectsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 178D46E9151DC554004F0734 /* ProjectsViewController.m */; };
 		178D47DD151F2F05004F0734 /* TaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 178D47DC151F2F04004F0734 /* TaskViewController.m */; };
 		179885CB154E6EAA00AA3CC1 /* context_nil_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 179885C5154E6EAA00AA3CC1 /* context_nil_30x30.png */; };
@@ -116,6 +116,26 @@
 		173951E5157F8A1F00B5C61A /* mail_undone_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mail_undone_30x30.png; sourceTree = "<group>"; };
 		173951E6157F8A1F00B5C61A /* map_undone_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_undone_30x30.png; sourceTree = "<group>"; };
 		173951E7157F8A1F00B5C61A /* sms_undone_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sms_undone_30x30.png; sourceTree = "<group>"; };
+		1739520B157FDABC00B5C61A /* NMTeamProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTeamProfile.h; sourceTree = "<group>"; };
+		1739520C157FDABC00B5C61A /* NMTeamProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTeamProfile.m; sourceTree = "<group>"; };
+		1739520E157FDABD00B5C61A /* NMTGAbstract.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGAbstract.h; sourceTree = "<group>"; };
+		1739520F157FDABD00B5C61A /* NMTGAbstract.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGAbstract.m; sourceTree = "<group>"; };
+		17395211157FDABD00B5C61A /* NMTGProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGProject.h; sourceTree = "<group>"; };
+		17395212157FDABD00B5C61A /* NMTGProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGProject.m; sourceTree = "<group>"; };
+		17395214157FDABD00B5C61A /* NMTGTaskPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskPhone.h; sourceTree = "<group>"; };
+		17395215157FDABD00B5C61A /* NMTGTaskPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskPhone.m; sourceTree = "<group>"; };
+		17395217157FDABD00B5C61A /* NMTGSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGSettings.h; sourceTree = "<group>"; };
+		17395218157FDABD00B5C61A /* NMTGSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGSettings.m; sourceTree = "<group>"; };
+		1739521A157FDABD00B5C61A /* NMTGTaskSMS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskSMS.h; sourceTree = "<group>"; };
+		1739521B157FDABE00B5C61A /* NMTGTaskSMS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskSMS.m; sourceTree = "<group>"; };
+		1739521D157FDABE00B5C61A /* NMTGTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTask.h; sourceTree = "<group>"; };
+		1739521E157FDABE00B5C61A /* NMTGTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTask.m; sourceTree = "<group>"; };
+		17395220157FDABE00B5C61A /* NMTGTaskLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskLocation.h; sourceTree = "<group>"; };
+		17395221157FDABE00B5C61A /* NMTGTaskLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskLocation.m; sourceTree = "<group>"; };
+		17395223157FDABE00B5C61A /* NMTGTaskMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskMail.h; sourceTree = "<group>"; };
+		17395224157FDABE00B5C61A /* NMTGTaskMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskMail.m; sourceTree = "<group>"; };
+		17395226157FDABE00B5C61A /* NMTGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGContext.h; sourceTree = "<group>"; };
+		17395227157FDABE00B5C61A /* NMTGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGContext.m; sourceTree = "<group>"; };
 		174E386615565DE00091C441 /* 43.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 43.PNG; sourceTree = "<group>"; };
 		174E3868155677A80091C441 /* winter_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = winter_30x30.png; sourceTree = "<group>"; };
 		174E3869155677A80091C441 /* spring_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spring_30x30.png; sourceTree = "<group>"; };
@@ -123,26 +143,6 @@
 		174E386B155677A80091C441 /* autumn_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = autumn_30x30.png; sourceTree = "<group>"; };
 		174FD176157E3AF800A33714 /* BadgedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgedCell.h; sourceTree = "<group>"; };
 		174FD177157E3AF800A33714 /* BadgedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgedCell.m; sourceTree = "<group>"; };
-		174FD186157F3AA200A33714 /* NMTGAbstract.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGAbstract.h; sourceTree = "<group>"; };
-		174FD187157F3AA200A33714 /* NMTGAbstract.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGAbstract.m; sourceTree = "<group>"; };
-		174FD189157F3AA200A33714 /* NMTGProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGProject.h; sourceTree = "<group>"; };
-		174FD18A157F3AA200A33714 /* NMTGProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGProject.m; sourceTree = "<group>"; };
-		174FD18C157F3AA200A33714 /* NMTeamProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTeamProfile.h; sourceTree = "<group>"; };
-		174FD18D157F3AA200A33714 /* NMTeamProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTeamProfile.m; sourceTree = "<group>"; };
-		174FD18F157F3AA200A33714 /* NMTGTaskMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskMail.h; sourceTree = "<group>"; };
-		174FD190157F3AA200A33714 /* NMTGTaskMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskMail.m; sourceTree = "<group>"; };
-		174FD192157F3AA200A33714 /* NMTGTaskPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskPhone.h; sourceTree = "<group>"; };
-		174FD193157F3AA200A33714 /* NMTGTaskPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskPhone.m; sourceTree = "<group>"; };
-		174FD195157F3AA300A33714 /* NMTGTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTask.h; sourceTree = "<group>"; };
-		174FD196157F3AA300A33714 /* NMTGTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTask.m; sourceTree = "<group>"; };
-		174FD198157F3AA300A33714 /* NMTGTaskLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskLocation.h; sourceTree = "<group>"; };
-		174FD199157F3AA300A33714 /* NMTGTaskLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskLocation.m; sourceTree = "<group>"; };
-		174FD19B157F3AA300A33714 /* NMTGTaskSMS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskSMS.h; sourceTree = "<group>"; };
-		174FD19C157F3AA300A33714 /* NMTGTaskSMS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskSMS.m; sourceTree = "<group>"; };
-		178359B4157F50F6008C573A /* NMTGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGContext.h; sourceTree = "<group>"; };
-		178359B5157F50F6008C573A /* NMTGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGContext.m; sourceTree = "<group>"; };
-		178359B7157F5159008C573A /* NMTGSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGSettings.h; sourceTree = "<group>"; };
-		178359B8157F515A008C573A /* NMTGSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGSettings.m; sourceTree = "<group>"; };
 		178D46E8151DC554004F0734 /* ProjectsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectsViewController.h; sourceTree = "<group>"; };
 		178D46E9151DC554004F0734 /* ProjectsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectsViewController.m; sourceTree = "<group>"; };
 		178D47DB151F2F04004F0734 /* TaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskViewController.h; sourceTree = "<group>"; };
@@ -424,26 +424,26 @@
 			isa = PBXGroup;
 			children = (
 				632BDE8414F41B7300A10E0B /* GraphTasks.xcdatamodeld */,
-				178359B7157F5159008C573A /* NMTGSettings.h */,
-				178359B8157F515A008C573A /* NMTGSettings.m */,
-				174FD19B157F3AA300A33714 /* NMTGTaskSMS.h */,
-				174FD19C157F3AA300A33714 /* NMTGTaskSMS.m */,
-				178359B4157F50F6008C573A /* NMTGContext.h */,
-				178359B5157F50F6008C573A /* NMTGContext.m */,
-				174FD198157F3AA300A33714 /* NMTGTaskLocation.h */,
-				174FD199157F3AA300A33714 /* NMTGTaskLocation.m */,
-				174FD195157F3AA300A33714 /* NMTGTask.h */,
-				174FD196157F3AA300A33714 /* NMTGTask.m */,
-				174FD192157F3AA200A33714 /* NMTGTaskPhone.h */,
-				174FD193157F3AA200A33714 /* NMTGTaskPhone.m */,
-				174FD18F157F3AA200A33714 /* NMTGTaskMail.h */,
-				174FD190157F3AA200A33714 /* NMTGTaskMail.m */,
-				174FD18C157F3AA200A33714 /* NMTeamProfile.h */,
-				174FD18D157F3AA200A33714 /* NMTeamProfile.m */,
-				174FD189157F3AA200A33714 /* NMTGProject.h */,
-				174FD18A157F3AA200A33714 /* NMTGProject.m */,
-				174FD186157F3AA200A33714 /* NMTGAbstract.h */,
-				174FD187157F3AA200A33714 /* NMTGAbstract.m */,
+				17395226157FDABE00B5C61A /* NMTGContext.h */,
+				17395227157FDABE00B5C61A /* NMTGContext.m */,
+				17395223157FDABE00B5C61A /* NMTGTaskMail.h */,
+				17395224157FDABE00B5C61A /* NMTGTaskMail.m */,
+				17395220157FDABE00B5C61A /* NMTGTaskLocation.h */,
+				17395221157FDABE00B5C61A /* NMTGTaskLocation.m */,
+				1739521D157FDABE00B5C61A /* NMTGTask.h */,
+				1739521E157FDABE00B5C61A /* NMTGTask.m */,
+				1739521A157FDABD00B5C61A /* NMTGTaskSMS.h */,
+				1739521B157FDABE00B5C61A /* NMTGTaskSMS.m */,
+				17395217157FDABD00B5C61A /* NMTGSettings.h */,
+				17395218157FDABD00B5C61A /* NMTGSettings.m */,
+				17395214157FDABD00B5C61A /* NMTGTaskPhone.h */,
+				17395215157FDABD00B5C61A /* NMTGTaskPhone.m */,
+				17395211157FDABD00B5C61A /* NMTGProject.h */,
+				17395212157FDABD00B5C61A /* NMTGProject.m */,
+				1739520E157FDABD00B5C61A /* NMTGAbstract.h */,
+				1739520F157FDABD00B5C61A /* NMTGAbstract.m */,
+				1739520B157FDABC00B5C61A /* NMTeamProfile.h */,
+				1739520C157FDABC00B5C61A /* NMTeamProfile.m */,
 				9C98B62014FD387700A4C6F0 /* NMTaskGraphManager.h */,
 				9C98B62114FD387700A4C6F0 /* NMTaskGraphManager.m */,
 			);
@@ -753,16 +753,16 @@
 				17CA620E1553196100707D26 /* AddSpecialTaskViewController.m in Sources */,
 				1736369D15552D1600B21CBC /* _43FoldersTableViewController.m in Sources */,
 				174FD178157E3AF800A33714 /* BadgedCell.m in Sources */,
-				174FD188157F3AA200A33714 /* NMTGAbstract.m in Sources */,
-				174FD18B157F3AA200A33714 /* NMTGProject.m in Sources */,
-				174FD18E157F3AA200A33714 /* NMTeamProfile.m in Sources */,
-				174FD191157F3AA200A33714 /* NMTGTaskMail.m in Sources */,
-				174FD194157F3AA300A33714 /* NMTGTaskPhone.m in Sources */,
-				174FD197157F3AA300A33714 /* NMTGTask.m in Sources */,
-				174FD19A157F3AA300A33714 /* NMTGTaskLocation.m in Sources */,
-				174FD19D157F3AA300A33714 /* NMTGTaskSMS.m in Sources */,
-				178359B6157F50F6008C573A /* NMTGContext.m in Sources */,
-				178359B9157F515A008C573A /* NMTGSettings.m in Sources */,
+				1739520D157FDABC00B5C61A /* NMTeamProfile.m in Sources */,
+				17395210157FDABD00B5C61A /* NMTGAbstract.m in Sources */,
+				17395213157FDABD00B5C61A /* NMTGProject.m in Sources */,
+				17395216157FDABD00B5C61A /* NMTGTaskPhone.m in Sources */,
+				17395219157FDABD00B5C61A /* NMTGSettings.m in Sources */,
+				1739521C157FDABE00B5C61A /* NMTGTaskSMS.m in Sources */,
+				1739521F157FDABE00B5C61A /* NMTGTask.m in Sources */,
+				17395222157FDABE00B5C61A /* NMTGTaskLocation.m in Sources */,
+				17395225157FDABE00B5C61A /* NMTGTaskMail.m in Sources */,
+				17395228157FDABE00B5C61A /* NMTGContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

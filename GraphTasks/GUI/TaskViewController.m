@@ -418,18 +418,20 @@
 -(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     NMTGAbstract* selectedObject = [_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
-    if([selectedObject isKindOfClass:[NMTGTask class]]){
-        AddPropertiesViewController* vc = [[AddPropertiesViewController alloc]initWithStyle:UITableViewStyleGrouped];
-        vc.taskToEdit = [_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
-        UINavigationController* nvc = [[UINavigationController alloc]initWithRootViewController:vc];
-        [self presentModalViewController:nvc animated:YES];
-    } else {
+    if([selectedObject isKindOfClass:[NMTGProject class]]){
         _projectToRename = (NMTGProject*) selectedObject;
         TextViewViewController* textvc = [TextViewViewController new];
         textvc.isRenamingProject = YES;
         textvc.delegateProjectProperties = self;
         textvc.textViewNameOrComment.text = selectedObject.title;
         [self.navigationController pushViewController:textvc animated:YES];
+    } else {
+        AddPropertiesViewController* vc = [[AddPropertiesViewController alloc]initWithStyle:UITableViewStyleGrouped];
+        NMTGTask* selectedTask = [_fetchedProjectsOrTasks objectAtIndex:indexPath.row];
+        vc.taskToEdit = selectedTask;
+        [vc setTasksKeyDescribingType:selectedTask.keyDescribingTaskType AndItsValue:selectedTask.valueForKeyDescribingTaskType];
+        UINavigationController* nvc = [[UINavigationController alloc]initWithRootViewController:vc];
+        [self presentModalViewController:nvc animated:YES];
     }
 }
   

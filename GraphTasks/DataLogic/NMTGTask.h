@@ -14,6 +14,8 @@
 
 @interface NMTGTask : NMTGAbstract
 
+@property (nonatomic, retain) NSString * keyDescribingTaskType;
+@property (nonatomic, retain) NSString * valueForKeyDescribingTaskType;
 @property (nonatomic, retain) NMTGProject *parentProject;
 
 @end

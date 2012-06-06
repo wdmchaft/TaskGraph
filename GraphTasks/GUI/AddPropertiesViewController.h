@@ -15,6 +15,7 @@
 -(void) setTasksComment: (NSString*)comment;
 -(void) setTasksContext: (NSString*)context;
 -(void) setTasksDeferred: (NSNumber*)isDeferred;
+-(void) setTasksKeyDescribingType: (NSString *)typeInfo AndItsValue: (NSString *)attributeValue;
 @end
 
 
@@ -34,8 +35,8 @@
     NSString*   _taskContext;
     NSDate*     _creationOrRenamingDate;
     NSNumber*   _taskDeferred;
-    
-    NSString* _additionalRowForSpecialTask;
+    NSString*   _taskKeyDescribingType; //строка типа "Позвонить" или "SMS" или "e-Mail"
+    NSString*   _taskValueForKeyDescribingType; //первым двум типам будет соответствовать номер телефона. Третьему - адрес почты
     
     BOOL _taskSMS;
     BOOL _taskPhone;
@@ -48,7 +49,7 @@
 @property(nonatomic, getter = isTaskSMS) BOOL taskSMS;
 @property(nonatomic, getter = isTaskMail) BOOL taskMail;
 @property(nonatomic, getter = isTaskPhone) BOOL taskPhone;
-@property(nonatomic, retain) NSString* additionalRowForSpecialTask;
+
 - (void) switchChanged;
--  (id)  initWithStyle:(UITableViewStyle)style additionalInfo:(NSDictionary *) info;
+
 @end

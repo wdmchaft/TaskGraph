@@ -33,6 +33,8 @@
     </entity>
     <entity name="NMTGSettings" representedClassName="NMTGSettings" syncable="YES"/>
     <entity name="NMTGTask" representedClassName="NMTGTask" parentEntity="NMTGAbstract" syncable="YES">
+        <attribute name="keyDescribingTaskType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="valueForKeyDescribingTaskType" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="parentProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NMTGProject" inverseName="subTasks" inverseEntity="NMTGProject" syncable="YES"/>
     </entity>
     <entity name="NMTGTaskLocation" representedClassName="NMTGTaskLocation" parentEntity="NMTGTask" syncable="YES"/>
@@ -45,10 +47,10 @@
         <element name="NMTGProfile" positionX="-3168" positionY="-1827" width="128" height="150"/>
         <element name="NMTGProject" positionX="-3177" positionY="-2115" width="128" height="90"/>
         <element name="NMTGSettings" positionX="160" positionY="192" width="128" height="45"/>
-        <element name="NMTGTask" positionX="-2871" positionY="-1989" width="128" height="60"/>
+        <element name="NMTGTask" positionX="-2871" positionY="-1989" width="128" height="90"/>
         <element name="NMTGTaskLocation" positionX="-2801" positionY="-2070" width="128" height="45"/>
         <element name="NMTGTaskMail" positionX="-2594" positionY="-1908" width="128" height="45"/>
         <element name="NMTGTaskPhone" positionX="-2700" positionY="-1827" width="128" height="45"/>
-        <element name="NMTGTaskSMS" positionX="-2592" positionY="-2034" width="128" height="45"/>
+        <element name="NMTGTaskSMS" positionX="160" positionY="192" width="128" height="45"/>
     </elements>
 </model>

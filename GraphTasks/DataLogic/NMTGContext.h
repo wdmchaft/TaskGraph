@@ -12,8 +12,8 @@
 
 @interface NMTGContext : NSManagedObject
 
-@property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * iconName;
 @property (nonatomic, retain) NSNumber * isDefaultContext;
+@property (nonatomic, retain) NSString * name;
 
 @end
