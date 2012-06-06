@@ -233,6 +233,9 @@
             case 2:
                 addSpecialVC.taskSMS = YES;
                 break;
+            case 3:
+                [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+                return;
             default:
                 break;
         }

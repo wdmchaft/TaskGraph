@@ -35,6 +35,14 @@
     [super viewDidUnload];
 }
 
+-(void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (self.taskSMS) self.navigationItem.title = @"Отправить SMS";
+    if (self.taskPhone) self.navigationItem.title = @"Позвонить";
+    if (self.taskEmail) self.navigationItem.title = @"Отправить e-Mail";    
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -112,7 +120,7 @@
         case 1:
             [self showNewPersonViewController];
             break;
-            
+            case 2:
         default:
             break;
     }
