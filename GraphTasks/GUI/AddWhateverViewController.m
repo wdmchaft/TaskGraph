@@ -8,7 +8,6 @@
 
 #import "TextViewViewController.h"
 #import "AddWhateverViewController.h"
-#import "AddSpecialTaskViewController.h"
 
 
 #define TITLE_NORMAL @"Обычные задачи"
