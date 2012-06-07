@@ -49,7 +49,6 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    NSLog(@"indexPath: %@", _indexPathOfSelectedCell);
     [self.tableView reloadData];
 }
 

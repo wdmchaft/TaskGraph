@@ -131,17 +131,15 @@
 {
 	ABPeoplePickerNavigationController *picker = [[ABPeoplePickerNavigationController alloc] init];
     picker.peoplePickerDelegate = self;
-	
-//новый вариант    
+
     NSMutableArray *displayedItems = [NSMutableArray new];
     if (self.taskPhone || self.taskSMS) {
         [displayedItems addObject:[NSNumber numberWithInt:kABPersonPhoneProperty]];
     } else {
         [displayedItems addObject:[NSNumber numberWithInt:kABPersonEmailProperty]];
     }
-	
+    
 	picker.displayedProperties = displayedItems;
-//    [self.navigationController pushViewController:picker animated:YES];
 	[self presentModalViewController:picker animated:YES];
 }
 
@@ -154,6 +152,25 @@
 	[self presentModalViewController:navigation animated:YES];
 }
 
+-(void)showPersonViewController
+{
+	// Fetch the address book 
+	ABAddressBookRef addressBook = ABAddressBookCreate();
+
+    ABRecordRef person = (ABRecordRef)[people objectAtIndex:0];
+    ABPersonViewController *picker = [[ABPersonViewController alloc] init];
+    picker.personViewDelegate = self;
+    picker.displayedPerson = person;
+    // Allow users to edit the person’s information
+    picker.allowsEditing = YES;
+    [self.navigationController pushViewController:picker animated:YES];
+	CFRelease(addressBook);
+}
+
+
+
+
+
 
 
 
@@ -161,6 +178,7 @@
 // Displays the information of a selected person
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person
 {
+
 	return YES;
 }
 
@@ -222,11 +240,8 @@
 - (BOOL)personViewController:(ABPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person 
 					property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifierForValue
 {
-    NSLog(@"person:%@",person);
-    NSLog(@"%@", [personViewController.displayedProperties objectAtIndex:0]);
-    NSLog(@"%@", [personViewController.displayedProperties objectAtIndex:1]);
-    NSLog(@"%@", [personViewController.displayedProperties objectAtIndex:2]);
-	return YES;
+
+	return NO;
 }
 
 
