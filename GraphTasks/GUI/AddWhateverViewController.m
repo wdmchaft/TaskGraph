@@ -259,7 +259,6 @@
             [self showNewPersonViewController];
             break;
         case 2: //отмена
-            [self actionSheetCancel:actionSheet];
             break;
         default:
             break;
