@@ -29,10 +29,11 @@
 @implementation AddPropertiesViewController
 
 @synthesize parentProject = _parentProject,
-            taskToEdit = _taskToEdit, 
-            taskMail = _taskMail, 
-            taskSMS = _taskSMS, 
-            taskPhone = _taskPhone;
+            taskToEdit,
+            taskMail,
+            taskSMS, 
+            taskPhone,
+            taskMap;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -111,6 +112,9 @@
             [_context insertObject:_newTask];
         } else if (self.isTaskPhone) {
             _newTask = [[NMTGTaskPhone alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGTaskPhone" inManagedObjectContext:_context] insertIntoManagedObjectContext:_context];
+            [_context insertObject:_newTask];
+        } else if (self.taskMap) {
+            _newTask = [[NMTGTaskLocation alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGTaskLocation" inManagedObjectContext:_context] insertIntoManagedObjectContext:_context];
             [_context insertObject:_newTask];
         } else {
             _newTask = [[NMTGTask alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGTask" inManagedObjectContext:_context] insertIntoManagedObjectContext:_context];

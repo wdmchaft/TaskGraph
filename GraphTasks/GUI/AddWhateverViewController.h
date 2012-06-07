@@ -7,13 +7,25 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AddressBook/AddressBook.h>
+#import <AddressBookUI/AddressBookUI.h>
 
-@interface AddWhateverViewController : UITableViewController{
+@interface AddWhateverViewController : UITableViewController <UIActionSheetDelegate, ABPeoplePickerNavigationControllerDelegate,
+ABPersonViewControllerDelegate, ABNewPersonViewControllerDelegate> {
     NSDictionary* _tableData;
     NMTGProject* _parentProject;
     NSIndexPath* _indexPathOfSelectedCell;
 }
 @property(nonatomic,retain) NMTGProject* parentProject;
--(void)save;
+@property (nonatomic) BOOL taskPhone;
+@property (nonatomic) BOOL taskSMS;
+@property (nonatomic) BOOL taskEmail;
+@property (nonatomic) BOOL taskMap;
+
 -(void)cancel;
+
+-(void)showPeoplePickerController;
+-(void)showPersonViewController;
+-(void)showNewPersonViewController;
+
 @end

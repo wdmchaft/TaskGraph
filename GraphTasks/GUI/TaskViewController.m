@@ -277,6 +277,12 @@
             } else {
                 cell.imageView.image = [UIImage imageNamed:@"call_30x30.png"];
             }
+        } else if([object isKindOfClass:[NMTGTaskLocation class]]) {
+            if ([object.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
+                cell.imageView.image = [UIImage imageNamed:@"map_undone_30x30.png"];
+            } else {
+                cell.imageView.image = [UIImage imageNamed:@"map_30x30.png"];
+            }
         } else if([object isKindOfClass:[NMTGTask class]]) {
             if ([object.done isEqualToNumber:[NSNumber numberWithBool:NO]]){
                 cell.imageView.image = [UIImage imageNamed:@"task_30x30.png"];
@@ -285,7 +291,6 @@
             }
         } 
         cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-//        cell.editingAccessoryType = UITableViewCellAccessoryNone;
         
         NSDateFormatter* formatter = [[NSDateFormatter alloc]init];
         [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:3*86400]];

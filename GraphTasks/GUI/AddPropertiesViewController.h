@@ -38,10 +38,6 @@
     NSString*   _taskKeyDescribingType; //строка типа "Позвонить" или "SMS" или "e-Mail"
     NSString*   _taskValueForKeyDescribingType; //первым двум типам будет соответствовать номер телефона. Третьему - адрес почты
     
-    BOOL _taskSMS;
-    BOOL _taskPhone;
-    BOOL _taskMail;
-    
     UISwitch* _switch;
 }
 @property(nonatomic,retain) NMTGProject* parentProject;
@@ -49,6 +45,7 @@
 @property(nonatomic, getter = isTaskSMS) BOOL taskSMS;
 @property(nonatomic, getter = isTaskMail) BOOL taskMail;
 @property(nonatomic, getter = isTaskPhone) BOOL taskPhone;
+@property(nonatomic, getter = isTaskMap) BOOL taskMap;
 
 - (void) switchChanged;
 
