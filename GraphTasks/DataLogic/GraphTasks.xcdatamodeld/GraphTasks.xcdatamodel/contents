@@ -10,12 +10,17 @@
         <attribute name="done" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="finishDate" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="employers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NMTGProfile" inverseName="tasksAndProjects" inverseEntity="NMTGProfile" syncable="YES"/>
     </entity>
     <entity name="NMTGContext" representedClassName="NMTGContext" syncable="YES">
         <attribute name="iconName" attributeType="String" syncable="YES"/>
         <attribute name="isDefaultContext" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="NMTGJobPosition" representedClassName="NMTGJobPosition" syncable="YES">
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="parentJobPosition" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="NMTGJobPosition" inverseName="subJobPositions" inverseEntity="NMTGJobPosition" syncable="YES"/>
+        <relationship name="subJobPositions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NMTGJobPosition" inverseName="parentJobPosition" inverseEntity="NMTGJobPosition" syncable="YES"/>
+        <relationship name="workersOnThisPosition" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NMTGProfile" syncable="YES"/>
     </entity>
     <entity name="NMTGProfile" representedClassName="NMTeamProfile" syncable="YES">
         <attribute name="birthday" optional="YES" attributeType="Date" syncable="YES"/>
@@ -24,7 +29,8 @@
         <attribute name="mail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="photo" optional="YES" attributeType="Transformable" storedInTruthFile="YES" syncable="YES"/>
-        <relationship name="tasksAndProjects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NMTGAbstract" inverseName="employers" inverseEntity="NMTGAbstract" syncable="YES"/>
+        <relationship name="jobPosition" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NMTGJobPosition" syncable="YES"/>
+        <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NMTGTask" syncable="YES"/>
     </entity>
     <entity name="NMTGProject" representedClassName="NMTGProject" parentEntity="NMTGAbstract" syncable="YES">
         <relationship name="parentProject" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="NMTGProject" syncable="YES"/>
@@ -36,6 +42,7 @@
         <attribute name="keyDescribingTaskType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="valueForKeyDescribingTaskType" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="parentProject" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NMTGProject" inverseName="subTasks" inverseEntity="NMTGProject" syncable="YES"/>
+        <relationship name="workers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NMTGTask" syncable="YES"/>
     </entity>
     <entity name="NMTGTaskLocation" representedClassName="NMTGTaskLocation" parentEntity="NMTGTask" syncable="YES"/>
     <entity name="NMTGTaskMail" representedClassName="NMTGTaskMail" parentEntity="NMTGTask" syncable="YES"/>
@@ -44,13 +51,14 @@
     <elements>
         <element name="NMTGAbstract" positionX="-3177" positionY="-1827" width="180" height="150"/>
         <element name="NMTGContext" positionX="-2916" positionY="-1800" width="128" height="60"/>
-        <element name="NMTGProfile" positionX="-3168" positionY="-1827" width="128" height="150"/>
+        <element name="NMTGProfile" positionX="-3168" positionY="-1827" width="128" height="165"/>
         <element name="NMTGProject" positionX="-3177" positionY="-2115" width="128" height="90"/>
         <element name="NMTGSettings" positionX="160" positionY="192" width="128" height="45"/>
-        <element name="NMTGTask" positionX="-2871" positionY="-1989" width="128" height="90"/>
+        <element name="NMTGTask" positionX="-2871" positionY="-1989" width="128" height="60"/>
         <element name="NMTGTaskLocation" positionX="-2801" positionY="-2070" width="128" height="45"/>
         <element name="NMTGTaskMail" positionX="-2594" positionY="-1908" width="128" height="45"/>
         <element name="NMTGTaskPhone" positionX="-2700" positionY="-1827" width="128" height="45"/>
-        <element name="NMTGTaskSMS" positionX="160" positionY="192" width="128" height="45"/>
+        <element name="NMTGTaskSMS" positionX="-2592" positionY="-2034" width="128" height="45"/>
+        <element name="NMTGJobPosition" positionX="160" positionY="192" width="128" height="105"/>
     </elements>
 </model>

@@ -7,11 +7,8 @@
 //
 
 #import "ContextsViewController.h"
-#import "NMTGTask.h"
-#import "NMTGProject.h"
-#import "NMTGContext.h"
-
 #import "TextViewViewController.h"
+#import "NMTaskGraphManager.h"
 
 #define TITLE_USUAL_CONTEXTS @"Стандартные"
 #define TITLE_MADE_BY_USER @"Пользовательские"
@@ -139,16 +136,16 @@
 }
 
 
--(void)setContextName:(NSString *)thename
+-(void)createNewContextWithName:(NSString *)thename
 {
-    NSManagedObjectContext* managedContext = [[NMTaskGraphManager sharedManager]managedContext];
+    NSManagedObjectContext* context = [[NMTaskGraphManager sharedManager]managedContext];
     
-    NMTGContext* contextName = [[NMTGContext alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGContext" inManagedObjectContext:managedContext] insertIntoManagedObjectContext:managedContext];
-    [managedContext insertObject:contextName];
+    NMTGContext* contextName = [[NMTGContext alloc]initWithEntity:[NSEntityDescription entityForName:@"NMTGContext" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+    [context insertObject:contextName];
     contextName.name = thename;
     contextName.iconName = @"context_30x30.png";
     NSError* error = nil;
-    if(![managedContext save:&error ]){
+    if(![context save:&error ]){
         NSLog(@"FAILED TO SAVE CONTEXT IN saveContextName in ContextsVC");
         NSLog(@"%@",error);
     }

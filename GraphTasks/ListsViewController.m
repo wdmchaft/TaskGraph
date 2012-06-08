@@ -11,9 +11,6 @@
 #import "FocusedAndContextedViewController.h"
 #import "_43FoldersTableViewController.h"
 
-#import "NMTGTask.h"
-#import "NMTGProject.h"
-#import "NMTGContext.h"
 
 #import "BadgedCell.h"
 
@@ -75,10 +72,9 @@
 {
     NSArray* regularTasks = [NSArray arrayWithObjects:@"Все", @"Ближайшие", @"43 папки GTD", nil];
      
-    NSManagedObjectContext* context;
+    NSManagedObjectContext* context = [[NMTaskGraphManager sharedManager] managedContext];
     NSFetchRequest* request = [NSFetchRequest new];
     NSEntityDescription* entity;
-    context = [[NMTaskGraphManager sharedManager]managedContext];
     NSArray* resultsOfFetchExec;
     
     [[_numbersForCellsDataSource objectForKey:TITLE_CONTEXTED] removeAllObjects];

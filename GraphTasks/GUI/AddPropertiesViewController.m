@@ -11,13 +11,6 @@
 #import "TextViewViewController.h"
 #import "ContextsViewController.h"
 
-#import "NMTGProject.h"
-#import "NMTGTask.h"
-#import "NMTGTaskLocation.h"
-#import "NMTGTaskMail.h"
-#import "NMTGTaskPhone.h"
-#import "NMTGTaskSMS.h"
-
 #define TITLE_COMMENT_AND_CONTEXT @"Пометки"
 #define TITLE_ALERT_DATES @"Напоминания"
 #define TITLE_NAME @"Имя"

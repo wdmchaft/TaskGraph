@@ -101,12 +101,10 @@
     
     cell.textLabel.text = [cellDataSourse objectAtIndex:indexPath.row];
     
-    BOOL indexPathIsLastSelected = NO;
-    indexPathIsLastSelected = (indexPath.row == _indexPathOfSelectedCell.row)&&
+    BOOL wasThisCellLastSelected = (indexPath.row == _indexPathOfSelectedCell.row) &&
     (indexPath.section == _indexPathOfSelectedCell.section);
-    //    cell.accessoryType = (indexPath==_indexPathOfSelectedCell) ? UITableViewCellAccessoryCheckmark 
-    //    : UITableViewCellAccessoryDisclosureIndicator;
-    cell.accessoryType = (indexPathIsLastSelected == YES) ? UITableViewCellAccessoryCheckmark 
+
+    cell.accessoryType = (wasThisCellLastSelected == YES) ? UITableViewCellAccessoryCheckmark 
     : UITableViewCellAccessoryNone; 
     
     switch (indexPath.section) {

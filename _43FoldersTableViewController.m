@@ -7,7 +7,6 @@
 //
 
 #import "FocusedAndContextedViewController.h"
-#import "NMTGTask.h"
 #import "ProjectsViewController.h"
 #import "_43FoldersTableViewController.h"
 

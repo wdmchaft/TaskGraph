@@ -7,10 +7,10 @@
 //
 
 #import "NMGRootViewController.h"
-#import "NMTeamProfileViewController.h"
 #import "ProjectsViewController.h"
 #import "AddWhateverViewController.h"
 #import "ListsViewController.h"
+#import "EmployersViewController.h"
 
 CGFloat kNMGButtonHeight;
 CGFloat kNMGButtonWidth;
@@ -136,8 +136,8 @@ CGRect  kNMGSettingsRect;
 }
 
 -   (void)  teamButtonClicked{
-    NMTeamProfileViewController*    tvc =   [[NMTeamProfileViewController   alloc]  init];
-    [self.navigationController  pushViewController:tvc animated:YES];
+    EmployersViewController *vc = [[EmployersViewController alloc] initWithStyle: UITableViewStylePlain];
+    [self.navigationController  pushViewController:vc animated:YES];
 }
 
 -   (void)  contextsButtonClicked{

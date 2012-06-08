@@ -7,8 +7,7 @@
 //
 
 #import "NMTaskGraphManager.h"
-#import "NMTGSettings.h"
-#import "NMTGContext.h"
+
 
 static  NMTaskGraphManager* st_sharedManager    =   nil;
 
@@ -122,8 +121,26 @@ const   NSString*   NMTaskGraphFileName =   @"NMTaskGraph2.sqlite";
             NSLog(@"Failed to save context in 'resetSettingsToDefaults' part 2");
             NSLog(@"%@",error);
         }
-
-//        
+        
+        NSEntityDescription* entityJobPosition = [NSEntityDescription entityForName:@"NMTGJobPosition" inManagedObjectContext:context];
+        
+        NMTGJobPosition *position1 = [[NMTGJobPosition alloc] initWithEntity: entityJobPosition insertIntoManagedObjectContext: context];
+        NMTGJobPosition *position2 = [[NMTGJobPosition alloc] initWithEntity: entityJobPosition insertIntoManagedObjectContext: context];
+        
+        [context insertObject: position1];
+        [context insertObject: position2];
+        
+        position1.title = @"Директор";
+        position2.title = @""; //будет отображаться "Без должности"
+        
+        [position1 addSubJobPositionsObject: position2];
+        [position1 setParentJobPosition: position1];
+     
+        error = nil;
+        if (![context save:&error]) {
+            NSLog(@"Failed to save context in 'resetSettingsToDefaults' part 3");
+            NSLog(@"%@",error);
+        }        
     }
 }
 

@@ -9,6 +9,19 @@
 #import <UIKit/UIKit.h>
 #import "NMTeamProfile.h"
 #import "NMTGProject.h"
+#import "NMTGSettings.h"
+#import "NMTGContext.h"
+#import "NMTGTask.h"
+#import "NMTGProject.h"
+#import "NMTGTaskLocation.h"
+#import "NMTGTaskMail.h"
+#import "NMTGTaskPhone.h"
+#import "NMTGTaskSMS.h"
+#import "NMTGJobPosition.h"
+#import "NMTGSettings.h"
+#import "NMTGAbstract.h"
+
+
 
 extern  const   NSString*   NMTaskGraphFileName;
 

@@ -12,16 +12,19 @@
 		173951E9157F8A1F00B5C61A /* mail_undone_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 173951E5157F8A1F00B5C61A /* mail_undone_30x30.png */; };
 		173951EA157F8A1F00B5C61A /* map_undone_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 173951E6157F8A1F00B5C61A /* map_undone_30x30.png */; };
 		173951EB157F8A1F00B5C61A /* sms_undone_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 173951E7157F8A1F00B5C61A /* sms_undone_30x30.png */; };
-		1739520D157FDABC00B5C61A /* NMTeamProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 1739520C157FDABC00B5C61A /* NMTeamProfile.m */; };
-		17395210157FDABD00B5C61A /* NMTGAbstract.m in Sources */ = {isa = PBXBuildFile; fileRef = 1739520F157FDABD00B5C61A /* NMTGAbstract.m */; };
-		17395213157FDABD00B5C61A /* NMTGProject.m in Sources */ = {isa = PBXBuildFile; fileRef = 17395212157FDABD00B5C61A /* NMTGProject.m */; };
-		17395216157FDABD00B5C61A /* NMTGTaskPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 17395215157FDABD00B5C61A /* NMTGTaskPhone.m */; };
-		17395219157FDABD00B5C61A /* NMTGSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 17395218157FDABD00B5C61A /* NMTGSettings.m */; };
-		1739521C157FDABE00B5C61A /* NMTGTaskSMS.m in Sources */ = {isa = PBXBuildFile; fileRef = 1739521B157FDABE00B5C61A /* NMTGTaskSMS.m */; };
-		1739521F157FDABE00B5C61A /* NMTGTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 1739521E157FDABE00B5C61A /* NMTGTask.m */; };
-		17395222157FDABE00B5C61A /* NMTGTaskLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 17395221157FDABE00B5C61A /* NMTGTaskLocation.m */; };
-		17395225157FDABE00B5C61A /* NMTGTaskMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 17395224157FDABE00B5C61A /* NMTGTaskMail.m */; };
-		17395228157FDABE00B5C61A /* NMTGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 17395227157FDABE00B5C61A /* NMTGContext.m */; };
+		17395252158112AD00B5C61A /* EmployersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17395251158112AD00B5C61A /* EmployersViewController.m */; };
+		173952551581168400B5C61A /* NMTGJobPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 173952541581168300B5C61A /* NMTGJobPosition.m */; };
+		173952581581168400B5C61A /* NMTGSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 173952571581168400B5C61A /* NMTGSettings.m */; };
+		1739525B1581168500B5C61A /* NMTGTaskLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1739525A1581168500B5C61A /* NMTGTaskLocation.m */; };
+		1739525E1581168500B5C61A /* NMTGProject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1739525D1581168500B5C61A /* NMTGProject.m */; };
+		173952611581168600B5C61A /* NMTGTaskSMS.m in Sources */ = {isa = PBXBuildFile; fileRef = 173952601581168500B5C61A /* NMTGTaskSMS.m */; };
+		173952641581168600B5C61A /* NMTeamProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 173952631581168600B5C61A /* NMTeamProfile.m */; };
+		173952671581168600B5C61A /* NMTGAbstract.m in Sources */ = {isa = PBXBuildFile; fileRef = 173952661581168600B5C61A /* NMTGAbstract.m */; };
+		1739526A1581168600B5C61A /* NMTGTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 173952691581168600B5C61A /* NMTGTask.m */; };
+		1739526D1581168600B5C61A /* NMTGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 1739526C1581168600B5C61A /* NMTGContext.m */; };
+		173952701581168600B5C61A /* NMTGTaskMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 1739526F1581168600B5C61A /* NMTGTaskMail.m */; };
+		173952731581168700B5C61A /* NMTGTaskPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 173952721581168700B5C61A /* NMTGTaskPhone.m */; };
+		17395277158133EE00B5C61A /* JobPositionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17395276158133EE00B5C61A /* JobPositionsViewController.m */; };
 		174E386715565DE00091C441 /* 43.PNG in Resources */ = {isa = PBXBuildFile; fileRef = 174E386615565DE00091C441 /* 43.PNG */; };
 		174E386C155677A80091C441 /* winter_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 174E3868155677A80091C441 /* winter_30x30.png */; };
 		174E386D155677A80091C441 /* spring_30x30.png in Resources */ = {isa = PBXBuildFile; fileRef = 174E3869155677A80091C441 /* spring_30x30.png */; };
@@ -101,7 +104,6 @@
 		632BDEBF14F41C3E00A10E0B /* UIButton+NMKit_Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 632BDEAD14F41C3E00A10E0B /* UIButton+NMKit_Extension.m */; };
 		632BDEC014F41C3E00A10E0B /* UIImage+NMKit_Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 632BDEB014F41C3E00A10E0B /* UIImage+NMKit_Extensions.m */; };
 		632BDEC114F41C3E00A10E0B /* UIToolbar+NMKit_Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 632BDEB314F41C3E00A10E0B /* UIToolbar+NMKit_Extensions.m */; };
-		9C98B61F14FD37DE00A4C6F0 /* NMTeamProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C98B61E14FD37DE00A4C6F0 /* NMTeamProfileViewController.m */; };
 		9C98B62214FD387700A4C6F0 /* NMTaskGraphManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C98B62114FD387700A4C6F0 /* NMTaskGraphManager.m */; };
 		9C98B62614FD4A7900A4C6F0 /* profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C98B62414FD4A7900A4C6F0 /* profile.png */; };
 		9C98B62714FD4A7900A4C6F0 /* profile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C98B62514FD4A7900A4C6F0 /* profile@2x.png */; };
@@ -115,26 +117,32 @@
 		173951E5157F8A1F00B5C61A /* mail_undone_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mail_undone_30x30.png; sourceTree = "<group>"; };
 		173951E6157F8A1F00B5C61A /* map_undone_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_undone_30x30.png; sourceTree = "<group>"; };
 		173951E7157F8A1F00B5C61A /* sms_undone_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sms_undone_30x30.png; sourceTree = "<group>"; };
-		1739520B157FDABC00B5C61A /* NMTeamProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTeamProfile.h; sourceTree = "<group>"; };
-		1739520C157FDABC00B5C61A /* NMTeamProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTeamProfile.m; sourceTree = "<group>"; };
-		1739520E157FDABD00B5C61A /* NMTGAbstract.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGAbstract.h; sourceTree = "<group>"; };
-		1739520F157FDABD00B5C61A /* NMTGAbstract.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGAbstract.m; sourceTree = "<group>"; };
-		17395211157FDABD00B5C61A /* NMTGProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGProject.h; sourceTree = "<group>"; };
-		17395212157FDABD00B5C61A /* NMTGProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGProject.m; sourceTree = "<group>"; };
-		17395214157FDABD00B5C61A /* NMTGTaskPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskPhone.h; sourceTree = "<group>"; };
-		17395215157FDABD00B5C61A /* NMTGTaskPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskPhone.m; sourceTree = "<group>"; };
-		17395217157FDABD00B5C61A /* NMTGSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGSettings.h; sourceTree = "<group>"; };
-		17395218157FDABD00B5C61A /* NMTGSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGSettings.m; sourceTree = "<group>"; };
-		1739521A157FDABD00B5C61A /* NMTGTaskSMS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskSMS.h; sourceTree = "<group>"; };
-		1739521B157FDABE00B5C61A /* NMTGTaskSMS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskSMS.m; sourceTree = "<group>"; };
-		1739521D157FDABE00B5C61A /* NMTGTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTask.h; sourceTree = "<group>"; };
-		1739521E157FDABE00B5C61A /* NMTGTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTask.m; sourceTree = "<group>"; };
-		17395220157FDABE00B5C61A /* NMTGTaskLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskLocation.h; sourceTree = "<group>"; };
-		17395221157FDABE00B5C61A /* NMTGTaskLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskLocation.m; sourceTree = "<group>"; };
-		17395223157FDABE00B5C61A /* NMTGTaskMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskMail.h; sourceTree = "<group>"; };
-		17395224157FDABE00B5C61A /* NMTGTaskMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskMail.m; sourceTree = "<group>"; };
-		17395226157FDABE00B5C61A /* NMTGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGContext.h; sourceTree = "<group>"; };
-		17395227157FDABE00B5C61A /* NMTGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGContext.m; sourceTree = "<group>"; };
+		17395250158112AD00B5C61A /* EmployersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmployersViewController.h; sourceTree = "<group>"; };
+		17395251158112AD00B5C61A /* EmployersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmployersViewController.m; sourceTree = "<group>"; };
+		173952531581168300B5C61A /* NMTGJobPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGJobPosition.h; sourceTree = "<group>"; };
+		173952541581168300B5C61A /* NMTGJobPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGJobPosition.m; sourceTree = "<group>"; };
+		173952561581168400B5C61A /* NMTGSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGSettings.h; sourceTree = "<group>"; };
+		173952571581168400B5C61A /* NMTGSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGSettings.m; sourceTree = "<group>"; };
+		173952591581168500B5C61A /* NMTGTaskLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskLocation.h; sourceTree = "<group>"; };
+		1739525A1581168500B5C61A /* NMTGTaskLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskLocation.m; sourceTree = "<group>"; };
+		1739525C1581168500B5C61A /* NMTGProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGProject.h; sourceTree = "<group>"; };
+		1739525D1581168500B5C61A /* NMTGProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGProject.m; sourceTree = "<group>"; };
+		1739525F1581168500B5C61A /* NMTGTaskSMS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskSMS.h; sourceTree = "<group>"; };
+		173952601581168500B5C61A /* NMTGTaskSMS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskSMS.m; sourceTree = "<group>"; };
+		173952621581168600B5C61A /* NMTeamProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTeamProfile.h; sourceTree = "<group>"; };
+		173952631581168600B5C61A /* NMTeamProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTeamProfile.m; sourceTree = "<group>"; };
+		173952651581168600B5C61A /* NMTGAbstract.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGAbstract.h; sourceTree = "<group>"; };
+		173952661581168600B5C61A /* NMTGAbstract.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGAbstract.m; sourceTree = "<group>"; };
+		173952681581168600B5C61A /* NMTGTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTask.h; sourceTree = "<group>"; };
+		173952691581168600B5C61A /* NMTGTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTask.m; sourceTree = "<group>"; };
+		1739526B1581168600B5C61A /* NMTGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGContext.h; sourceTree = "<group>"; };
+		1739526C1581168600B5C61A /* NMTGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGContext.m; sourceTree = "<group>"; };
+		1739526E1581168600B5C61A /* NMTGTaskMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskMail.h; sourceTree = "<group>"; };
+		1739526F1581168600B5C61A /* NMTGTaskMail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskMail.m; sourceTree = "<group>"; };
+		173952711581168700B5C61A /* NMTGTaskPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTGTaskPhone.h; sourceTree = "<group>"; };
+		173952721581168700B5C61A /* NMTGTaskPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTGTaskPhone.m; sourceTree = "<group>"; };
+		17395275158133EE00B5C61A /* JobPositionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JobPositionsViewController.h; sourceTree = "<group>"; };
+		17395276158133EE00B5C61A /* JobPositionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JobPositionsViewController.m; sourceTree = "<group>"; };
 		174E386615565DE00091C441 /* 43.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 43.PNG; sourceTree = "<group>"; };
 		174E3868155677A80091C441 /* winter_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = winter_30x30.png; sourceTree = "<group>"; };
 		174E3869155677A80091C441 /* spring_30x30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spring_30x30.png; sourceTree = "<group>"; };
@@ -248,8 +256,6 @@
 		632BDEB214F41C3E00A10E0B /* UIToolbar+NMKit_Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIToolbar+NMKit_Extensions.h"; sourceTree = "<group>"; };
 		632BDEB314F41C3E00A10E0B /* UIToolbar+NMKit_Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIToolbar+NMKit_Extensions.m"; sourceTree = "<group>"; };
 		632BDEC214F41DA400A10E0B /* NMGGUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NMGGUI.h; path = GUI/NMGGUI.h; sourceTree = "<group>"; };
-		9C98B61D14FD37DE00A4C6F0 /* NMTeamProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTeamProfileViewController.h; sourceTree = "<group>"; };
-		9C98B61E14FD37DE00A4C6F0 /* NMTeamProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTeamProfileViewController.m; sourceTree = "<group>"; };
 		9C98B62014FD387700A4C6F0 /* NMTaskGraphManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NMTaskGraphManager.h; sourceTree = "<group>"; };
 		9C98B62114FD387700A4C6F0 /* NMTaskGraphManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NMTaskGraphManager.m; sourceTree = "<group>"; };
 		9C98B62414FD4A7900A4C6F0 /* profile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile.png; sourceTree = "<group>"; };
@@ -277,6 +283,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		173952741581339A00B5C61A /* AddControllers */ = {
+			isa = PBXGroup;
+			children = (
+				17395275158133EE00B5C61A /* JobPositionsViewController.h */,
+				17395276158133EE00B5C61A /* JobPositionsViewController.m */,
+			);
+			name = AddControllers;
+			sourceTree = "<group>";
+		};
 		178D47DA151F2C9A004F0734 /* ProjectsViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -290,6 +305,7 @@
 				179885E51550969900AA3CC1 /* FocusedAndContextedViewController.m */,
 				1736369B15552D1600B21CBC /* _43FoldersTableViewController.h */,
 				1736369C15552D1600B21CBC /* _43FoldersTableViewController.m */,
+				17E30AC0152DEAA5007414A5 /* AddControllers */,
 			);
 			name = ProjectsViewControllers;
 			sourceTree = "<group>";
@@ -419,26 +435,28 @@
 			isa = PBXGroup;
 			children = (
 				632BDE8414F41B7300A10E0B /* GraphTasks.xcdatamodeld */,
-				17395226157FDABE00B5C61A /* NMTGContext.h */,
-				17395227157FDABE00B5C61A /* NMTGContext.m */,
-				17395223157FDABE00B5C61A /* NMTGTaskMail.h */,
-				17395224157FDABE00B5C61A /* NMTGTaskMail.m */,
-				17395220157FDABE00B5C61A /* NMTGTaskLocation.h */,
-				17395221157FDABE00B5C61A /* NMTGTaskLocation.m */,
-				1739521D157FDABE00B5C61A /* NMTGTask.h */,
-				1739521E157FDABE00B5C61A /* NMTGTask.m */,
-				1739521A157FDABD00B5C61A /* NMTGTaskSMS.h */,
-				1739521B157FDABE00B5C61A /* NMTGTaskSMS.m */,
-				17395217157FDABD00B5C61A /* NMTGSettings.h */,
-				17395218157FDABD00B5C61A /* NMTGSettings.m */,
-				17395214157FDABD00B5C61A /* NMTGTaskPhone.h */,
-				17395215157FDABD00B5C61A /* NMTGTaskPhone.m */,
-				17395211157FDABD00B5C61A /* NMTGProject.h */,
-				17395212157FDABD00B5C61A /* NMTGProject.m */,
-				1739520E157FDABD00B5C61A /* NMTGAbstract.h */,
-				1739520F157FDABD00B5C61A /* NMTGAbstract.m */,
-				1739520B157FDABC00B5C61A /* NMTeamProfile.h */,
-				1739520C157FDABC00B5C61A /* NMTeamProfile.m */,
+				173952561581168400B5C61A /* NMTGSettings.h */,
+				173952571581168400B5C61A /* NMTGSettings.m */,
+				173952591581168500B5C61A /* NMTGTaskLocation.h */,
+				1739525A1581168500B5C61A /* NMTGTaskLocation.m */,
+				1739525C1581168500B5C61A /* NMTGProject.h */,
+				1739525D1581168500B5C61A /* NMTGProject.m */,
+				1739525F1581168500B5C61A /* NMTGTaskSMS.h */,
+				173952601581168500B5C61A /* NMTGTaskSMS.m */,
+				173952621581168600B5C61A /* NMTeamProfile.h */,
+				173952631581168600B5C61A /* NMTeamProfile.m */,
+				173952651581168600B5C61A /* NMTGAbstract.h */,
+				173952661581168600B5C61A /* NMTGAbstract.m */,
+				173952681581168600B5C61A /* NMTGTask.h */,
+				173952691581168600B5C61A /* NMTGTask.m */,
+				1739526B1581168600B5C61A /* NMTGContext.h */,
+				1739526C1581168600B5C61A /* NMTGContext.m */,
+				1739526E1581168600B5C61A /* NMTGTaskMail.h */,
+				1739526F1581168600B5C61A /* NMTGTaskMail.m */,
+				173952711581168700B5C61A /* NMTGTaskPhone.h */,
+				173952721581168700B5C61A /* NMTGTaskPhone.m */,
+				173952531581168300B5C61A /* NMTGJobPosition.h */,
+				173952541581168300B5C61A /* NMTGJobPosition.m */,
 				9C98B62014FD387700A4C6F0 /* NMTaskGraphManager.h */,
 				9C98B62114FD387700A4C6F0 /* NMTaskGraphManager.m */,
 			);
@@ -450,9 +468,8 @@
 			children = (
 				174FD176157E3AF800A33714 /* BadgedCell.h */,
 				174FD177157E3AF800A33714 /* BadgedCell.m */,
-				9C98B61C14FD37C800A4C6F0 /* NMTeamProfileViewController */,
+				9C98B61C14FD37C800A4C6F0 /* TeamViewControllers */,
 				178D47DA151F2C9A004F0734 /* ProjectsViewControllers */,
-				17E30AC0152DEAA5007414A5 /* AddControllers */,
 			);
 			path = GUI;
 			sourceTree = "<group>";
@@ -559,14 +576,16 @@
 			path = "UIToolBar+NMKit_Extensions";
 			sourceTree = "<group>";
 		};
-		9C98B61C14FD37C800A4C6F0 /* NMTeamProfileViewController */ = {
+		9C98B61C14FD37C800A4C6F0 /* TeamViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				9C98B61D14FD37DE00A4C6F0 /* NMTeamProfileViewController.h */,
-				9C98B61E14FD37DE00A4C6F0 /* NMTeamProfileViewController.m */,
+				17395250158112AD00B5C61A /* EmployersViewController.h */,
+				17395251158112AD00B5C61A /* EmployersViewController.m */,
 				9C98B62814FD4CBA00A4C6F0 /* NMTeamProfileEditController.h */,
 				9C98B62914FD4CBA00A4C6F0 /* NMTeamProfileEditController.m */,
+				173952741581339A00B5C61A /* AddControllers */,
 			);
+			name = TeamViewControllers;
 			path = NMTeamProfileViewController;
 			sourceTree = "<group>";
 		};
@@ -733,7 +752,6 @@
 				632BDEBF14F41C3E00A10E0B /* UIButton+NMKit_Extension.m in Sources */,
 				632BDEC014F41C3E00A10E0B /* UIImage+NMKit_Extensions.m in Sources */,
 				632BDEC114F41C3E00A10E0B /* UIToolbar+NMKit_Extensions.m in Sources */,
-				9C98B61F14FD37DE00A4C6F0 /* NMTeamProfileViewController.m in Sources */,
 				9C98B62214FD387700A4C6F0 /* NMTaskGraphManager.m in Sources */,
 				9C98B62A14FD4CBA00A4C6F0 /* NMTeamProfileEditController.m in Sources */,
 				178D46EA151DC554004F0734 /* ProjectsViewController.m in Sources */,
@@ -747,16 +765,19 @@
 				179885E61550969900AA3CC1 /* FocusedAndContextedViewController.m in Sources */,
 				1736369D15552D1600B21CBC /* _43FoldersTableViewController.m in Sources */,
 				174FD178157E3AF800A33714 /* BadgedCell.m in Sources */,
-				1739520D157FDABC00B5C61A /* NMTeamProfile.m in Sources */,
-				17395210157FDABD00B5C61A /* NMTGAbstract.m in Sources */,
-				17395213157FDABD00B5C61A /* NMTGProject.m in Sources */,
-				17395216157FDABD00B5C61A /* NMTGTaskPhone.m in Sources */,
-				17395219157FDABD00B5C61A /* NMTGSettings.m in Sources */,
-				1739521C157FDABE00B5C61A /* NMTGTaskSMS.m in Sources */,
-				1739521F157FDABE00B5C61A /* NMTGTask.m in Sources */,
-				17395222157FDABE00B5C61A /* NMTGTaskLocation.m in Sources */,
-				17395225157FDABE00B5C61A /* NMTGTaskMail.m in Sources */,
-				17395228157FDABE00B5C61A /* NMTGContext.m in Sources */,
+				17395252158112AD00B5C61A /* EmployersViewController.m in Sources */,
+				173952551581168400B5C61A /* NMTGJobPosition.m in Sources */,
+				173952581581168400B5C61A /* NMTGSettings.m in Sources */,
+				1739525B1581168500B5C61A /* NMTGTaskLocation.m in Sources */,
+				1739525E1581168500B5C61A /* NMTGProject.m in Sources */,
+				173952611581168600B5C61A /* NMTGTaskSMS.m in Sources */,
+				173952641581168600B5C61A /* NMTeamProfile.m in Sources */,
+				173952671581168600B5C61A /* NMTGAbstract.m in Sources */,
+				1739526A1581168600B5C61A /* NMTGTask.m in Sources */,
+				1739526D1581168600B5C61A /* NMTGContext.m in Sources */,
+				173952701581168600B5C61A /* NMTGTaskMail.m in Sources */,
+				173952731581168700B5C61A /* NMTGTaskPhone.m in Sources */,
+				17395277158133EE00B5C61A /* JobPositionsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

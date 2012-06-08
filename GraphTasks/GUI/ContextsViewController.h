@@ -10,7 +10,7 @@
 #import "AddPropertiesViewController.h"
 
 @protocol ContextAddDelegate <NSObject>
--(void)setContextName:(NSString*)name;
+-(void)createNewContextWithName:(NSString*)name;
 @end
 
 @interface ContextsViewController : UITableViewController <ContextAddDelegate>{

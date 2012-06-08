@@ -7,11 +7,6 @@
 //
 
 #import "FocusedAndContextedViewController.h"
-#import "NMTGTask.h"
-#import "NMTGContext.h"
-#import "NMTGTaskMail.h"
-#import "NMTGTaskPhone.h"
-#import "NMTGTaskSMS.h"
 #import "ProjectsViewController.h"
 
 /*

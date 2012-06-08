@@ -10,43 +10,40 @@
 #import "TaskViewController.h"
 #import "AddPropertiesViewController.h"
 #import "ContextsViewController.h"
-
+#import "JobPositionsViewController.h"
 
 #define TITLE_SUBPROJECT_NAMES @"Имена подпроектов"
 #define TITLE_SUBTASK_NAMES @"Имена подзадач"
+#define TITLE_CONTEXT_NAMES @"Имена контекстов"
+#define TITLE_JOB_POSITIONS_NAMES @"Имена должностей"
 
 @interface TextViewViewController : UIViewController<UITextViewDelegate, UIAlertViewDelegate>{
-    UITextView* _textViewNameOrCommentOrContextText;
-    BOOL _isAddingTaskName;
-    BOOL _isAddingTaskComment;
-    BOOL _isAddingProjectName;
-    BOOL _isAddingContextName;
-    BOOL _isRenamingProject;
-    BOOL _isRenamingTask;
+    UITextView* _textViewForEVERYTHING;
     
     NMTGProject* _parentProject;
     NSMutableDictionary* _namesDataSource;
-    id<ContextAddDelegate> _delegateContextAdd;
-    id<SetTasksProperties> _delegateTaskProperties; 
-    id<SetProjectsProperties> _delegateProjectProperties;
     
     UIBarButtonItem* _buttonItem;
     UILabel* _placeholderLabel;
     NSString* _placeHolderText;
     
 }
+//свойства для задач
 @property(nonatomic)        BOOL isAddingTaskName;
 @property(nonatomic)        BOOL isAddingTaskComment;
 @property(nonatomic)        BOOL isAddingProjectName;
 @property(nonatomic)        BOOL isAddingContextName;
 @property(nonatomic)        BOOL isRenamingProject;
 @property(nonatomic)        BOOL isRenamingTask;
+//свойства для работников
+@property(nonatomic)        BOOL isAddingJobPositionName;
 
 @property(nonatomic,strong) NMTGProject* parentProject;
 @property(nonatomic,retain) UITextView* textViewNameOrComment;
 @property(nonatomic,retain) id<ContextAddDelegate> delegateContextAdd;
 @property(nonatomic,retain) id<SetTasksProperties> delegateTaskProperties;
 @property(nonatomic,retain) id<SetProjectsProperties> delegateProjectProperties;
+@property(nonatomic,retain) id<JobPositionsDelegate> delegateJobPositions;
 
 -(void)addingProjectName;
 -(void)addingTaskName;
@@ -54,6 +51,8 @@
 -(void)addingContextName;
 -(void)cancel;
 -(void)renamingProject;
+-(void)addingJobPositionName;
+
 -(void)alertShow;
 
 -(void)modifyTextViewsText;

@@ -7,9 +7,6 @@
 //
 
 #import "ProjectsViewController.h"
-#import "NMTGProject.h"
-#import "NMTGAbstract.h"
-#import "NMTGTask.h"
 #import "TaskViewController.h"
 #import "AddWhateverViewController.h"
 #import "TextViewViewController.h"

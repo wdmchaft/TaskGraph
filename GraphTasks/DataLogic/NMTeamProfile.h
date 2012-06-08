@@ -2,14 +2,14 @@
 //  NMTeamProfile.h
 //  GraphTasks
 //
-//  Created by Тимур Юсипов on 06.06.12.
+//  Created by Тимур Юсипов on 07.06.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class NMTGAbstract;
+@class NMTGJobPosition, NMTGTask;
 
 @interface NMTeamProfile : NSManagedObject
 
@@ -19,14 +19,20 @@
 @property (nonatomic, retain) NSString * mail;
 @property (nonatomic, retain) NSString * phone;
 @property (nonatomic, retain) id photo;
-@property (nonatomic, retain) NSSet *tasksAndProjects;
+@property (nonatomic, retain) NSSet *tasks;
+@property (nonatomic, retain) NSSet *jobPosition;
 @end
 
 @interface NMTeamProfile (CoreDataGeneratedAccessors)
 
-- (void)addTasksAndProjectsObject:(NMTGAbstract *)value;
-- (void)removeTasksAndProjectsObject:(NMTGAbstract *)value;
-- (void)addTasksAndProjects:(NSSet *)values;
-- (void)removeTasksAndProjects:(NSSet *)values;
+- (void)addTasksObject:(NMTGTask *)value;
+- (void)removeTasksObject:(NMTGTask *)value;
+- (void)addTasks:(NSSet *)values;
+- (void)removeTasks:(NSSet *)values;
+
+- (void)addJobPositionObject:(NMTGJobPosition *)value;
+- (void)removeJobPositionObject:(NMTGJobPosition *)value;
+- (void)addJobPosition:(NSSet *)values;
+- (void)removeJobPosition:(NSSet *)values;
 
 @end
